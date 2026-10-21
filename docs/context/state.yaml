@@ -180,6 +180,16 @@ features:
           - T-004
         evidence:
           - EV-004
+      - id: T-007
+        title: Tanpa garis dekoratif, skala teks HP, audit semua layar
+        status: done
+        requirements:
+          - FR-001
+          - FR-006
+        depends_on:
+          - T-006
+        evidence:
+          - EV-005
   - id: F-004
     title: Login mode demo
     status: implemented
@@ -299,6 +309,16 @@ features:
           - T-004
           - T-005
         evidence: []
+      - id: T-007
+        title: Jalan tanpa dokumen perjanjian
+        status: done
+        requirements:
+          - FR-002
+        depends_on:
+          - T-002
+        evidence:
+          - EV-005
+          - EV-006
 active:
   feature_id: F-006
   task_id: T-006
@@ -308,10 +328,7 @@ assumptions_open:
     title: Domain, hosting, dan akun deploy
   - id: A-016
     feature: F-006
-    title: Penyambungan ke Firestore produksi
-  - id: A-017
-    feature: F-006
-    title: Project Firebase `inzta-5244e` bukan database dasbor internal
+    title: Data perjanjian dan rilis di produksi
 blockers:
   - feature_id: F-005
     task_id: T-001
@@ -322,5 +339,5 @@ blockers:
   - feature_id: F-006
     task_id: T-006
     title: Sambungkan ke produksi
-generated_at: 2026-10-21T06:13:31.292Z
-source_hash: b532ee4f54987af89fcbd0493972dc6db2bd7b39d8ceea13afa3f1d324f424da
+generated_at: 2026-10-21T07:33:42.543Z
+source_hash: fd02c9383549f242aaab58afd1ce97fb619674caa250b4ced2c96721f2786746

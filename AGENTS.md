@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run adapters:sync`.
 Source: docs/steering/, sdd.config.json.
-source_hash: d460bebf23bad1ea2a1160966e25303b83b3e853c8eb5c9e254f3da3224ed2cc -->
+source_hash: 70a6e10e6699d555ea2a9dfe267a48c12ab16d01b259719193eeb45e9b01045b -->
 
 # Repository contract: Inzta Investor Portal
 
@@ -106,7 +106,7 @@ Stack and commands. `npm run init` filled the preset values; everything else com
 | Language and runtime | TypeScript 5 on Node 22+ (developed on Node 24) | `"type": "module"` so `node --test` loads `.ts` with type stripping |
 | Application framework | Next.js 16.4 (App Router, Turbopack), React 19.3 | Server Components by default |
 | Styling | Tailwind CSS v4 through `@tailwindcss/turbopack` | tokens from `docs/design/design-system.html` in `@theme` of `src/app/globals.css`: white base, Inzta charcoal, Inzta orange accent, no pale yellow |
-| Data store | Firebase Firestore, project `inzta-5244e` shared with `inztamoto-erp-dashboard` (Spark plan) | one database, two web apps (ADR-0001); the daily read quota is shared with the internal dashboard |
+| Data store | Firebase Firestore, project `database-inzta` shared with `inztamoto-erp-dashboard` (Spark plan) | one database, two web apps (ADR-0001); the daily read quota is shared with the internal dashboard |
 | Data access | Firebase Admin SDK (`firebase-admin` 14) on the server only, behind `InvestorDataSource` (ADR-0003, ADR-0006) | `sales` is read with `select(date, revenue, sellingPrice, quantity)`; the browser receives monthly totals only |
 | Auth | Portal-owned username and scrypt password hash from the server env, httpOnly HMAC-signed cookie (ADR-0004, ADR-0006) | the investor has no Firebase Auth account; gate at the data access point in `src/app/(portal)/portfolio.tsx` |
 | Authorization | Session check on the server; the Admin SDK bypasses Firestore Security Rules, so the field projection in `firestore-source.ts` is the data boundary | rules of the shared project are unchanged (A-003); UI hiding is never authorization |

@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: b532ee4f54987af89fcbd0493972dc6db2bd7b39d8ceea13afa3f1d324f424da -->
+source_hash: fd02c9383549f242aaab58afd1ce97fb619674caa250b4ced2c96721f2786746 -->
 
 # Project Progress
 
@@ -32,6 +32,7 @@ source_hash: b532ee4f54987af89fcbd0493972dc6db2bd7b39d8ceea13afa3f1d324f424da --
 | T-004 Halaman Komisi dan Pengembalian, kartu sudah masuk | done | FR-004, FR-005, FR-007 | T-001 | EV-002, EV-003 |
 | T-005 Kondisi memuat dan gagal, verifikasi responsif | done | FR-006, FR-001 | T-002, T-003, T-004 | EV-003 |
 | T-006 Pagination jadwal komisi dan kartu angka dua kolom | done | FR-004 | T-004 | EV-004 |
+| T-007 Tanpa garis dekoratif, skala teks HP, audit semua layar | done | FR-001, FR-006 | T-006 | EV-005 |
 
 ## F-004 — Login mode demo (`implemented`, complete)
 
@@ -57,3 +58,4 @@ source_hash: b532ee4f54987af89fcbd0493972dc6db2bd7b39d8ceea13afa3f1d324f424da --
 | T-004 Login milik portal | done | FR-004 |  | EV-001, EV-003 |
 | T-005 Hapus mock dan akun demo | done | FR-005 | T-002, T-004 | EV-001, EV-004 |
 | T-006 Sambungkan ke produksi | blocked | FR-001, FR-002, FR-004 | T-001, T-002, T-003, T-004, T-005 |  |
+| T-007 Jalan tanpa dokumen perjanjian | done | FR-002 | T-002 | EV-005, EV-006 |

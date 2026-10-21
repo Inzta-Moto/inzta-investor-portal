@@ -13,6 +13,8 @@ supersedes: [ADR-0002, ADR-0005]
 
 # ADR-0006: Baca di server dengan proyeksi kolom, tanpa akun Firebase untuk investor
 
+> Koreksi fakta 2026-10-21 (A-017): database dasbor ERP adalah project `database-inzta`, bukan `inzta-5244e` yang disebut di Context. Keputusan tidak berubah.
+
 Diputuskan Sehan 2026-10-21 ("jadi kita ambil sebagian kolom itu aja untuk investor", lalu "oke pakai jalan tengah aja opsi nya"). Menggantikan ADR-0002 (koleksi ringkasan oleh Cloud Function) dan ADR-0005 (Firebase Auth di browser). Kontrak `InvestorDataSource` dari ADR-0003 dan cookie sesi dari ADR-0004 tetap dipakai; adaptor mock ADR-0003 dan akun demo ADR-0004 dihapus.
 
 ## Context

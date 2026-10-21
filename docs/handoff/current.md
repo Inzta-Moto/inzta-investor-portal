@@ -4,7 +4,7 @@ owner: "VXerys"
 session_date: "2026-10-21"
 branch: "main"
 base_commit: "5d6ab26"
-current_commit: "5c4d4f6"
+current_commit: "fad9e3c"
 feature_id: "F-006"
 task_id: "T-006"
 expires_after: "2026-11-04"
@@ -22,10 +22,9 @@ ADR-0001, ADR-0003, ADR-0004, ADR-0006; aturan `getSaleRevenue` dan format tangg
 
 ## Completed
 
-- F-006 T-001 sampai T-005: Admin SDK di server, proyeksi kolom `sales`, cache dua jendela (kemarin ke atas 25 detik, sisanya 1 jam), refresh 30 detik dengan jeda 15 menit, login scrypt milik portal, mock dan akun demo dihapus.
-- Audit code-review (10 temuan) diperbaiki: kuota baca, polling tanpa batas, pembatas login yang bisa dipalsukan, scrypt sinkron, hash rusak, kunci sesi tidak terikat kata sandi, kode mati, dokumen steering yang bertentangan.
-- F-003 T-006: pagination jadwal komisi (6 baris di HP, 12 di desktop) dan kartu komisi dua kolom di HP.
-- ADR-0006; ADR-0002 dan ADR-0005 superseded; A-003, A-004 tidak lagi memblokir; A-014, A-015 rejected; A-016 baru.
+- F-006: server membaca Firestore `database-inzta` (dasbor ERP) dengan proyeksi empat kolom; portal jalan tanpa dokumen perjanjian memakai ketentuan draf (T-007); `npm run env:setup` mengisi `.env.local` dari berkas kunci tanpa menampilkan nilai.
+- F-003: semua garis warna dekoratif diganti; skala teks HP lebih kecil; bug sidebar terpotong (tabel sr-only), grafik melebar setelah resize, kartu Pengembalian meluber di 320 px, dan kartu Penjualan tidak sejajar diperbaiki (T-007).
+- Dua audit code-review: 10 dan 8 temuan, semuanya diperbaiki.
 
 ## Requirement coverage
 
@@ -49,7 +48,7 @@ None.
 
 ## Blockers
 
-A-016: kunci service account `inzta-5244e`, env login produksi, dokumen `investor_agreement/current` dan `investor_payments` di produksi. A-011: hosting dan DNS untuk F-005.
+A-016: dokumen `investor_agreement/current` dan `investor_payments` setelah Tahap I, env hosting (Angkasa, A-011), kata sandi kuat, cabut kunci `inzta-5244e` dan `inzta-dev`. Pertanyaan terbuka: apakah pesanan website (`orders`) ikut dihitung (A-017).
 
 ## Decisions made during session
 
@@ -61,7 +60,7 @@ ADR-0006 (Sehan: "pakai jalan tengah"). Username investor `investor@inzta.id` (S
 
 ## Exact next step
 
-Sehan membuat kunci service account di Firebase Console (Project settings, Service accounts), mengisi env sesuai README, dan meminta admin membuat dokumen perjanjian; lalu F-006 T-006: jalankan portal terhadap produksi dan bandingkan total bulanan dengan dasbor internal. Verifikasi: `npm run context:validate`.
+Sehan atau admin membandingkan total bulanan portal dengan dasbor ERP (F-006 verification, Not run). Setelah Tahap I diterima, admin mengisi Tanggal Efektif dan persentase pengembalian di `investor_agreement/current`. Angkasa menyiapkan hosting dengan env yang sama. Verifikasi: `npm run context:validate`.
 
 ## Do not do next
 

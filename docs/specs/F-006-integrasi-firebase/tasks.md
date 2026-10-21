@@ -3,7 +3,7 @@ id: F-006
 title: "Integrasi Firestore lewat server"
 type: tasks
 status: verification
-tier: lite
+tier: full
 owner: "VXerys"
 created: 2026-10-21
 last_updated: 2026-10-21
@@ -56,7 +56,15 @@ This file is the master for task status. Rencana awal (rules, Cloud Function, Fi
 - depends_on: [T-001, T-002, T-003, T-004, T-005]
 - evidence: []
 
-Menunggu A-016: Sehan menjalankan `npm run env:setup` dengan kunci service account; admin membuat `investor_agreement/current` dan `investor_payments`; hosting A-011.
+Sudah: `.env.local` lewat `npm run env:setup` dengan kunci `database-inzta` (A-017). Menunggu A-016: admin membuat `investor_agreement/current` dan `investor_payments`; hosting A-011.
+
+### T-007 — Jalan tanpa dokumen perjanjian
+- status: done
+- requirements: [FR-002]
+- depends_on: [T-002]
+- evidence: [EV-005, EV-006]
+
+Ketentuan draf sebagai nilai bawaan; field rusak kembali ke kontrak; peringatan berbahasa biasa untuk investor.
 
 ## Deferred
 

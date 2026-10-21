@@ -3,7 +3,7 @@
 // when given a downloaded key file, the service account. Run it yourself; agents never read .env files.
 //
 //   npm run env:setup
-//   npm run env:setup -- --service-account C:\path\to\inzta-5244e-key.json
+//   npm run env:setup -- --service-account D:/keys/database-inzta-admin.json
 import { randomBytes } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 

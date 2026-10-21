@@ -3,7 +3,7 @@ id: F-006
 title: "Integrasi Firestore lewat server"
 type: requirements
 status: verification
-tier: lite
+tier: full
 owner: "VXerys"
 created: 2026-10-21
 last_updated: 2026-10-21
@@ -37,7 +37,7 @@ The system shall membaca `sales` hanya dengan kolom `date`, `revenue`, `sellingP
 
 ### FR-002 — Perjanjian dan pembayaran dari Firestore
 
-- AC-003: Given `investor_agreement/current` dan `investor_payments`, then Ringkasan, Komisi, dan Pengembalian memakai nilainya; dokumen pembayaran yang rusak menjadi peringatan, perjanjian yang hilang atau rusak menjadi pesan yang bisa dibaca.
+- AC-003: Given `investor_agreement/current` dan `investor_payments`, then Ringkasan, Komisi, dan Pengembalian memakai nilainya. Tanpa dokumen perjanjian, portal memakai ketentuan draf (Pasal 2 sampai 5) dengan status "Perjanjian belum aktif"; field yang rusak memakai nilai kontrak, pembayaran yang rusak dilewati, dan investor melihat kalimat biasa, bukan nama field (keputusan Sehan 2026-10-21: "jangan di hold belum ada perjanjian").
 
 ### FR-003 — Pembaruan otomatis dengan anggaran baca
 
@@ -57,4 +57,4 @@ The system shall membaca `sales` hanya dengan kolom `date`, `revenue`, `sellingP
 
 ## Open questions
 
-- A-016: kunci service account, env produksi, dan dokumen perjanjian di produksi. blocking: yes (hanya T-006).
+- A-016: dokumen perjanjian, env hosting, kata sandi kuat. blocking: no untuk menjalankan portal, yes untuk rilis (T-006).

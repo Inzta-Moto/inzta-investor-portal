@@ -1,13 +1,13 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: b532ee4f54987af89fcbd0493972dc6db2bd7b39d8ceea13afa3f1d324f424da -->
+source_hash: fd02c9383549f242aaab58afd1ce97fb619674caa250b4ced2c96721f2786746 -->
 
 # Project State
 
-- Generated at: 2026-10-21T06:13:31.292Z
+- Generated at: 2026-10-21T07:33:42.543Z
 - Project: Inzta Investor Portal (tier `full`)
 - Active: F-006 / T-006
-- Open assumptions: 3
+- Open assumptions: 2
 - Blocked tasks: T-001, T-002, T-006
 
 ## Features
@@ -16,23 +16,23 @@ source_hash: b532ee4f54987af89fcbd0493972dc6db2bd7b39d8ceea13afa3f1d324f424da --
 |---|---|---|---|---|---|---|---|---|
 | F-001 Fondasi proyek | implemented | complete | 0 | 0 | 0 | 0 | 3 | 0 |
 | F-002 Domain investasi dan data mock | implemented | complete | 0 | 0 | 0 | 0 | 5 | 0 |
-| F-003 Tampilan portal investor | implemented | complete | 0 | 0 | 0 | 0 | 6 | 0 |
+| F-003 Tampilan portal investor | implemented | complete | 0 | 0 | 0 | 0 | 7 | 0 |
 | F-004 Login mode demo | implemented | complete | 0 | 0 | 0 | 0 | 2 | 0 |
 | F-005 Rilis produksi capital.inzta.id | draft | blocked | 0 | 0 | 2 | 0 | 0 | 0 |
-| F-006 Integrasi Firestore lewat server | verification | blocked | 0 | 0 | 1 | 0 | 5 | 0 |
+| F-006 Integrasi Firestore lewat server | verification | blocked | 0 | 0 | 1 | 0 | 6 | 0 |
 
 <!-- GENERATED:GIT_FACTS:START -->
 ## Git
 
 - Branch: `main`
-- HEAD: `9080654`
+- HEAD: `fad9e3c`
 - Worktree: dirty
 
 Recent commits:
 
-- `9080654 fix(F-006): keep the password hash intact in .env files and add env:setup`
-- `5e91927 docs(F-006): record evidence, close T-001 to T-005, update handoff`
-- `5c4d4f6 feat(F-006): read Firestore on the server with a field-limited sales query`
-- `5d6ab26 docs(F-001,F-002,F-003,F-004): record evidence, close tasks, and hand off`
-- `02ba2a8 feat(F-002,F-003,F-004): investor portal on mock data with demo login`
+- `fad9e3c fix(F-006): audit fixes for agreement warnings and the env scripts`
+- `8aa2e87 fix(F-003): pair the finished-month sales cards and align their rows`
+- `7d41a42 fix(F-003): chart view toggle at the 44px touch target`
+- `2d13a6b fix(F-003): mobile type scale and layout bugs found in a full screen audit`
+- `a024c73 feat(F-006): run on the contract terms until the agreement document exists`
 <!-- GENERATED:GIT_FACTS:END -->

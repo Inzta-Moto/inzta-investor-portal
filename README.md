@@ -2,7 +2,7 @@
 
 Portal web hanya-baca untuk investor PT Inzta Gear Indonesia: hasil penjualan bulanan InztaMoto, rekap komisi (Rp6.400.000 per bulan selama 24 bulan), dan progres pengembalian dana (bulan ke-16, 20, 24). Rencana domain `capital.inzta.id`. Dirancang untuk HP terlebih dulu.
 
-Status: membaca Firestore asli lewat server (ADR-0006), tanpa data mock. Penyambungan ke project produksi `inzta-5244e` menunggu kunci service account dan dokumen perjanjian (A-016).
+Status: membaca Firestore asli lewat server (ADR-0006), tanpa data mock. Tersambung ke database dasbor ERP (project `database-inzta`). Sebelum dokumen perjanjian diisi admin, portal memakai ketentuan draf perjanjian dan menampilkan "Perjanjian belum aktif" (A-016).
 
 ## Cara kerja data
 
@@ -36,7 +36,7 @@ Buka http://localhost:3300. Di `npm run dev`, bila ketiga variabel login kosong,
 Cara termudah mengisi `.env.local`: simpan kunci service account (JSON dari Firebase Console, Project settings, Service accounts) **di luar folder proyek**, lalu jalankan:
 
 ```bash
-npm run env:setup -- --service-account D:/keys/inzta-5244e-admin.json
+npm run env:setup -- --service-account D:/keys/database-inzta-admin.json
 ```
 
 Skrip menanyakan username dan kata sandi, menulis hash, membuat `SESSION_SECRET`, mengisi kunci service account, dan tidak pernah menampilkan nilainya. Daftar variabel ada di `.env.example`; untuk hosting, isi variabel yang sama di secret hosting.
@@ -46,7 +46,7 @@ Skrip menanyakan username dan kata sandi, menulis hash, membuat `SESSION_SECRET`
 | `INVESTOR_USERNAME` | username investor, misalnya `investor@inzta.id` |
 | `INVESTOR_PASSWORD_HASH` | dibuat `npm run env:setup` atau `npm run auth:hash-password`, format `scrypt:...` (kata sandi tidak disimpan) |
 | `SESSION_SECRET` | minimal 32 karakter acak |
-| `FIREBASE_PROJECT_ID` | `inzta-5244e` |
+| `FIREBASE_PROJECT_ID` | `database-inzta` (diisi otomatis dari berkas kunci) |
 | `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` | dari kunci service account yang dibuat di Firebase Console, Project settings, Service accounts |
 | `FIRESTORE_EMULATOR_HOST` | hanya untuk lokal; bila diisi, portal membaca emulator |
 

@@ -3,7 +3,7 @@ id: F-006
 title: "Integrasi Firestore lewat server"
 type: verification
 status: verification
-tier: lite
+tier: full
 owner: "VXerys"
 created: 2026-10-21
 last_updated: 2026-10-21
@@ -58,12 +58,35 @@ supersedes: null
 - commit: 5c4d4f6
 - covers: [AC-001, AC-010]
 
+### EV-005 — Tanpa dokumen perjanjian dan field rusak
+- command: `npm test`, `FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 node --test "src/**/*.itest.ts"`
+- output:
+  ```text
+  tests 48 pass 0 fail: tanpa dokumen = CONTRACT_TERMS; hanya effectiveDate diisi = sisa kontrak; field rusak dan urutan dueMonth terbalik kembali ke kontrak
+  emulator 7 pass: tanpa perjanjian fase "unsigned", Rp6.400.000 per bulan, penjualan sama persis dengan snapshot saat dokumen ada
+  ```
+- date: 2026-10-21
+- commit: fad9e3c
+- covers: [AC-003]
+
+### EV-006 — Pembacaan hanya-hitung Firestore produksi
+- command: skrip sementara dengan Admin SDK dan `.env.local` (izin Sehan "boleh baca produksi", "silahkan cek"), hanya `count()` dan `select()` empat kolom
+- output:
+  ```text
+  project database-inzta: sales 1523, semuanya date YYYY-MM-DD dan revenue bulat; investor_agreement belum ada, investor_payments 0
+  Mei 11.365.000 | Jun 79.644.131 | Jul 105.080.710 | Agu 97.330.669 | Sep 111.244.737 | Okt (berjalan) 44.575.650
+  ```
+- date: 2026-10-21
+- commit: a303fbd
+- covers: [AC-001, AC-002]
+
 ## Coverage
 
 | Criterion | Evidence | Result |
 |---|---|---|
 | AC-001, AC-010 | EV-001, EV-002, EV-004 | pass |
-| AC-002, AC-003, AC-006 | EV-002 | pass |
+| AC-002, AC-006 | EV-002, EV-006 | pass |
+| AC-003 | EV-002, EV-005 | pass |
 | AC-004 | EV-003 | pass |
 | AC-005 | | not_run |
 | AC-007 sampai AC-009 | EV-001, EV-003 | pass |
@@ -73,7 +96,7 @@ supersedes: null
 | Check | Reason | Residual risk |
 |---|---|---|
 | AC-005 jeda 15 menit | tidak ditunggu 15 menit di browser; logika dibaca ulang dan lint bersih | halaman bisa terus refresh atau tidak pulih setelah jeda; dicek saat uji terima |
-| Firestore produksi `inzta-5244e` | butuh kunci service account dan dokumen perjanjian (A-016); agen tidak menyentuh produksi | dokumen `sales` yang menyimpang (mis. `date` bukan string) tidak terhitung; volume harian belum diketahui, kuota Spark bersama bisa menipis |
+| Angka portal dibandingkan dengan layar dasbor ERP | agen tidak login ke dasbor; total di EV-006 memakai aturan `getSaleRevenue` yang sama | selisih bila dasbor menyaring sesuatu di luar kode yang diperiksa; dicek Sehan atau admin |
 
 ## Result
-Lulus di emulator. T-006 (penyambungan produksi) menunggu A-016.
+Lulus di emulator dan tersambung ke `database-inzta` (hanya baca). T-006 menunggu A-016: dokumen perjanjian, env hosting, kata sandi kuat.

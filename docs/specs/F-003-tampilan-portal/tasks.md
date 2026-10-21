@@ -66,6 +66,14 @@ AC-012 dan pemeriksaan 360 px, 1366 px, tema gelap.
 
 Permintaan Sehan 2026-10-21: jadwal 24 bulan dipecah 6 baris per halaman di HP dan 12 di desktop, dibuka di halaman bulan berjalan; kartu "Komisi per bulan" dan "Total 24 bulan" berdampingan di HP; tarif komisi dibaca dari perjanjian, bukan teks tetap.
 
+### T-007 — Tanpa garis dekoratif, skala teks HP, audit semua layar
+- status: done
+- requirements: [FR-001, FR-006]
+- depends_on: [T-006]
+- evidence: [EV-005]
+
+Permintaan Sehan 2026-10-21: semua garis warna dekoratif diganti, teks HP lebih kecil, kartu Penjualan berpasangan dan sejajar, tanpa bug UI di HP maupun desktop.
+
 ## Deferred
 
 None.

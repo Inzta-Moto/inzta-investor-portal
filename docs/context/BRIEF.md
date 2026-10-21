@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: b532ee4f54987af89fcbd0493972dc6db2bd7b39d8ceea13afa3f1d324f424da -->
+source_hash: fd02c9383549f242aaab58afd1ce97fb619674caa250b4ced2c96721f2786746 -->
 
 # Brief
 
@@ -12,12 +12,12 @@ Project `Inzta Investor Portal`, tier `full`. Rendered from sdd.config.json, doc
 Feature F-006 — Integrasi Firestore lewat server (`verification`, docs/specs/F-006-integrasi-firebase/)
 Task T-006 — Sambungkan ke produksi (`blocked`); requirements: FR-001, FR-002, FR-004; depends on: T-001, T-002, T-003, T-004, T-005
 
-Menunggu A-016: Sehan menjalankan `npm run env:setup` dengan kunci service account; admin membuat `investor_agreement/current` dan `investor_payments`; hosting A-011.
+Sudah: `.env.local` lewat `npm run env:setup` dengan kunci `database-inzta` (A-017). Menunggu A-016: admin membuat `investor_agreement/current` dan `investor_payments`; hosting A-011.
 
 Acceptance criteria:
 - AC-001: Given dokumen `sales` berisi pelanggan, kota, reseller, harga modal, when portal membaca, then hanya empat kolom itu yang diterima server dan HTML maupun payload RSC tidak memuat kolom lain.
 - AC-002: Given dokumen lama tanpa `revenue`, then dihitung `sellingPrice * quantity`.
-- AC-003: Given `investor_agreement/current` dan `investor_payments`, then Ringkasan, Komisi, dan Pengembalian memakai nilainya; dokumen pembayaran yang rusak menjadi peringatan, perjanjian yang hilang atau rusak menjadi pesan yang bisa dibaca.
+- AC-003: Given `investor_agreement/current` dan `investor_payments`, then Ringkasan, Komisi, dan Pengembalian memakai nilainya. Tanpa dokumen perjanjian, portal memakai ketentuan draf (Pasal 2 sampai 5) dengan status "Perjanjian belum aktif"; field yang rusak memakai nilai kontrak, pembayaran yang rusak dilewati, dan investor melihat kalimat biasa, bukan nama field (keputusan Sehan 2026-10-21: "jangan di hold belum ada perjanjian").
 - AC-007: Given `INVESTOR_USERNAME` dan `INVESTOR_PASSWORD_HASH` (scrypt), then hanya pasangan yang cocok yang masuk; hash rusak ditolak sebagai kesalahan konfigurasi; investor tidak punya akun Firebase.
 - AC-008: Given kata sandi diganti di env, then cookie lama tidak berlaku.
 - AC-009: Given banyak percobaan gagal, then dibatasi 5 per klien dan 50 total per 15 menit.
@@ -44,13 +44,12 @@ Generated: `docs/context/state.yaml`, `docs/context/PROJECT_STATE.md`, `docs/con
 Frozen: none
 
 ## Open assumptions
-- A-016 — Penyambungan ke Firestore produksi (F-006)
-- A-017 — Project Firebase `inzta-5244e` bukan database dasbor internal (F-006)
+- A-016 — Data perjanjian dan rilis di produksi (F-006)
 
 ## Handoff
 Next step:
 
-Sehan membuat kunci service account di Firebase Console (Project settings, Service accounts), mengisi env sesuai README, dan meminta admin membuat dokumen perjanjian; lalu F-006 T-006: jalankan portal terhadap produksi dan bandingkan total bulanan dengan dasbor internal. Verifikasi: `npm run context:validate`.
+Sehan atau admin membandingkan total bulanan portal dengan dasbor ERP (F-006 verification, Not run). Setelah Tahap I diterima, admin mengisi Tanggal Efektif dan persentase pengembalian di `investor_agreement/current`. Angkasa menyiapkan hosting dengan env yang sama. Verifikasi: `npm run context:validate`.
 
 ## Other open tasks
 None.
@@ -60,7 +59,7 @@ None.
 |---|---|---|---|
 | F-001 Fondasi proyek | implemented | complete | 3/3 |
 | F-002 Domain investasi dan data mock | implemented | complete | 5/5 |
-| F-003 Tampilan portal investor | implemented | complete | 6/6 |
+| F-003 Tampilan portal investor | implemented | complete | 7/7 |
 | F-004 Login mode demo | implemented | complete | 2/2 |
 | F-005 Rilis produksi capital.inzta.id | draft | blocked | 0/2 |
-| F-006 Integrasi Firestore lewat server | verification | blocked | 5/6 |
+| F-006 Integrasi Firestore lewat server | verification | blocked | 6/7 |
