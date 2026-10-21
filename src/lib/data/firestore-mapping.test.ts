@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
+import { CONTRACT_TERMS } from "../investment/contract-terms.ts";
 import { toAgreement, toPayment } from "./firestore-mapping.ts";
 
 const agreementDoc = {
@@ -19,22 +20,37 @@ const agreementDoc = {
   ],
 };
 
-test("F-006 AC-001: a well-formed agreement document maps to the same shape as the mock", () => {
-  const mapped = toAgreement(agreementDoc);
-  assert.equal(mapped.ok, true);
-  if (mapped.ok) {
-    assert.equal(mapped.value.effectiveDate, "2026-11-10");
-    assert.deepEqual(mapped.value.repayments.map((r) => r.percentBasisPoints), [2500, null, null]);
-    assert.deepEqual(mapped.value.tranches[1], { number: 2, amount: 50_000_000, receivedDate: null });
-  }
+test("F-006 AC-001: a well-formed agreement document overrides the contract terms", () => {
+  const { value, warnings } = toAgreement(agreementDoc);
+  assert.deepEqual(warnings, []);
+  assert.equal(value.effectiveDate, "2026-11-10");
+  assert.deepEqual(value.repayments.map((r) => r.percentBasisPoints), [2500, null, null]);
+  assert.deepEqual(value.tranches[1], { number: 2, amount: 50_000_000, receivedDate: null });
 });
 
-test("a missing or malformed agreement is reported, never guessed", () => {
-  assert.equal(toAgreement(undefined).ok, false);
-  assert.equal(toAgreement({ ...agreementDoc, effectiveDate: "10/11/2026" }).ok, false);
-  assert.equal(toAgreement({ ...agreementDoc, totalInvestment: 200_000_000.5 }).ok, false);
-  assert.equal(toAgreement({ ...agreementDoc, repayments: agreementDoc.repayments.slice(0, 2) }).ok, false);
-  assert.equal(toAgreement({ ...agreementDoc, effectiveDate: "" }).ok, true);
+test("F-006 AC-003: no document means the contract terms, not an error", () => {
+  const { value, warnings } = toAgreement(undefined);
+  assert.deepEqual(value, CONTRACT_TERMS);
+  assert.deepEqual(warnings, []);
+  assert.equal(value.commissionRateBasisPoints, 320);
+  assert.equal(value.effectiveDate, null);
+});
+
+test("a document with only the dates the admin knows keeps every other contract term", () => {
+  const { value, warnings } = toAgreement({ effectiveDate: "2026-10-23" });
+  assert.deepEqual(warnings, []);
+  assert.equal(value.effectiveDate, "2026-10-23");
+  assert.equal(value.totalInvestment, 200_000_000);
+  assert.deepEqual(value.repayments.map((r) => r.dueMonth), [16, 20, 24]);
+});
+
+test("a malformed field keeps the contract value and is reported, never guessed", () => {
+  const bad = toAgreement({ ...agreementDoc, effectiveDate: "10/11/2026", totalInvestment: 200_000_000.5, repayments: agreementDoc.repayments.slice(0, 2) });
+  assert.equal(bad.value.effectiveDate, null);
+  assert.equal(bad.value.totalInvestment, 200_000_000);
+  assert.deepEqual(bad.value.repayments, CONTRACT_TERMS.repayments);
+  assert.equal(bad.warnings.length, 3);
+  assert.equal(toAgreement({ ...agreementDoc, effectiveDate: "" }).value.effectiveDate, null);
 });
 
 test("payments need kind, period, whole amount, and date; repayments need a number", () => {

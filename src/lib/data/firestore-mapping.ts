@@ -1,7 +1,8 @@
+import { CONTRACT_TERMS } from "../investment/contract-terms.ts";
 import type { Agreement, IsoDate, Payment, RepaymentTerm, Tranche } from "../investment/types.ts";
 
 // Firestore documents are written by hand in the Console (A-008), so every field is checked before it reaches the
-// money rules; a malformed document becomes a warning instead of a wrong number.
+// money rules; a malformed field becomes a warning instead of a wrong number.
 
 export type Mapped<T> = { ok: true; value: T } | { ok: false; reason: string };
 
@@ -23,37 +24,63 @@ function basisPointsOrNull(value: unknown): number | null | undefined {
   return typeof value === "number" && Number.isInteger(value) && value >= 0 && value <= 10_000 ? value : undefined;
 }
 
-export function toAgreement(data: Data | undefined): Mapped<Agreement> {
-  if (!data) return { ok: false, reason: "Dokumen investor_agreement/current belum ada." };
+/**
+ * Fields the admin filled override the contract terms; a missing field keeps the contract value, and a malformed one
+ * keeps it too with a warning, so a typo in the Console never takes the portal down or invents a number.
+ */
+export function toAgreement(data: Data | undefined): { value: Agreement; warnings: string[] } {
+  const value: Agreement = structuredClone(CONTRACT_TERMS);
+  const warnings: string[] = [];
+  if (!data) return { value, warnings };
+  const present = (field: string) => data[field] !== undefined && data[field] !== null;
+  const reject = (field: string) => warnings.push(`investor_agreement/current: ${field} tidak valid, memakai ketentuan perjanjian.`);
+
   const effectiveDate = isoOrNull(data.effectiveDate);
-  if (effectiveDate === undefined) return { ok: false, reason: "effectiveDate harus berformat YYYY-MM-DD atau kosong." };
-  const totalInvestment = wholeRupiah(data.totalInvestment);
-  if (!totalInvestment) return { ok: false, reason: "totalInvestment harus Rupiah bulat lebih dari 0." };
-  const termMonths = typeof data.termMonths === "number" && Number.isInteger(data.termMonths) && data.termMonths > 0 ? data.termMonths : null;
-  if (!termMonths) return { ok: false, reason: "termMonths harus bilangan bulat lebih dari 0." };
-  const rate = basisPointsOrNull(data.commissionRateBasisPoints);
-  if (rate === undefined || rate === null) return { ok: false, reason: "commissionRateBasisPoints harus 0 sampai 10000." };
+  if (effectiveDate === undefined) reject("effectiveDate");
+  else value.effectiveDate = effectiveDate;
 
-  const rawTranches = Array.isArray(data.tranches) ? (data.tranches as Data[]) : [];
-  const tranches: Tranche[] = [];
-  for (const [index, raw] of rawTranches.entries()) {
-    const amount = wholeRupiah(raw?.amount);
-    const receivedDate = isoOrNull(raw?.receivedDate);
-    if (amount === null || receivedDate === undefined) return { ok: false, reason: `tranches[${index}] tidak valid.` };
-    tranches.push({ number: (index + 1) as 1 | 2, amount, receivedDate });
+  if (present("totalInvestment")) {
+    const total = wholeRupiah(data.totalInvestment);
+    if (total) value.totalInvestment = total;
+    else reject("totalInvestment");
+  }
+  if (present("termMonths")) {
+    if (typeof data.termMonths === "number" && Number.isInteger(data.termMonths) && data.termMonths > 0) value.termMonths = data.termMonths;
+    else reject("termMonths");
+  }
+  if (present("commissionRateBasisPoints")) {
+    const rate = basisPointsOrNull(data.commissionRateBasisPoints);
+    if (rate !== undefined && rate !== null) value.commissionRateBasisPoints = rate;
+    else reject("commissionRateBasisPoints");
   }
 
-  const rawRepayments = Array.isArray(data.repayments) ? (data.repayments as Data[]) : [];
-  if (rawRepayments.length !== 3) return { ok: false, reason: "repayments harus berisi tepat 3 pengembalian." };
-  const repayments: RepaymentTerm[] = [];
-  for (const [index, raw] of rawRepayments.entries()) {
-    const dueMonth = typeof raw?.dueMonth === "number" && Number.isInteger(raw.dueMonth) && raw.dueMonth >= 1 && raw.dueMonth <= termMonths ? raw.dueMonth : null;
-    const percentBasisPoints = basisPointsOrNull(raw?.percentBasisPoints);
-    if (dueMonth === null || percentBasisPoints === undefined) return { ok: false, reason: `repayments[${index}] tidak valid.` };
-    repayments.push({ number: (index + 1) as 1 | 2 | 3, dueMonth, percentBasisPoints });
+  if (present("tranches")) {
+    const raw = Array.isArray(data.tranches) ? (data.tranches as Data[]) : null;
+    const tranches: Tranche[] = [];
+    for (const [index, item] of (raw ?? []).entries()) {
+      const amount = wholeRupiah(item?.amount);
+      const receivedDate = isoOrNull(item?.receivedDate);
+      if (amount === null || receivedDate === undefined || index > 1) break;
+      tranches.push({ number: (index + 1) as 1 | 2, amount, receivedDate });
+    }
+    if (raw && raw.length > 0 && tranches.length === raw.length) value.tranches = tranches;
+    else reject("tranches");
   }
 
-  return { ok: true, value: { effectiveDate, termMonths, totalInvestment, commissionRateBasisPoints: rate, tranches, repayments } };
+  if (present("repayments")) {
+    const raw = Array.isArray(data.repayments) ? (data.repayments as Data[]) : null;
+    const repayments: RepaymentTerm[] = [];
+    for (const [index, item] of (raw ?? []).entries()) {
+      const dueMonth = typeof item?.dueMonth === "number" && Number.isInteger(item.dueMonth) && item.dueMonth >= 1 && item.dueMonth <= value.termMonths ? item.dueMonth : null;
+      const percentBasisPoints = basisPointsOrNull(item?.percentBasisPoints);
+      if (dueMonth === null || percentBasisPoints === undefined) break;
+      repayments.push({ number: (index + 1) as 1 | 2 | 3, dueMonth, percentBasisPoints });
+    }
+    if (raw?.length === 3 && repayments.length === 3) value.repayments = repayments;
+    else reject("repayments (harus tepat 3)");
+  }
+
+  return { value, warnings };
 }
 
 export function toPayment(id: string, data: Data): Mapped<Payment> {

@@ -3,7 +3,7 @@ import { after, before, test } from "node:test";
 
 import { buildFixtures } from "../../../scripts/emulator/fixtures.mjs";
 import { buildPortfolio } from "../investment/portfolio.ts";
-import { InvestorDataError, SALES_FIELDS, adminDb, createFirestoreSource } from "./firestore-source.ts";
+import { SALES_FIELDS, adminDb, createFirestoreSource } from "./firestore-source.ts";
 
 // Runs only inside `npm run test:emulator`, which starts the Firestore emulator for project "demo-inzta".
 const host = process.env.FIRESTORE_EMULATOR_HOST;
@@ -88,8 +88,13 @@ test("F-006: a payment recorded by the admin appears after the 25-second cache",
   assert.equal(fresh.commission.items[2].status, "paid");
 });
 
-test("F-006: a missing agreement is a readable error, not a crash", async () => {
+test("F-006: without an agreement document the portal runs on the contract terms and real sales", async () => {
   await db.doc("investor_agreement/current").delete();
-  await assert.rejects(createFirestoreSource(db).getSnapshot(TODAY, 0), (error) => error instanceof InvestorDataError && /belum ada/.test(error.message));
+  const snapshot = await createFirestoreSource(db).getSnapshot(TODAY, 0);
+  const portfolio = buildPortfolio(snapshot, TODAY);
+  assert.deepEqual(portfolio.phase, { kind: "unsigned" });
+  assert.equal(portfolio.commission.totals.perMonth, 6_400_000);
+  // Earlier tests add sales to this month, so the check is that real sales still come through, not an exact sum.
+  assert.ok((snapshot.monthlySales.find((m) => m.month === fx.current)?.revenue ?? 0) >= 3 * 295000 + 165000);
   await db.doc("investor_agreement/current").set(fx.agreement);
 });

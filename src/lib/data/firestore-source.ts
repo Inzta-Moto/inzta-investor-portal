@@ -72,10 +72,10 @@ export function createFirestoreSource(db: Firestore) {
 
   async function loadMeta() {
     const [agreementSnap, paymentsSnap] = await Promise.all([db.doc("investor_agreement/current").get(), db.collection("investor_payments").get()]);
+    // No document yet is normal before signing: the contract terms carry the portal until the admin adds the dates.
     const agreement = toAgreement(agreementSnap.exists ? agreementSnap.data() : undefined);
-    if (!agreement.ok) throw new InvestorDataError(agreement.reason);
     const payments: Payment[] = [];
-    const warnings: string[] = [];
+    const warnings: string[] = [...agreement.warnings];
     for (const doc of paymentsSnap.docs) {
       const mapped = toPayment(doc.id, doc.data());
       if (mapped.ok) payments.push(mapped.value);
