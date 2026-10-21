@@ -30,14 +30,16 @@ function Warnings({ portfolio }: { portfolio: Portfolio }) {
   ));
 }
 
-function ChangeLine({ portfolio, long = false }: { portfolio: Portfolio; long?: boolean }) {
+function ChangeLine({ portfolio }: { portfolio: Portfolio }) {
   const change = portfolio.sales.change;
   if (!change || change.changeBasisPoints === null) return null;
   const up = change.changeBasisPoints >= 0;
   return (
-    <span className={`inline-flex items-center gap-1 text-[13px] font-semibold ${up ? "text-good" : "text-bad"}`}>
-      {up ? <UpIcon className="size-4" /> : <DownIcon className="size-4" />}
-      {formatPercent(Math.abs(change.changeBasisPoints))} dibanding {formatMonth(change.previous, long ? "long" : "short")}
+    <span className={`inline-flex items-start gap-1 text-[13px] font-semibold ${up ? "text-good" : "text-bad"}`}>
+      {up ? <UpIcon className="mt-px size-4" /> : <DownIcon className="mt-px size-4" />}
+      <span>
+        {formatPercent(Math.abs(change.changeBasisPoints))} dibanding {formatMonth(change.previous, "short")}
+      </span>
     </span>
   );
 }
@@ -92,6 +94,9 @@ export function RingkasanView({ portfolio }: { portfolio: Portfolio }) {
   );
 }
 
+// Three subgrid rows per stat card, with the card's own tighter gap inside them.
+const ALIGNED = "row-span-3 grid-rows-subgrid gap-y-1.5";
+
 export function PenjualanView({ portfolio }: { portfolio: Portfolio }) {
   const { points, change } = portfolio.sales;
   const running = points[points.length - 1];
@@ -101,14 +106,16 @@ export function PenjualanView({ portfolio }: { portfolio: Portfolio }) {
     <>
       <PageHeader title="Penjualan" subtitle="Hasil penjualan InztaMoto per bulan, dihitung dari catatan Inzta" />
       <Warnings portfolio={portfolio} />
-      <div className="grid gap-3 lg:grid-cols-3 lg:gap-4">
-        <StatCard label={`${formatMonth(running.month, "long")} · berjalan`} value={formatRupiahCompact(running.revenue)}>
+      {/* The running month leads at full width; the two finished-month figures pair up beside each other on a phone.
+          Each card spans three shared rows (label, figure, note), so figures line up even when a label wraps. */}
+      <div className="grid grid-cols-2 gap-x-3 gap-y-3 lg:grid-cols-3 lg:gap-x-4">
+        <StatCard className={`col-span-2 lg:col-span-1 ${ALIGNED}`} label={`${formatMonth(running.month, "long")} · berjalan`} value={formatRupiahCompact(running.revenue)}>
           <p className="text-[13px] text-ink-3">Belum lengkap sampai akhir bulan</p>
         </StatCard>
-        <StatCard label={change ? formatMonth(change.month, "long") : "Bulan lalu"} value={change ? formatRupiahCompact(change.revenue) : "Belum ada"}>
-          <ChangeLine portfolio={portfolio} long />
+        <StatCard compact className={ALIGNED} label={change ? formatMonth(change.month, "long") : "Bulan lalu"} value={change ? formatRupiahCompact(change.revenue) : "Belum ada"}>
+          <ChangeLine portfolio={portfolio} />
         </StatCard>
-        <StatCard label={`Rata-rata ${complete.length} bulan selesai`} value={average !== null ? formatRupiahCompact(average) : "Belum ada"}>
+        <StatCard compact className={ALIGNED} label={`Rata-rata ${complete.length} bulan`} value={average !== null ? formatRupiahCompact(average) : "Belum ada"}>
           <p className="text-[13px] text-ink-3">Bulan berjalan tidak dihitung</p>
         </StatCard>
       </div>
