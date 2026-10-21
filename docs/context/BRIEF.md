@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: fd02c9383549f242aaab58afd1ce97fb619674caa250b4ced2c96721f2786746 -->
+source_hash: afc464ebd34af9e0a39662b0ba5d12eb62863fce08f3ab0497269ae9b7ec5a93 -->
 
 # Brief
 
@@ -49,7 +49,7 @@ Frozen: none
 ## Handoff
 Next step:
 
-Sehan atau admin membandingkan total bulanan portal dengan dasbor ERP (F-006 verification, Not run). Setelah Tahap I diterima, admin mengisi Tanggal Efektif dan persentase pengembalian di `investor_agreement/current`. Angkasa menyiapkan hosting dengan env yang sama. Verifikasi: `npm run context:validate`.
+Total bulanan sudah cocok dengan dasbor ERP (Sehan, EV-007). Setelah Tahap I diterima, admin mengisi Tanggal Efektif dan persentase pengembalian di `investor_agreement/current`. Angkasa menyiapkan hosting dengan env yang sama. Verifikasi: `npm run context:validate`.
 
 ## Other open tasks
 None.

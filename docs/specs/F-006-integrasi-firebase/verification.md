@@ -80,12 +80,22 @@ supersedes: null
 - commit: a303fbd
 - covers: [AC-001, AC-002]
 
+### EV-007 — Total bulanan cocok dengan dasbor ERP
+- command: pembandingan manual oleh Sehan antara halaman Penjualan portal dan laporan bulanan dasbor ERP (`database-inzta`)
+- output:
+  ```text
+  Sehan 2026-10-21: "udah cocok kok data penjualan nya" (Mei sampai Sep 2026, angka EV-006)
+  ```
+- date: 2026-10-21
+- commit: dfd84a6
+- covers: [AC-001, AC-002]
+
 ## Coverage
 
 | Criterion | Evidence | Result |
 |---|---|---|
-| AC-001, AC-010 | EV-001, EV-002, EV-004 | pass |
-| AC-002, AC-006 | EV-002, EV-006 | pass |
+| AC-001, AC-010 | EV-001, EV-002, EV-004, EV-007 | pass |
+| AC-002, AC-006 | EV-002, EV-006, EV-007 | pass |
 | AC-003 | EV-002, EV-005 | pass |
 | AC-004 | EV-003 | pass |
 | AC-005 | | not_run |
@@ -96,7 +106,6 @@ supersedes: null
 | Check | Reason | Residual risk |
 |---|---|---|
 | AC-005 jeda 15 menit | tidak ditunggu 15 menit di browser; logika dibaca ulang dan lint bersih | halaman bisa terus refresh atau tidak pulih setelah jeda; dicek saat uji terima |
-| Angka portal dibandingkan dengan layar dasbor ERP | agen tidak login ke dasbor; total di EV-006 memakai aturan `getSaleRevenue` yang sama | selisih bila dasbor menyaring sesuatu di luar kode yang diperiksa; dicek Sehan atau admin |
 
 ## Result
 Lulus di emulator dan tersambung ke `database-inzta` (hanya baca). T-006 menunggu A-016: dokumen perjanjian, env hosting, kata sandi kuat.

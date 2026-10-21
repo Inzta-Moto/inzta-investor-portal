@@ -60,7 +60,7 @@ ADR-0006 (Sehan: "pakai jalan tengah"). Username investor `investor@inzta.id` (S
 
 ## Exact next step
 
-Sehan atau admin membandingkan total bulanan portal dengan dasbor ERP (F-006 verification, Not run). Setelah Tahap I diterima, admin mengisi Tanggal Efektif dan persentase pengembalian di `investor_agreement/current`. Angkasa menyiapkan hosting dengan env yang sama. Verifikasi: `npm run context:validate`.
+Total bulanan sudah cocok dengan dasbor ERP (Sehan, EV-007). Setelah Tahap I diterima, admin mengisi Tanggal Efektif dan persentase pengembalian di `investor_agreement/current`. Angkasa menyiapkan hosting dengan env yang sama. Verifikasi: `npm run context:validate`.
 
 ## Do not do next
 

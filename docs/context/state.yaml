@@ -339,5 +339,5 @@ blockers:
   - feature_id: F-006
     task_id: T-006
     title: Sambungkan ke produksi
-generated_at: 2026-10-21T07:33:42.543Z
-source_hash: fd02c9383549f242aaab58afd1ce97fb619674caa250b4ced2c96721f2786746
+generated_at: 2026-10-21T07:38:53.381Z
+source_hash: afc464ebd34af9e0a39662b0ba5d12eb62863fce08f3ab0497269ae9b7ec5a93
