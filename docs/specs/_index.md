@@ -1,7 +1,7 @@
 ---
 id: FEATURE-REGISTRY
 title: Feature Registry
-status: template
+status: active
 owner: "VXerys"
 last_updated: "2026-10-21"
 ---
@@ -14,7 +14,11 @@ Task status belongs in each feature's `tasks.md`; `docs/context/state.yaml` and 
 
 | Feature ID | Feature | Spec path | Product priority | Lifecycle gate | Related milestone |
 |---|---|---|---|---|---|
-| `F-XXX` | example: create todo | `docs/specs/F-XXX-create-todo/` | P0 | draft | M1 |
+| `F-001` | fondasi proyek | `docs/specs/F-001-fondasi-proyek/` | P0 | approved | M1 |
+| `F-002` | akun investor dan gerbang role | belum dibuat | P0 | draft | M1 |
+| `F-003` | laporan penjualan bulanan | belum dibuat | P0 | draft | M1 |
+| `F-004` | komisi dan pengembalian dana | belum dibuat | P0 | draft | M2 |
+| `F-005` | rilis produksi `capital.inzta.id` | belum dibuat | P1 | draft | M2 |
 
 ## Lifecycle gate meaning
 

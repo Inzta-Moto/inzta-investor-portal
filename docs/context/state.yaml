@@ -4,11 +4,79 @@
 schema_version: 2
 project: Inzta Investor Portal
 tier: full
-features: []
+features:
+  - id: F-001
+    title: Fondasi proyek
+    status: implementing
+    phase: in_progress
+    spec_path: docs/specs/F-001-fondasi-proyek
+    tasks:
+      - id: T-001
+        title: Kerangka Next.js, Tailwind, ESLint, halaman placeholder
+        status: in_progress
+        requirements:
+          - FR-001
+          - FR-004
+        depends_on: []
+        evidence: []
+      - id: T-002
+        title: Konfigurasi Firebase lazy dan format Rupiah
+        status: planned
+        requirements:
+          - FR-002
+          - FR-003
+        depends_on:
+          - T-001
+        evidence: []
+      - id: T-003
+        title: Verifikasi fondasi dan konteks SDD
+        status: planned
+        requirements:
+          - FR-001
+          - FR-002
+          - FR-003
+          - FR-004
+        depends_on:
+          - T-001
+          - T-002
+        evidence: []
 active:
-  feature_id: null
-  task_id: null
-assumptions_open: []
+  feature_id: F-001
+  task_id: T-001
+assumptions_open:
+  - id: A-002
+    feature: F-003
+    title: Cara investor melihat penjualan tanpa membaca data mentah
+  - id: A-003
+    feature: F-002
+    title: Security Rules Firestore yang berlaku sekarang tidak diketahui
+  - id: A-004
+    feature: F-002
+    title: Akun investor bisa masuk ke dasbor internal
+  - id: A-005
+    feature: F-002
+    title: Format "username" akun investor
+  - id: A-006
+    feature: F-003
+    title: Definisi margin yang ditampilkan
+  - id: A-007
+    feature: F-003
+    title: Definisi "hasil penjualan" bulanan
+  - id: A-008
+    feature: F-004
+    title: Siapa dan di mana pembayaran komisi dan pengembalian dicatat
+  - id: A-009
+    feature: F-004
+    title: Tanggal Efektif, tanggal Tahap II, dan nilai pengembalian ke-2 dan ke-3
+  - id: A-010
+    feature: F-003
+    title: Arti "tidak dapat diunduh"
+  - id: A-011
+    feature: F-005
+    title: Domain, hosting, dan akun deploy
+  - id: A-012
+    feature: F-004
+    title: Tampilan saat Keadaan Memaksa (Pasal 9)
 blockers: []
-generated_at: 2026-10-21T01:23:55.465Z
-source_hash: 154f3551a0931361173914ea74bc8e4e521ab5d786c1b87675252983f8890514
+generated_at: 2026-10-21T01:40:01.363Z
+source_hash: a5f45ba334e93aca1eb4ff409b7edbd35449926fd7a21ae2ff0730b83f3e1824

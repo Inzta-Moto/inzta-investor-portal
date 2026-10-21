@@ -1,22 +1,41 @@
 {
-  "name": "ai-assisted-sdd-project-template",
-  "version": "2.0.0",
+  "name": "inzta-investor-portal",
+  "version": "0.1.0",
   "private": true,
-  "description": "Stack-agnostic spec-driven development and context-engineering repository template.",
+  "description": "Portal investor hanya-baca PT Inzta Gear Indonesia: laporan penjualan bulanan, rekap komisi, dan progres pengembalian dana.",
   "type": "module",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test \"scripts/**/*.test.mjs\"",
-    "init": "node scripts/init/init.mjs",
-    "example:validate": "cd examples/todo-api && node ../../scripts/context/validate-context.mjs",
+    "dev": "next dev --port 3300",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "node --test \"src/**/*.test.ts\"",
+    "test:sdd": "node --test \"scripts/**/*.test.mjs\"",
     "context:render": "node scripts/context/render.mjs",
     "context:validate": "node scripts/context/validate-context.mjs",
     "context:archive-handoff": "node scripts/context/archive-handoff.mjs",
-    "adapters:sync": "node scripts/adapters/sync.mjs"
+    "adapters:sync": "node scripts/adapters/sync.mjs",
+    "sdd:init": "node scripts/init/init.mjs"
   },
   "dependencies": {
+    "firebase": "^13.0.0",
+    "next": "16.4.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.2",
+    "tailwindcss": "^4",
+    "typescript": "^5",
     "yaml": "^2.9.1"
   }
 }

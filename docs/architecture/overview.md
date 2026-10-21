@@ -17,27 +17,33 @@ Cross-feature boundaries and invariants every module obeys, in the lite form of 
 
 ## System context
 
-One paragraph: what the system does and for whom, and what stays outside its boundary.
+Portal web hanya-baca untuk satu akun investor PT Inzta Gear Indonesia. Portal membaca project Firestore yang sama dengan dasbor internal (ADR-0001). Pencatatan penjualan, produk, produksi, gaji, dan pengguna tetap milik dasbor internal dan di luar batas portal.
 
 | Actor or external system | Relationship | Trust boundary |
 |---|---|---|
-| Example: payment provider | receives order totals, returns payment status | untrusted input, signed callbacks |
+| Investor (browser) | login, membaca ringkasan | untrusted client; dibatasi Security Rules |
+| Firebase Auth (project bersama) | identitas investor | dikelola Google; akun dibuat admin |
+| Firestore (project bersama) | sumber data penjualan, komisi, pengembalian | Security Rules adalah titik otorisasi |
+| Dasbor internal `inztamoto-erp-dashboard` | penulis koleksi penjualan | aplikasi terpisah; gerbang role belum menolak akun non-staf (A-004) |
 
 ```text
-client -> entry boundary -> application -> persistence or external services
+investor browser -> Firebase Auth -> Firestore Security Rules -> koleksi yang boleh dibaca investor
+admin browser (dasbor internal) -> Firestore (sales, products, ...) -> ringkasan investor (ADR-0002, belum diputuskan)
 ```
 
 ## Components
 
 | Component | Responsibility | Owns | Does not own |
 |---|---|---|---|
-| | | | |
+| `src/app/` | rute, layout, layar baca | tampilan | data, otorisasi |
+| `src/lib/firebase/` | inisialisasi Firebase client, listener | koneksi SDK | perhitungan domain |
+| `src/lib/money/`, domain di `src/lib/` | format Rupiah, perhitungan jadwal Komisi dan pengembalian | aturan Pasal 4 dan 5 | akses data |
 
 ## Boundaries
 
-For each boundary future features must respect:
-
-- B-001: inside, outside, allowed communication, prohibited shortcut, rationale.
+- B-001: portal hanya membaca. Tidak ada `addDoc`, `setDoc`, `updateDoc`, atau `deleteDoc` ke koleksi dasbor internal; ditegakkan oleh rules role investor dan review.
+- B-002: hanya `src/lib/firebase/` yang mengimpor `firebase`; domain menerima data biasa agar teruji tanpa Firestore.
+- B-003: investor tidak menerima dokumen `sales` mentah (ADR-0002).
 
 ## Dependency direction
 
@@ -45,36 +51,39 @@ For each boundary future features must respect:
 ui -> application -> domain <- data
 ```
 
-Rules and documented exceptions. Cycles are not allowed. Infrastructure errors are normalized before reaching the presentation layer; authorization is enforced at a trusted boundary.
+`src/app` memanggil `src/lib`; `src/lib/firebase` memetakan dokumen Firestore ke tipe domain sebelum sampai ke UI.
 
 ## Data flow and classification
 
-One line per flow: input, validation, domain operation, persistence or service call, output.
-
 | Data | Owner | Where stored | Sensitivity |
 |---|---|---|---|
-| | | | public \| internal \| personal \| secret |
+| Transaksi penjualan (pelanggan, kota, harga modal, reseller) | dasbor internal | `sales` | personal dan internal; tidak untuk investor |
+| Ringkasan penjualan bulanan | Inzta | usulan `investor_monthly_sales` (ADR-0002) | internal, boleh dibaca investor |
+| Komisi dan pengembalian | Inzta | usulan `investor_payments` (A-008) | internal, boleh dibaca investor |
+| Akun investor | Inzta | Firebase Auth | personal |
 
 ## State ownership
 
 | State | Owner | Source of truth | Mutation path | Invalidation or sync |
 |---|---|---|---|---|
-| | | | | |
-
-One writable source of truth per state; reconciliation rules are explicit when a second copy exists.
+| Penjualan | admin Inzta | `sales` | dasbor internal | listener realtime |
+| Ringkasan bulanan | belum diputuskan | ADR-0002 | trigger atau dasbor internal | dihitung ulang tiap perubahan `sales` |
+| Pembayaran Komisi dan pengembalian | admin Inzta | usulan `investor_payments` | A-008 | listener realtime |
 
 ## Security
 
-Identity mechanism, session or token lifecycle, revocation. Authorization decision point, role or permission model, default policy (deny). Secrets, input validation, sensitive-data handling, audit logging, production access.
+Lihat `docs/architecture/security.md`. Default deny; satu role `investor` hanya membaca koleksi `investor_*`.
 
 ## Deployment
 
-Environments, build artifact, deployment mechanism, configuration management, migration order, rollback or roll-forward.
+Belum diputuskan (A-011). Build `next build`; konfigurasi lewat variabel `NEXT_PUBLIC_FIREBASE_*`.
 
 ## Decisions and open questions
 
-ADR ids with their decision and status. Unknowns go to `docs/context/ASSUMPTIONS.md`; reference A-XXX ids here.
+- ADR-0001 approved: satu Firestore, realtime.
+- ADR-0002 review: isolasi data investor.
+- Open: A-002 sampai A-012.
 
 ## Approval and change rule
 
-Architecture owner, approved date. A cross-feature or expensive-to-reverse change requires an ADR and owner approval before implementation.
+Architecture owner: VXerys. Perubahan rules atau koleksi bersama butuh ADR dan persetujuan pemilik project Firebase.

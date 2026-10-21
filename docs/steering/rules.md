@@ -48,7 +48,7 @@ Stop and report, instead of implementing, when the task would require any prohib
 - Authorization is enforced at a trusted boundary; hiding UI is not authorization.
 - Validate untrusted input at the boundary. Do not log secrets, tokens, auth headers, or unnecessary personal data.
 - Data store changes are versioned, append-only, reviewed, and reversible or explicitly accepted as forward-only.
-- Project-specific rule: none
+- Project-specific rule: portal ini tidak pernah menulis ke koleksi milik dasbor internal Inzta. Agen tidak menjalankan baca atau tulis ke Firestore produksi dan tidak mengubah Security Rules tanpa persetujuan eksplisit pemilik; uji memakai fixture atau emulator.
 
 ## Source of truth and conflicts
 

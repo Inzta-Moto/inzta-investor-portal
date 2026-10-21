@@ -52,5 +52,7 @@ Status vocabulary matches the template frontmatter. A proposal that is not taken
 
 | ADR | Status | Decision | Superseded by |
 |---|---|---|---|
+| [ADR-0001](ADR-0001-shared-firestore-realtime.md) | approved | satu Firestore dengan dasbor internal, dibaca realtime | |
+| [ADR-0002](ADR-0002-investor-data-isolation.md) | review | isolasi data investor (usulan: ringkasan lewat Cloud Function) | |
 
 Use `docs/_templates/adr.md` for new records.

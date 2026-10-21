@@ -1,10 +1,23 @@
 # Dependencies
-node_modules/
+/node_modules
+
+# Next.js and build output
+/.next/
+/out/
+/build
+/coverage
+*.tsbuildinfo
+next-env.d.ts
 
 # Environment and secrets
-.env
-.env.*
+.env*
 !.env.example
+*.pem
+*service-account*.json
+*-firebase-adminsdk-*.json
+
+# Vercel
+.vercel
 
 # Editors and operating systems
 .vscode/
@@ -12,20 +25,13 @@ node_modules/
 .DS_Store
 Thumbs.db
 
-# Build and coverage
-coverage/
-dist/
-build/
-.next/
-.dart_tool/
-
 # Logs
 *.log
 npm-debug.log*
 
-# Temporary context tooling
+# Temporary context tooling (SDD template)
 .context-cache/
 
-# Claude Code: personal settings and per-session hook state
+# Claude Code: personal settings and per-session hook state (SDD template)
 .claude/settings.local.json
 .claude/.sdd-session/

@@ -47,7 +47,7 @@ ui -> application -> domain <- data
 
 - Inner layers never import outer layers.
 - Framework and provider SDKs stay behind a project-owned boundary.
-- Project-specific rule: none
+- Project-specific rule: hanya `src/lib/firebase/` yang mengimpor paket `firebase`; modul domain di `src/lib/` lainnya menerima data biasa sehingga bisa diuji tanpa Firestore.
 
 ## Naming
 

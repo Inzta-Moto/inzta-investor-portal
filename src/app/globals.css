@@ -1,0 +1,33 @@
+/* Scans src/ only, so words in docs/*.md never become utilities. */
+@import "tailwindcss" source("..");
+
+/* Provisional neutral tokens; the visual direction is decided in a later feature (see docs/product/roadmap.md). */
+@theme {
+  --color-background: #f7f7f5;
+  --color-surface: #ffffff;
+  --color-text: #1c1c1a;
+  --color-text-muted: #5f5f5a;
+  --color-rule: #e2e2dc;
+  --color-accent: #1f4e79;
+
+  --font-sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Menlo, monospace;
+}
+
+@layer base {
+  html {
+    background: var(--color-background);
+    color: var(--color-text);
+  }
+
+  /* The portal is view-only (Pasal 7 ayat 3); printing is a download by another name. */
+  @media print {
+    body {
+      display: none;
+    }
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}

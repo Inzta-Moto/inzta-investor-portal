@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: 154f3551a0931361173914ea74bc8e4e521ab5d786c1b87675252983f8890514 -->
+source_hash: a5f45ba334e93aca1eb4ff409b7edbd35449926fd7a21ae2ff0730b83f3e1824 -->
 
 # Brief
 
@@ -9,7 +9,16 @@ Inzta Investor Portal adalah portal daring hanya-baca untuk investor PT Inzta Ge
 Project `Inzta Investor Portal`, tier `full`. Rendered from sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
 
 ## Active
-No active feature. Pick the first `planned` task whose `depends_on` are all `done`, or create `docs/specs/F-XXX-name/` from the templates.
+Feature F-001 — Fondasi proyek (`implementing`, docs/specs/F-001-fondasi-proyek/)
+Task T-001 — Kerangka Next.js, Tailwind, ESLint, halaman placeholder (`in_progress`); requirements: FR-001, FR-004; depends on: none
+
+Scope: `package.json`, `tsconfig.json`, `eslint.config.mjs`, `next.config.ts`, `.gitignore`, `src/app/`. Acceptance criteria: AC-001, AC-002, AC-006, AC-007.
+
+Acceptance criteria:
+- AC-001: Given build produksi, when `npm run build` selesai, then rute `/` dirender statis tanpa variabel Firebase.
+- AC-002: Given respons halaman mana pun, when diperiksa, then terdapat meta `robots` `noindex, nofollow` dan header `X-Robots-Tag: noindex, nofollow`.
+- AC-006: Given respons halaman, when diperiksa, then header `X-Frame-Options: DENY` ada.
+- AC-007: Given media cetak, when stylesheet diterapkan, then `body` bernilai `display: none`.
 
 ## Rules
 Stop conditions:
@@ -38,7 +47,11 @@ None.
 ## Handoff
 Handoff is `inactive`.
 
+## Other open tasks
+- T-002 — Konfigurasi Firebase lazy dan format Rupiah (`planned`)
+- T-003 — Verifikasi fondasi dan konteks SDD (`planned`)
+
 ## Features
 | Feature | Status | Phase | Done/Total |
 |---|---|---|---|
-| none yet | | | |
+| F-001 Fondasi proyek | implementing | in_progress | 0/3 |

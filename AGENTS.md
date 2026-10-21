@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run adapters:sync`.
 Source: docs/steering/, sdd.config.json.
-source_hash: 4d172d098e33d782e705df2e8ceadd2fec18554d43ba102af87bd2e5925ebc03 -->
+source_hash: c953da3b8ff0a89c826a598e4143e554e603a2afc96944512aab495ab89d753c -->
 
 # Repository contract: Inzta Investor Portal
 
@@ -87,7 +87,7 @@ Stop and report, instead of implementing, when the task would require any prohib
 - Authorization is enforced at a trusted boundary; hiding UI is not authorization.
 - Validate untrusted input at the boundary. Do not log secrets, tokens, auth headers, or unnecessary personal data.
 - Data store changes are versioned, append-only, reviewed, and reversible or explicitly accepted as forward-only.
-- Project-specific rule: none
+- Project-specific rule: portal ini tidak pernah menulis ke koleksi milik dasbor internal Inzta. Agen tidak menjalankan baca atau tulis ke Firestore produksi dan tidak mengubah Security Rules tanpa persetujuan eksplisit pemilik; uji memakai fixture atau emulator.
 
 ### Source of truth and conflicts
 
@@ -97,54 +97,61 @@ When sources conflict: stop the affected work, name both sources, inspect code a
 
 ## Tech
 
-Stack and commands. `npm run init` fills every `PRESET_` placeholder from the chosen app and database presets (`scripts/init/presets/`); everything else is filled from the real repository. A command listed here must exist and run.
+Stack and commands. `npm run init` filled the preset values; everything else comes from the real repository. A command listed here must exist and run. The web stack mirrors `fluxa-web` and `bookmate-web` (same Next.js, React, Tailwind, ESLint, and test runner versions).
 
 ### Stack
 
 | Concern | Technology | Reason or constraint |
 |---|---|---|
-| Language and runtime | TypeScript on Node 22 | |
-| Application framework | Next.js | |
-| Data store | Firebase (Firestore) | relational, document, key-value, embedded local, file, or none |
+| Language and runtime | TypeScript 5 on Node 22+ (developed on Node 24) | `"type": "module"` so `node --test` loads `.ts` with type stripping |
+| Application framework | Next.js 16.4 (App Router, Turbopack), React 19.3 | Server Components by default |
+| Styling | Tailwind CSS v4 through `@tailwindcss/turbopack` | provisional tokens in `@theme` in `src/app/globals.css`; visual direction not decided |
+| Data store | Firebase Firestore, the project shared with `inztamoto-erp-dashboard` | one database, two web apps, realtime (ADR-0001) |
+| Data access | Firebase JS SDK 13 (modular), browser listeners | isolation model pending (ADR-0002, A-002) |
+| Auth | Firebase Auth, one investor account | account format pending (A-005); internal dashboard gate pending (A-004) |
+| Authorization | Firestore Security Rules | current rules unknown (A-003); UI hiding is never authorization |
+| Test framework | Node test runner with type stripping (`node --test`) | pure logic only; rules tests need the emulator (A-003) |
+| Deployment target | not decided; planned domain `capital.inzta.id` | A-011 |
 | Source and test paths | `src/**`, `public/**` | globs used by `fileMatch` steering rules |
-
-Add rows for the backend or API, auth, state management, build tooling, test framework, and deployment target once they are decided. A row that does not apply says `none`, not an invented value. Mobile (Flutter, Kotlin, React Native) and non-relational stores are first-class here.
 
 ### Commands
 
-Run these before claiming any task done. Report a command that cannot run; never claim its success. `none` means the preset has no command for that purpose; replace it when the project gains one.
+Run these before claiming any task done. Report a command that cannot run; never claim its success. `none` means the project has no command for that purpose yet.
 
 | Purpose | Command |
 |---|---|
 | Install | `npm ci` |
 | Analyze or lint | `npm run lint` |
-| Typecheck | `npx tsc --noEmit` |
-| Format check | `npx prettier --check .` |
+| Typecheck | `npm run typecheck` |
+| Format check | `none` |
 | Test | `npm test` |
 | Build | `npm run build` |
-| Run locally | `npm run dev` |
-| Data store change check | `firebase deploy --only firestore:rules,firestore:indexes` |
+| Run locally | `npm run dev` (port 3300) |
+| Data store change check | `none` (no `firestore.rules` in this repository yet, see A-003; the preset's `firebase deploy` is a production action, never a check) |
 | Context validation | `npm run context:validate` |
+| SDD tooling tests | `npm run test:sdd` |
 
 ### Stack rules
 
 - Server Components by default; client components opt in with `'use client'` and stay leaf-sized.
-- Secrets are read in server code only; a variable reaches the browser only with the `NEXT_PUBLIC_` prefix.
-- Route handlers validate every request body at the boundary and return typed errors.
-- `npx tsc --noEmit` at 0 errors and `npm run lint` clean before a task is done.
+- Secrets are read in server code only; a variable reaches the browser only with the `NEXT_PUBLIC_` prefix. The Firebase web config is public by design; no service account or Admin SDK credential is used by this app.
+- `npm run typecheck` at 0 errors and `npm run lint` clean before a task is done. It runs `next typegen` first because `next-env.d.ts` and `.next/types` are generated, not committed.
+- Next.js 16 differs from older versions; read the matching guide in `node_modules/next/dist/docs/` before using an unfamiliar API. `agentRules: false` in `next.config.ts` stops `next dev` from appending to the rendered `AGENTS.md`.
+- The Firebase app is created lazily in `src/lib/firebase/client.ts`; nothing connects at import time or during `next build`.
+- Money is whole Rupiah as safe integers, formatted through `src/lib/money/rupiah.ts`, shown with the `tabular` utility.
 
 ### Environment and secrets
 
 - Secrets come from the environment or a secret manager; `.env*`, key files, and store credentials are never read, printed, or committed by an agent.
-- Example-config files (`.env.example` or equivalent) document required variables without values.
+- `.env.example` documents the four `NEXT_PUBLIC_FIREBASE_*` variables without values. The owner fills `.env.local`.
 
 ### Dependency policy
 
-Before adding or replacing a dependency, state the problem it solves, the native alternative considered, maintenance health, runtime or bundle impact, and license. Approval rule: the owner approves every new or replaced dependency; record the approval in the task that adds it.
+Before adding or replacing a dependency, state the problem it solves, the native alternative considered, maintenance health, runtime or bundle impact, and license. Approval rule: the owner approves every new or replaced dependency; record the approval in the task that adds it. `firebase` was added in F-001 at the owner's request (data layer of ADR-0001).
 
 ### Data store changes
 
-Schema, rules, index, or migration changes are versioned files in the repository, reviewed like code. Append-only; destructive changes need explicit approval. The store's own rules are in the `database.md` steering file when a database preset was chosen. The full procedure is `docs/runbooks/database-migrations.md` (full tier).
+Rules and index changes are versioned files in the repository, reviewed like code, tested in the emulator before deploy. Deploying rules, indexes, or functions to the shared project is a production action that affects the internal dashboard and needs the owner's explicit approval each time. The store's own rules are in `docs/steering/database.md`; the procedure is `docs/runbooks/database-migrations.md`.
 
 ## Structure
 
@@ -191,7 +198,7 @@ ui -> application -> domain <- data
 
 - Inner layers never import outer layers.
 - Framework and provider SDKs stay behind a project-owned boundary.
-- Project-specific rule: none
+- Project-specific rule: hanya `src/lib/firebase/` yang mengimpor paket `firebase`; modul domain di `src/lib/` lainnya menerima data biasa sehingga bisa diuji tanpa Firestore.
 
 ### Naming
 
@@ -258,30 +265,38 @@ Short, always-loaded product context. The full product requirements live in `doc
 
 Inzta Investor Portal adalah portal daring hanya-baca untuk investor PT Inzta Gear Indonesia yang menampilkan laporan penjualan bulanan, rekap komisi, dan progres pengembalian dana investasi selama 24 bulan masa perjanjian.
 
-One paragraph on why it exists now and what "working" looks like for the user. Project content (specs, product docs, UI copy) is written in Indonesian; the framework text stays English.
+Dasbor ini memenuhi Pasal 7 ayat 3 draf Perjanjian Kerja Sama Investasi: laporan hasil penjualan bulanan serta rekap Komisi dan pengembalian Dana Investasi, diakses investor dengan akun khusus, hanya untuk melihat. "Berhasil" berarti investor melihat angka yang sama dengan catatan Inzta, realtime, tanpa bisa membuka dasbor internal atau data per transaksi. Project content (specs, product docs, UI copy) is written in Indonesian; the framework text stays English.
 
 ### Personas
 
-- Example: Reader, a commuter who logs a daily reading session from a phone in under ten seconds.
+- Investor (Pihak Pertama): satu akun, membuka portal dari ponsel atau laptop untuk memantau penjualan bulanan, Komisi, dan sisa dana yang belum kembali. Tidak punya hak instruksi atas usaha (Pasal 8).
+- Admin Inzta: mencatat penjualan di dasbor internal dan pembayaran Komisi serta pengembalian (lokasi pencatatan: A-008). Bukan pengguna portal di M1.
 
 ### Core use cases
 
-- UC-001: actor, trigger, outcome.
+- UC-001: Investor login, melihat hasil penjualan bulan berjalan dan riwayat per bulan selama 24 bulan.
+- UC-002: Investor melihat Komisi per bulan (Rp4.800.000, lalu Rp6.400.000 setelah Tahap II) dan status bayar tanggal 25 sampai 26.
+- UC-003: Investor melihat jadwal pengembalian bulan ke-16, 20, 24, total dana yang sudah kembali, dan sisanya.
 
 ### Non-goals
 
-- Nearby capabilities this product deliberately does not provide in the current milestone.
+- Unduh, ekspor, cetak, atau PDF.
+- Akses ke dasbor internal, data per transaksi, data pelanggan, reseller, atau harga modal.
+- Investor mengubah data apa pun; lebih dari satu akun investor.
 
 ### Success signals
 
 | Signal | What it tells us | Source |
 |---|---|---|
-| Example: daily check-ins per active user | the habit loop works | analytics event `check_in` |
+| Laporan manual (Pasal 7 ayat 4) berhenti setelah rilis | portal cukup sebagai laporan resmi | konfirmasi Inzta |
+| Angka bulanan portal sama dengan dasbor internal | agregasi benar | uji agregasi, pengecekan admin |
 
 ### Constraints that shape product decisions
 
-- Example: offline use on the primary device is required.
-- Example: data of minors is never collected.
+- Satu database Firestore dengan dasbor internal, realtime (ADR-0001).
+- Investor tidak boleh membaca data mentah; Security Rules tidak bisa menyaring field (ADR-0002, belum diputuskan).
+- Nilai yang belum ditetapkan perjanjian tampil "belum ditetapkan", tidak ditebak.
+- Bukti dan rincian kebutuhan: `docs/product/prd.md`, pertanyaan terbuka: `docs/context/ASSUMPTIONS.md`.
 
 ## Conditional rules
 
@@ -292,11 +307,13 @@ Apply the section when the edited path matches its pattern.
 Rules for every change under `firestore.rules`, `firestore.indexes.json`, `storage.rules`, `functions/**`. Generated by `npm run init` from the `firebase` preset; edit freely, it is a steering file.
 
 - Migration tool: Firebase CLI
-- Apply locally: `firebase deploy --only firestore:rules,firestore:indexes`
+- Test locally: `firebase emulators:exec` against the rules file (Firebase CLI not installed in this repository yet)
+- Deploy (production action, owner approval each time): `firebase deploy --only firestore:rules,firestore:indexes`
 - Migration files: `firestore.rules, firestore.indexes.json`
 
 #### Rules
 
+- The Firestore project is shared with `inztamoto-erp-dashboard` (ADR-0001): a rules change here changes what the internal dashboard can read and write. Export the live rules into the repository before the first change (A-003).
 - Firestore has no schema; a document-shape change is a versioned script in the repository, run once per environment, with the run recorded as evidence.
 - Security Rules are the authorization mechanism: every collection has rules, tested with `firebase emulators:exec` before deploy.
 - Indexes live in `firestore.indexes.json`; a composite index created from the console is exported into the file before release.
