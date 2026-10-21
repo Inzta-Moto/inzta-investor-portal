@@ -29,7 +29,7 @@ function SignOutButton({ compact }: { compact?: boolean }) {
 export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-dvh flex-col lg:flex-row">
-      <aside className="brand-stripe sticky top-0 hidden h-dvh w-62 shrink-0 flex-col border-r border-line bg-surface lg:flex">
+      <aside className="sticky top-0 hidden h-dvh w-62 shrink-0 flex-col border-r border-line bg-surface lg:flex">
         <div className="flex items-center gap-3 border-b border-line px-5 pt-6 pb-5">
           <LogoMark size={36} />
           <div className="leading-tight">
@@ -57,7 +57,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="brand-stripe sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-line bg-surface px-4 pt-[15px] pb-3 lg:px-8">
+        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-line bg-surface px-4 py-3 lg:px-8">
           <div className="flex min-w-0 items-center gap-2.5 lg:hidden">
             <LogoMark size={28} />
             <p className="text-[15px] font-bold">Portal Investor</p>

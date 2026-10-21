@@ -43,7 +43,7 @@
     --c-solid: #f59e0b;
     --c-on-solid: #1a1a1a;
     --c-hero: #1a1a1a;
-    --c-hero-border: rgb(245 158 11 / 0.45);
+    --c-hero-border: #44403c;
     --c-nav-active: #f59e0b;
     --c-nav-active-icon: #1a1a1a;
     --c-nav-active-text: #1a1a1a;
@@ -97,10 +97,10 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /* Neutral ink, not the brand orange: focus is a function, and an outline follows each element's own radius. */
   :focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px rgb(217 119 6 / 0.45);
-    border-radius: 8px;
+    outline: 2px solid var(--c-ink);
+    outline-offset: 2px;
   }
 
   /* View-only portal (A-010): printing is a download by another name. */
@@ -115,24 +115,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* The 3px stripe comes from the internal dashboard's top bar (charcoal into Inzta orange): a brand motif. */
-@utility brand-stripe {
-  position: relative;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 3px;
-    background: linear-gradient(90deg, #1a1a1a, #d97706, #f59e0b);
-  }
-}
-
-/* The running month is incomplete, so it is hatched in the same orange rather than given a second colour. */
-@utility hatch-now {
-  background: repeating-linear-gradient(45deg, #d97706 0 3px, rgb(217 119 6 / 0.3) 3px 6px);
-  outline: 1.5px solid #d97706;
-  outline-offset: -1.5px;
-}
 
 @utility repay-marker {
   position: relative;

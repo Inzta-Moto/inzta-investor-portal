@@ -12,11 +12,15 @@ function due(item: { dueStart: IsoDate | null; dueEnd: IsoDate | null }): string
   return item.dueStart && item.dueEnd ? formatDueWindow(item.dueStart, item.dueEnd) : "Menunggu Tanggal Efektif";
 }
 
+function NowTag() {
+  return <span className="rounded-md bg-ink px-1.5 py-0.5 text-[11px] font-bold text-bg">Bulan ini</span>;
+}
+
 function chip(item: CommissionItem) {
   return <StatusChip status={item.status} detail={item.status === "paid" && item.paidDate ? formatDate(item.paidDate) : undefined} />;
 }
 
-/** Mobile list; the left edge marks the month that is due now, a real state rather than decoration. */
+/** Mobile list; the running month is named in words and set on a sunk row, so no coloured edge is needed. */
 export function CommissionList({ items, currentMonth, title }: { items: CommissionItem[]; currentMonth: number | null; title?: (item: CommissionItem) => string }) {
   return (
     <ul>
@@ -24,11 +28,14 @@ export function CommissionList({ items, currentMonth, title }: { items: Commissi
         <li
           key={item.month}
           className={`grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 border-b border-line px-4 py-3.5 last:border-b-0 ${
-            item.month === currentMonth ? "shadow-[inset_3px_0_0_#d97706]" : ""
+            item.month === currentMonth ? "bg-surface-sunk" : ""
           }`}
         >
           <div className="grid min-w-0 gap-0.5">
-            <p className="font-bold">{title ? title(item) : `Bulan ke-${item.month}`}</p>
+            <p className="flex flex-wrap items-center gap-x-2 font-bold">
+              {title ? title(item) : `Bulan ke-${item.month}`}
+              {item.month === currentMonth ? <NowTag /> : null}
+            </p>
             <p className="text-[13px] text-ink-3">{due(item)}</p>
           </div>
           <p className="tabular text-right font-semibold">{formatRupiah(item.amount)}</p>
@@ -64,9 +71,12 @@ export function CommissionTable({ items, currentMonth, effectiveDate }: { items:
           {items.map((item) => {
             const period = agreementMonthKey(effectiveDate, item.month);
             return (
-              <tr key={item.month} className="border-t border-line whitespace-nowrap">
-                <th scope="row" className={`px-5 py-3 text-left font-bold ${item.month === currentMonth ? "shadow-[inset_3px_0_0_#d97706]" : ""}`}>
-                  Bulan ke-{item.month}
+              <tr key={item.month} className={`border-t border-line whitespace-nowrap ${item.month === currentMonth ? "bg-surface-sunk" : ""}`}>
+                <th scope="row" className="px-5 py-3 text-left font-bold">
+                  <span className="inline-flex items-center gap-2">
+                    Bulan ke-{item.month}
+                    {item.month === currentMonth ? <NowTag /> : null}
+                  </span>
                 </th>
                 <td className="px-5 py-3">{period ? formatMonth(period, "long") : "–"}</td>
                 <td className="px-5 py-3">{due(item)}</td>

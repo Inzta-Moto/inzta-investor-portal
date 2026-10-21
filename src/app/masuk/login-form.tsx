@@ -29,7 +29,7 @@ export function LoginForm({ configError }: { configError: string | null }) {
           required
           placeholder="Username dari admin Inzta"
           aria-invalid={error ? true : undefined}
-          className="min-h-12 w-full rounded-[10px] border border-line-strong bg-surface px-3.5 text-base text-ink placeholder:text-ink-3 focus:border-brand-amber focus:shadow-[0_0_0_3px_rgb(217_119_6/0.45)] focus:outline-none"
+          className="min-h-12 w-full rounded-[10px] border border-line-strong bg-surface px-3.5 text-base text-ink placeholder:text-ink-3 focus:border-ink"
         />
       </div>
       <div className="grid gap-1.5">
@@ -45,7 +45,7 @@ export function LoginForm({ configError }: { configError: string | null }) {
             required
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? "login-error" : undefined}
-            className="min-h-12 w-full rounded-[10px] border border-line-strong bg-surface pr-12 pl-3.5 text-base text-ink focus:border-brand-amber focus:shadow-[0_0_0_3px_rgb(217_119_6/0.45)] focus:outline-none"
+            className="min-h-12 w-full rounded-[10px] border border-line-strong bg-surface pr-12 pl-3.5 text-base text-ink focus:border-ink"
           />
           <button
             type="button"

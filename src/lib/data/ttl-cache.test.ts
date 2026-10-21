@@ -30,6 +30,7 @@ test("a failed load is not cached", async () => {
 
 test("admin config: emulator needs no key; production needs all three variables", () => {
   assert.deepEqual(readAdminConfig({ FIRESTORE_EMULATOR_HOST: "127.0.0.1:8080" }), { ok: true, mode: "emulator", projectId: "demo-inzta" });
+  assert.deepEqual(readAdminConfig({ FIRESTORE_EMULATOR_HOST: "127.0.0.1:8080", FIREBASE_PROJECT_ID: "database-inzta" }), { ok: true, mode: "emulator", projectId: "demo-inzta" });
   assert.deepEqual(readAdminConfig({ FIREBASE_PROJECT_ID: "inzta-5244e" }), { ok: false, missing: ["FIREBASE_CLIENT_EMAIL", "FIREBASE_PRIVATE_KEY"] });
   const ok = readAdminConfig({ FIREBASE_PROJECT_ID: "p", FIREBASE_CLIENT_EMAIL: "sa@p.iam.gserviceaccount.com", FIREBASE_PRIVATE_KEY: "-----BEGIN-----\\nabc\\n-----END-----" });
   assert.equal(ok.ok && ok.mode === "service-account" && ok.privateKey, "-----BEGIN-----\nabc\n-----END-----");

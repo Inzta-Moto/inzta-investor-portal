@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type { ChartPoint } from "@/lib/format/portfolio-view";
 import type { ChartPoint } from "@/lib/format/portfolio-view";
@@ -20,7 +20,7 @@ function tick(value: number): string {
 }
 
 /**
- * One series, one colour: every month in Inzta orange, the running month hatched because it is incomplete.
+ * One series in Inzta orange; the running month is solid ink because it is incomplete, a fill rather than stripes.
  * Drawn in pixels from the measured width so axis text stays 11px on a 360px phone.
  */
 export function SalesChart({ points, tall = false, title }: { points: ChartPoint[]; tall?: boolean; title: string }) {
@@ -28,7 +28,6 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
   const [width, setWidth] = useState(0);
   const [active, setActive] = useState<number | null>(null);
   const [view, setView] = useState<"chart" | "table">("chart");
-  const hatchId = `hatch-${useId().replace(/:/g, "")}`;
 
   useEffect(() => {
     const element = host.current;
@@ -78,13 +77,7 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
 
       <div ref={host} className={`relative ${view === "chart" ? "" : "hidden"}`} style={{ minHeight: height }}>
         {width > 0 ? (
-          <svg width={width} height={height} role="group" aria-label={`${title}. Bulan berjalan diarsir karena belum lengkap.`} className="block overflow-visible">
-            <defs>
-              <pattern id={hatchId} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <rect width="6" height="6" fill={ORANGE} fillOpacity="0.3" />
-                <rect width="3" height="6" fill={ORANGE} />
-              </pattern>
-            </defs>
+          <svg width={width} height={height} role="group" aria-label={`${title}. Bulan berjalan berwarna gelap karena belum lengkap.`} className="block overflow-visible">
             {ticks.map((value) => {
               const y = base - (value / max) * plotHeight;
               return (
@@ -105,7 +98,7 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
               const showLabel = i % labelEvery === labelEvery - 1 || point.running;
               return (
                 <g key={point.month}>
-                  {barHeight > 0 ? <path d={path} fill={point.running ? `url(#${hatchId})` : ORANGE} /> : null}
+                  {barHeight > 0 ? <path d={path} fill={point.running ? "var(--c-ink)" : ORANGE} /> : null}
                   {showLabel ? (
                     <text x={padLeft + band * i + band / 2} y={height - 6} textAnchor="middle" className="fill-ink-3 text-[11px]">
                       {point.short}
@@ -120,7 +113,7 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
                     role="img"
                     tabIndex={0}
                     aria-label={`${point.label}: ${point.amount}${point.running ? ", bulan berjalan" : ""}`}
-                    className="cursor-pointer outline-none focus-visible:stroke-brand-amber focus-visible:stroke-2"
+                    className="cursor-pointer outline-none focus-visible:stroke-ink focus-visible:stroke-2"
                     onPointerEnter={() => setActive(i)}
                     onPointerLeave={() => setActive(null)}
                     onFocus={() => setActive(i)}
@@ -173,7 +166,7 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
 
       <ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-ink-2">
         <li className="inline-flex items-center gap-1.5"><i className="size-3 rounded-[3px] bg-brand-amber" />Bulan selesai</li>
-        <li className="inline-flex items-center gap-1.5"><i className="hatch-now size-3 rounded-[3px]" />Bulan berjalan, belum lengkap</li>
+        <li className="inline-flex items-center gap-1.5"><i className="size-3 rounded-[3px] bg-ink" />Bulan berjalan, belum lengkap</li>
       </ul>
     </div>
   );

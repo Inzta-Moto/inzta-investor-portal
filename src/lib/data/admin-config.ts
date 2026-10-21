@@ -10,7 +10,8 @@ type Env = Record<string, string | undefined>;
 
 export function readAdminConfig(env: Env): AdminConfig {
   const projectId = env.FIREBASE_PROJECT_ID?.trim() ?? "";
-  if (env.FIRESTORE_EMULATOR_HOST?.trim()) return { ok: true, mode: "emulator", projectId: projectId || "demo-inzta" };
+  // Always the test project: .env.local holds the production id, and the seed and tests write to "demo-inzta" only.
+  if (env.FIRESTORE_EMULATOR_HOST?.trim()) return { ok: true, mode: "emulator", projectId: "demo-inzta" };
   const clientEmail = env.FIREBASE_CLIENT_EMAIL?.trim() ?? "";
   // Hosting dashboards store the PEM on one line with literal "\n"; restore the line breaks the key parser expects.
   const privateKey = (env.FIREBASE_PRIVATE_KEY ?? "").replace(/\\n/g, "\n").trim();
