@@ -11,7 +11,6 @@ import { createInterface } from "node:readline";
 import { hashPassword } from "../../src/lib/auth/investor-credentials.ts";
 import { removeKeys, upsertEnv } from "./env-file.mjs";
 
-const PROJECT_ID = "inzta-5244e";
 const ENV_FILE = ".env.local";
 // Variables from the mock era (ADR-0004, ADR-0005) that the app no longer reads; DEMO_INVESTOR_PASSWORD is plain text.
 const OBSOLETE = [
@@ -34,8 +33,9 @@ function readServiceAccount(path) {
   if (key.type !== "service_account" || !key.client_email || !key.private_key) {
     throw new Error("Berkas itu bukan kunci service account Firebase (JSON dari Project settings, Service accounts).");
   }
-  if (key.project_id !== PROJECT_ID) throw new Error(`Kunci ini untuk project ${key.project_id}, bukan ${PROJECT_ID}.`);
-  return { clientEmail: key.client_email, privateKey: key.private_key };
+  if (!key.project_id) throw new Error("Kunci ini tidak menyebut project_id.");
+  // The project comes from the key itself, so the id and the credential can never point at different projects.
+  return { projectId: key.project_id, clientEmail: key.client_email, privateKey: key.private_key };
 }
 
 // Reads one line per prompt from a terminal or a pipe; readline/promises loses piped lines between questions.
@@ -70,9 +70,9 @@ const values = {
   INVESTOR_PASSWORD_HASH: hashPassword(password),
   // An existing strong secret is kept so devices already signed in stay signed in.
   SESSION_SECRET: existingSecret.length >= 32 ? existingSecret : randomBytes(32).toString("hex"),
-  FIREBASE_PROJECT_ID: PROJECT_ID,
 };
 if (serviceAccount) {
+  values.FIREBASE_PROJECT_ID = serviceAccount.projectId;
   values.FIREBASE_CLIENT_EMAIL = serviceAccount.clientEmail;
   values.FIREBASE_PRIVATE_KEY = serviceAccount.privateKey;
 }
@@ -83,6 +83,7 @@ const { text: cleaned, removed } = removeKeys(original, toRemove);
 writeFileSync(ENV_FILE, upsertEnv(cleaned, values), { encoding: "utf8", mode: 0o600 });
 
 console.log(`${ENV_FILE} diperbarui: ${Object.keys(values).join(", ")}.`);
+if (serviceAccount) console.log(`Project Firebase: ${serviceAccount.projectId}. Pastikan ini project dasbor ERP Inzta.`);
 if (removed.length) console.log(`Dihapus karena tidak dipakai lagi: ${removed.join(", ")}.`);
 if (password.length < 12) console.log("Peringatan: kata sandi di bawah 12 karakter mudah ditebak; ganti sebelum portal dibuka di internet.");
 if (!serviceAccount) {
