@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: 96f01898d0d1d7cda7a1f603fba85badb600a12ce4ad4961a3760d5ce78437e8 -->
+source_hash: 134ff46fe114fa60a4b638c73ff7003ca80f4732ce3f9c9d868414c7318959fc -->
 
 # Brief
 
@@ -10,13 +10,17 @@ Project `Inzta Investor Portal`, tier `full`. Rendered from sdd.config.json, doc
 
 ## Active
 Feature F-006 — Integrasi Firestore lewat server (`verification`, docs/specs/F-006-integrasi-firebase/)
-Task T-001 — Admin SDK, konfigurasi, dan emulator (`done`); requirements: FR-001; depends on: none
+Task T-006 — Sambungkan ke produksi (`blocked`); requirements: FR-001, FR-002, FR-004; depends on: T-001, T-002, T-003, T-004, T-005
 
-`firebase-admin` menggantikan `firebase` (disetujui Sehan lewat pilihan "jalan tengah"); `firebase.json` hanya emulator; Java 21 di `D:	ools\jre21` untuk mesin lokal.
+Menunggu A-016: Sehan membuat kunci service account dan env produksi; admin membuat `investor_agreement/current` dan `investor_payments`; hosting A-011.
 
 Acceptance criteria:
 - AC-001: Given dokumen `sales` berisi pelanggan, kota, reseller, harga modal, when portal membaca, then hanya empat kolom itu yang diterima server dan HTML maupun payload RSC tidak memuat kolom lain.
 - AC-002: Given dokumen lama tanpa `revenue`, then dihitung `sellingPrice * quantity`.
+- AC-003: Given `investor_agreement/current` dan `investor_payments`, then Ringkasan, Komisi, dan Pengembalian memakai nilainya; dokumen pembayaran yang rusak menjadi peringatan, perjanjian yang hilang atau rusak menjadi pesan yang bisa dibaca.
+- AC-007: Given `INVESTOR_USERNAME` dan `INVESTOR_PASSWORD_HASH` (scrypt), then hanya pasangan yang cocok yang masuk; hash rusak ditolak sebagai kesalahan konfigurasi; investor tidak punya akun Firebase.
+- AC-008: Given kata sandi diganti di env, then cookie lama tidak berlaku.
+- AC-009: Given banyak percobaan gagal, then dibatasi 5 per klien dan 50 total per 15 menit.
 
 ## Rules
 Stop conditions:
@@ -45,10 +49,10 @@ Frozen: none
 ## Handoff
 Next step:
 
-Sehan meninjau keputusan [delegasi] di `docs/context/ASSUMPTIONS.md`, lalu menanyakan A-003, A-004, A-011 ke Raja. Saat klien membuka integrasi, mulai F-006 T-001. Verifikasi: `npm run context:validate`.
+Sehan membuat kunci service account di Firebase Console (Project settings, Service accounts), mengisi env sesuai README, dan meminta admin membuat dokumen perjanjian; lalu F-006 T-006: jalankan portal terhadap produksi dan bandingkan total bulanan dengan dasbor internal. Verifikasi: `npm run context:validate`.
 
 ## Other open tasks
-- T-006 — Sambungkan ke produksi (`blocked`)
+None.
 
 ## Features
 | Feature | Status | Phase | Done/Total |

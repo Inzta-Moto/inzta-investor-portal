@@ -59,9 +59,7 @@ The system shall menjumlahkan penjualan per bulan kalender seperti `getSaleReven
 - AC-010: Given transaksi dengan `revenue`, tanpa `revenue`, dan `revenue` bukan angka, then dipakai `revenue`, lalu `sellingPrice * quantity`, lalu 0.
 - AC-011: Given ringkasan bulanan, then deret berisi 12 bulan berurutan berakhir di bulan hari ini, bulan tanpa data bernilai 0, bulan terakhir bertanda berjalan.
 
-### FR-005 — Kontrak sumber data dan adaptor mock
-
-> Superseded 2026-10-21 oleh F-006 FR-005: adaptor mock dihapus; kontrak `InvestorDataSource` tetap, kini diisi adaptor Firestore (ADR-0006).
+### FR-005 — Kontrak sumber data dan adaptor mock (superseded 2026-10-21 oleh F-006 FR-005: mock dihapus, kontrak tetap)
 
 The system shall menyediakan `InvestorDataSource` dengan adaptor mock yang deterministik terhadap tanggal hari ini.
 

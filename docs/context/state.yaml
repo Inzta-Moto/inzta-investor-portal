@@ -301,7 +301,7 @@ features:
         evidence: []
 active:
   feature_id: F-006
-  task_id: T-001
+  task_id: T-006
 assumptions_open:
   - id: A-011
     feature: F-005
@@ -319,5 +319,5 @@ blockers:
   - feature_id: F-006
     task_id: T-006
     title: Sambungkan ke produksi
-generated_at: 2026-10-21T05:37:06.557Z
-source_hash: 96f01898d0d1d7cda7a1f603fba85badb600a12ce4ad4961a3760d5ce78437e8
+generated_at: 2026-10-21T05:41:43.228Z
+source_hash: 134ff46fe114fa60a4b638c73ff7003ca80f4732ce3f9c9d868414c7318959fc

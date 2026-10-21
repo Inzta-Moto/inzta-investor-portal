@@ -30,8 +30,7 @@ supersedes: null
 - command: `npm run dev`, browser pane 1366×900, `/ringkasan`, `/pengembalian?skenario=tahun-kedua`
 - output:
   ```text
-  sidebar berlogo, menu aktif charcoal, navigasi bawah tersembunyi, label "Data contoh";
-  kartu utama Rp6.400.000 + chip Jatuh tempo; Komisi sudah masuk Rp128.000.000 (20 dari 24);
+  sidebar berlogo, menu aktif charcoal, navigasi bawah tersembunyi, label "Data contoh"; kartu utama Rp6.400.000 + chip Jatuh tempo; Komisi sudah masuk Rp128.000.000 (20 dari 24);
   Pengembalian sudah masuk Rp100.000.000 (2 dari 3, 50%); tabel Pasal 5 dengan baris Jumlah
   ```
 - date: 2026-10-21
@@ -42,21 +41,30 @@ supersedes: null
 - command: browser pane 360×780 pada keempat halaman
 - output:
   ```text
-  scrollWidth 360 = viewport di semua halaman; navigasi bawah 4 label; hero 42,7 px muat di kartu 328 px;
-  grafik 12 batang, bulan berjalan diarsir, sumbu 0/25 jt/50 jt/75 jt; Komisi 24 baris daftar;
-  Pengembalian "Belum ditetapkan" di ketiga kartu, sisa Rp200.000.000
+  scrollWidth 360 = viewport di semua halaman; navigasi bawah 4 label; hero 42,7 px muat di kartu 328 px; grafik 12 batang, bulan berjalan diarsir, sumbu 0/25 jt/50 jt/75 jt;
+  Komisi 24 baris daftar; Pengembalian "Belum ditetapkan" di ketiga kartu, sisa Rp200.000.000
   /penjualan: svg role=group, 12 rect role=img tabindex=0 berlabel, tabel 12 bulan selalu ada (sr-only atau tombol Tabel)
   ```
 - date: 2026-10-21
 - commit: 02ba2a8
 - covers: [AC-002, AC-006, AC-007, AC-008, AC-009]
 
+### EV-004 — Pagination jadwal komisi dan kartu dua kolom
+- command: `next start` dengan emulator, browser pane 360x780 dan 1280x900, halaman `/komisi`
+- output:
+  ```text
+  HP: "Bulan 1–6 · halaman 1 dari 4", 6 baris, Berikutnya dua kali → bulan 13–18 dengan "Bersamaan pengembalian ke-1"; dua kartu berdampingan, Rp153.600.000 utuh, scrollWidth 360; desktop: "Bulan 1–12 · halaman 1 dari 2", 12 baris
+  ```
+- date: 2026-10-21
+- commit: 5c4d4f6
+- covers: [AC-008]
+
 ## Coverage
 
 | Criterion | Evidence | Result |
 |---|---|---|
 | AC-001 sampai AC-004, AC-013, AC-014 | EV-002 | pass |
-| AC-002, AC-006 sampai AC-009 | EV-003 | pass |
+| AC-002, AC-006 sampai AC-009 | EV-003, EV-004 | pass |
 | AC-011 | EV-001 | pass |
 | AC-005, AC-010, AC-012 | | not_run |
 
@@ -68,5 +76,4 @@ supersedes: null
 | AC-010 dan layar gagal AC-012 | butuh data rusak atau sumber gagal; teks "Memuat data…" sempat terlihat saat kompilasi dev | rendah; komponen sederhana |
 
 ## Result
-
 `pass_with_limitations`: tampilan utama terverifikasi di HP dan desktop; tiga kondisi tepi hanya dijamin lewat logika domain.

@@ -1,12 +1,12 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: 96f01898d0d1d7cda7a1f603fba85badb600a12ce4ad4961a3760d5ce78437e8 -->
+source_hash: 134ff46fe114fa60a4b638c73ff7003ca80f4732ce3f9c9d868414c7318959fc -->
 
 # Project State
 
-- Generated at: 2026-10-21T05:37:06.557Z
+- Generated at: 2026-10-21T05:41:43.228Z
 - Project: Inzta Investor Portal (tier `full`)
-- Active: F-006 / T-001
+- Active: F-006 / T-006
 - Open assumptions: 2
 - Blocked tasks: T-001, T-002, T-006
 
@@ -25,14 +25,14 @@ source_hash: 96f01898d0d1d7cda7a1f603fba85badb600a12ce4ad4961a3760d5ce78437e8 --
 ## Git
 
 - Branch: `main`
-- HEAD: `5d6ab26`
+- HEAD: `5c4d4f6`
 - Worktree: dirty
 
 Recent commits:
 
+- `5c4d4f6 feat(F-006): read Firestore on the server with a field-limited sales query`
 - `5d6ab26 docs(F-001,F-002,F-003,F-004): record evidence, close tasks, and hand off`
 - `02ba2a8 feat(F-002,F-003,F-004): investor portal on mock data with demo login`
 - `9ec89d6 docs: flat Rp6.4M commission, admin-entered repayments, portal as optional access`
 - `96dcb6e docs(F-001): record evidence, task status, and handoff`
-- `73f4f09 feat(F-001): scaffold Next.js foundation, lazy Firebase client, and SDD product docs`
 <!-- GENERATED:GIT_FACTS:END -->
