@@ -45,7 +45,8 @@ export type MonthlySales = {
   revenue: number;
 };
 
-export type DataSourceKind = "firestore";
+/** "snapshot" is the saved copy of 2026-10-21, used only while the Firestore read quota is exhausted. */
+export type DataSourceKind = "firestore" | "snapshot";
 
 export type InvestorSnapshot = {
   source: DataSourceKind;
