@@ -2,26 +2,49 @@
 
 Portal web hanya-baca untuk investor PT Inzta Gear Indonesia: hasil penjualan bulanan InztaMoto, rekap komisi (Rp6.400.000 per bulan selama 24 bulan), dan progres pengembalian dana (bulan ke-16, 20, 24). Rencana domain `capital.inzta.id`. Dirancang untuk HP terlebih dulu.
 
-Status: **data mock** atas permintaan klien; integrasi Firebase ditahan (F-006). Setiap halaman memberi label "Data contoh".
+Status: membaca Firestore asli lewat server (ADR-0006), tanpa data mock. Penyambungan ke project produksi `inzta-5244e` menunggu kunci service account dan dokumen perjanjian (A-016).
 
-## Menjalankan
+## Cara kerja data
+
+- Server portal membaca Firestore dengan Firebase Admin SDK. Koleksi `sales` hanya dibaca kolom `date`, `revenue`, `sellingPrice`, `quantity`; browser menerima total bulanan saja.
+- `investor_agreement/current` dan `investor_payments` diisi admin Inzta lewat Firebase Console (kontrak di `docs/specs/F-006-integrasi-firebase/design.md`). Portal tidak menulis apa pun ke Firestore.
+- Halaman memperbarui diri tiap 30 detik selama dibuka dan dipakai; penjualan sejak kemarin di-cache 25 detik, hari yang lebih lama 1 jam, untuk menjaga kuota baca yang dipakai bersama dasbor internal.
+- Investor tidak punya akun Firebase. Login memakai username dan hash kata sandi di env server.
+
+## Menjalankan dengan emulator (tanpa menyentuh produksi)
+
+Butuh Java 21 (`JAVA_HOME`). Terminal 1:
 
 ```bash
-npm ci
-npm run dev
+npm run emulator:start
 ```
 
-Buka http://localhost:3300. Di `npm run dev`, bila `.env.local` tidak mengisi variabel login, akun demo berikut berlaku (hanya di mode pengembangan):
+Terminal 2, isi data contoh lalu jalankan portal:
 
-| Username | Kata sandi |
-|---|---|
-| `investor` | `inzta-demo-2026` |
+```bash
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 npm run emulator:seed
+```
 
-Di halaman portal ada pemilih skenario data contoh: **Awal kontrak** (bulan ke-3, persentase pengembalian belum diisi) dan **Tahun ke-2** (bulan ke-21, pengembalian 25/25/50%, dua pengembalian sudah masuk). Bisa juga lewat URL, misalnya `/ringkasan?skenario=tahun-kedua`.
+```bash
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 npm run dev
+```
+
+Buka http://localhost:3300. Di `npm run dev`, bila ketiga variabel login kosong, akun pengembangan `investor` / `inzta-demo-2026` berlaku (tidak pernah di build produksi). Data contoh hanya ada di emulator (`scripts/emulator/fixtures.mjs`).
 
 ## Variabel lingkungan
 
-Lihat `.env.example`. Untuk `npm run build` dan `npm start`, isi `DEMO_INVESTOR_USERNAME`, `DEMO_INVESTOR_PASSWORD`, dan `SESSION_SECRET` (minimal 32 karakter); tanpa itu login menolak semua percobaan.
+Daftar ada di `.env.example`; nilainya diisi pemilik di `.env.local` dan secret hosting.
+
+| Variabel | Isi |
+|---|---|
+| `INVESTOR_USERNAME` | username investor, misalnya `investor@inzta.id` |
+| `INVESTOR_PASSWORD_HASH` | keluaran `npm run auth:hash-password` (kata sandi diketik, tidak disimpan) |
+| `SESSION_SECRET` | minimal 32 karakter acak |
+| `FIREBASE_PROJECT_ID` | `inzta-5244e` |
+| `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` | dari kunci service account yang dibuat di Firebase Console, Project settings, Service accounts |
+| `FIRESTORE_EMULATOR_HOST` | hanya untuk lokal; bila diisi, portal membaca emulator |
+
+Mengganti `INVESTOR_PASSWORD_HASH` atau `INVESTOR_USERNAME` mengeluarkan semua perangkat yang sedang masuk.
 
 ## Perintah
 
@@ -30,7 +53,9 @@ Lihat `.env.example`. Untuk `npm run build` dan `npm start`, isi `DEMO_INVESTOR_
 | Lint | `npm run lint` |
 | Typecheck | `npm run typecheck` |
 | Test | `npm test` |
+| Test integrasi Firestore (emulator) | `npm run test:emulator` |
 | Build | `npm run build` |
+| Hash kata sandi investor | `npm run auth:hash-password` |
 | Validasi konteks SDD | `npm run context:validate` |
 | Test tooling SDD | `npm run test:sdd` |
 
@@ -38,12 +63,13 @@ Lihat `.env.example`. Untuk `npm run build` dan `npm start`, isi `DEMO_INVESTOR_
 
 | Path | Isi |
 |---|---|
-| `src/app/(portal)/` | Ringkasan, Penjualan, Komisi, Pengembalian; gerbang sesi di `layout.tsx` |
+| `src/app/(portal)/` | Ringkasan, Penjualan, Komisi, Pengembalian; cek sesi di `portfolio.tsx` |
 | `src/app/masuk/` | layar masuk dan server action |
-| `src/components/portal/` | kerangka, kartu, grafik, jadwal |
+| `src/components/portal/` | kerangka, tampilan halaman, kartu, grafik, jadwal, pembaruan otomatis |
 | `src/lib/investment/` | aturan komisi, pengembalian, penjualan (murni, teruji) |
-| `src/lib/data/` | kontrak `InvestorDataSource` dan adaptor mock |
-| `src/lib/auth/` | sesi demo bertanda tangan |
+| `src/lib/data/` | adaptor Firestore (Admin SDK), validasi dokumen, cache |
+| `src/lib/auth/` | kredensial scrypt, sesi bertanda tangan, pembatas percobaan |
+| `scripts/emulator/`, `scripts/auth/` | data contoh emulator, pembuat hash kata sandi |
 | `docs/design/` | sistem desain dan prototipe HTML |
 | `docs/` | PRD, spec F-001 sampai F-006, ADR, asumsi; mulai dari `docs/context/BRIEF.md` |
 

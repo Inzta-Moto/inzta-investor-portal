@@ -1,13 +1,13 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { readDemoAuthConfig, type DemoAuthConfig } from "./demo-config.ts";
+import { readCredentialConfig, sessionKey, type CredentialConfig } from "./investor-credentials.ts";
 import { SESSION_TTL_MS, verifySession } from "./session-token.ts";
 
 export const SESSION_COOKIE = "inzta_investor_session";
 
-export function demoAuthConfig(): DemoAuthConfig {
-  return readDemoAuthConfig(process.env, process.env.NODE_ENV);
+export function credentialConfig(): CredentialConfig {
+  return readCredentialConfig(process.env, process.env.NODE_ENV);
 }
 
 export function sessionCookieOptions() {
@@ -24,9 +24,9 @@ export async function hasValidSession(): Promise<boolean> {
   // Cookies are read before the config check so every caller is rendered per request; otherwise a build without
   // env vars would prerender /masuk with the "not configured" message baked in.
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
-  const config = demoAuthConfig();
+  const config = credentialConfig();
   if (!config.ok) return false;
-  return verifySession(token, config.secret, Date.now());
+  return verifySession(token, sessionKey(config), Date.now());
 }
 
 /** Server-side gate for every portal page; hiding links is not access control. */

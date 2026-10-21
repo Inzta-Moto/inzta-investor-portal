@@ -171,6 +171,15 @@ features:
           - T-004
         evidence:
           - EV-003
+      - id: T-006
+        title: Pagination jadwal komisi dan kartu angka dua kolom
+        status: done
+        requirements:
+          - FR-004
+        depends_on:
+          - T-004
+        evidence:
+          - EV-004
   - id: F-004
     title: Login mode demo
     status: implemented
@@ -221,63 +230,85 @@ features:
           - T-001
         evidence: []
   - id: F-006
-    title: Integrasi Firebase (ditahan)
-    status: draft
+    title: Integrasi Firestore lewat server
+    status: verification
     phase: blocked
     spec_path: docs/specs/F-006-integrasi-firebase
     tasks:
       - id: T-001
-        title: Ekspor rules aktif dan siapkan emulator
-        status: blocked
-        requirements:
-          - FR-003
-        depends_on: []
-        evidence: []
-      - id: T-002
-        title: Adaptor Firestore untuk InvestorDataSource
-        status: blocked
+        title: Admin SDK, konfigurasi, dan emulator
+        status: done
         requirements:
           - FR-001
-        depends_on:
-          - T-001
-        evidence: []
-      - id: T-003
-        title: Cloud Function ringkasan penjualan dan backfill
-        status: blocked
+        depends_on: []
+        evidence:
+          - EV-001
+          - EV-002
+      - id: T-002
+        title: Adaptor Firestore dengan proyeksi kolom
+        status: done
         requirements:
+          - FR-001
           - FR-002
         depends_on:
           - T-001
-        evidence: []
-      - id: T-004
-        title: Firebase Auth dan role investor
-        status: blocked
+        evidence:
+          - EV-002
+          - EV-004
+      - id: T-003
+        title: Cache dan pembaruan otomatis
+        status: done
         requirements:
-          - FR-004
           - FR-003
         depends_on:
-          - T-001
-        evidence: []
+          - T-002
+        evidence:
+          - EV-002
+          - EV-003
+      - id: T-004
+        title: Login milik portal
+        status: done
+        requirements:
+          - FR-004
+        depends_on: []
+        evidence:
+          - EV-001
+          - EV-003
       - id: T-005
-        title: Gerbang role di dasbor internal
-        status: blocked
+        title: Hapus mock dan akun demo
+        status: done
         requirements:
           - FR-005
-        depends_on: []
+        depends_on:
+          - T-002
+          - T-004
+        evidence:
+          - EV-001
+          - EV-004
+      - id: T-006
+        title: Sambungkan ke produksi
+        status: blocked
+        requirements:
+          - FR-001
+          - FR-002
+          - FR-004
+        depends_on:
+          - T-001
+          - T-002
+          - T-003
+          - T-004
+          - T-005
         evidence: []
 active:
   feature_id: F-006
   task_id: T-001
 assumptions_open:
-  - id: A-003
-    feature: F-006
-    title: Security Rules Firestore yang berlaku sekarang tidak diketahui
-  - id: A-004
-    feature: F-006
-    title: Akun investor bisa masuk ke dasbor internal
   - id: A-011
     feature: F-005
     title: Domain, hosting, dan akun deploy
+  - id: A-016
+    feature: F-006
+    title: Penyambungan ke Firestore produksi
 blockers:
   - feature_id: F-005
     task_id: T-001
@@ -286,19 +317,7 @@ blockers:
     task_id: T-002
     title: Domain dan verifikasi header
   - feature_id: F-006
-    task_id: T-001
-    title: Ekspor rules aktif dan siapkan emulator
-  - feature_id: F-006
-    task_id: T-002
-    title: Adaptor Firestore untuk InvestorDataSource
-  - feature_id: F-006
-    task_id: T-003
-    title: Cloud Function ringkasan penjualan dan backfill
-  - feature_id: F-006
-    task_id: T-004
-    title: Firebase Auth dan role investor
-  - feature_id: F-006
-    task_id: T-005
-    title: Gerbang role di dasbor internal
-generated_at: 2026-10-21T03:23:33.093Z
-source_hash: 53365353f9f3bff0643f497f536d2696b9959bf24e1c1df0b1ecfaf4204566eb
+    task_id: T-006
+    title: Sambungkan ke produksi
+generated_at: 2026-10-21T05:37:06.557Z
+source_hash: 96f01898d0d1d7cda7a1f603fba85badb600a12ce4ad4961a3760d5ce78437e8

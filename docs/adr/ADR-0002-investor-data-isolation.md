@@ -2,7 +2,7 @@
 id: ADR-0002
 title: Isolasi data investor di database bersama
 type: adr
-status: approved
+status: superseded
 tier: full
 owner: "VXerys"
 created: 2026-10-21
@@ -12,6 +12,8 @@ supersedes: null
 ---
 
 # ADR-0002: Isolasi data investor di database bersama
+
+> Superseded oleh ADR-0006 (2026-10-21): server portal membaca `sales` dengan proyeksi empat kolom; tanpa Cloud Function dan tanpa akun Firebase untuk investor.
 
 Disetujui 2026-10-21 oleh agen atas delegasi Sehan (perlu dicek ulang). Implementasi Firestore ditahan sampai F-006 (A-014); A-003 dan A-004 tetap terbuka untuk tahap itu.
 

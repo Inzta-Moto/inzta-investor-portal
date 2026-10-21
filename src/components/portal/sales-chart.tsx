@@ -2,7 +2,8 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 
-export type ChartPoint = { month: string; short: string; label: string; revenue: number; amount: string; running: boolean };
+export type { ChartPoint } from "@/lib/format/portfolio-view";
+import type { ChartPoint } from "@/lib/format/portfolio-view";
 
 const ORANGE = "#d97706";
 const STEPS = [1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000, 100_000_000, 250_000_000, 500_000_000, 1_000_000_000];

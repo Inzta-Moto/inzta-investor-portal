@@ -58,6 +58,14 @@ AC-008 sampai AC-010, AC-013, AC-014.
 
 AC-012 dan pemeriksaan 360 px, 1366 px, tema gelap.
 
+### T-006 — Pagination jadwal komisi dan kartu angka dua kolom
+- status: done
+- requirements: [FR-004]
+- depends_on: [T-004]
+- evidence: [EV-004]
+
+Permintaan Sehan 2026-10-21: jadwal 24 bulan dipecah 6 baris per halaman di HP dan 12 di desktop, dibuka di halaman bulan berjalan; kartu "Komisi per bulan" dan "Total 24 bulan" berdampingan di HP; tarif komisi dibaca dari perjanjian, bukan teks tetap.
+
 ## Deferred
 
 None.

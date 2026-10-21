@@ -35,3 +35,7 @@ npm-debug.log*
 # Claude Code: personal settings and per-session hook state (SDD template)
 .claude/settings.local.json
 .claude/.sdd-session/
+
+# Firebase emulator logs
+firestore-debug.log
+firebase-debug.log

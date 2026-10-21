@@ -1,8 +1,8 @@
 ---
 id: F-006
-title: "Integrasi Firebase (ditahan)"
+title: "Integrasi Firestore lewat server"
 type: design
-status: draft
+status: verification
 tier: lite
 owner: "VXerys"
 created: 2026-10-21
@@ -11,6 +11,31 @@ last_verified: 2026-10-21
 supersedes: null
 ---
 
-# Design: Integrasi Firebase (ditahan)
+# Design: Integrasi Firestore lewat server
 
-Mengikuti ADR-0001, ADR-0002 (Option A), dan ADR-0003: adaptor `src/lib/data/firestore.ts` memetakan `investor_agreement`, `investor_payments`, `investor_monthly_sales` ke `InvestorSnapshot`; Cloud Function memakai `aggregateMonthlySales` dari `src/lib/investment/sales.ts`; Firebase Auth menggantikan ADR-0004. Rancangan rinci ditulis saat klien membuka integrasi.
+Mengikuti ADR-0006, ADR-0003 (kontrak `InvestorDataSource`), ADR-0004 (cookie sesi).
+
+## Modules
+
+| Path | Responsibility |
+|---|---|
+| `src/lib/data/admin-config.ts` | mode emulator (`FIRESTORE_EMULATOR_HOST`) atau service account (`FIREBASE_*`) |
+| `src/lib/data/firestore-source.ts` | `adminDb()`, `SALES_FIELDS`, `createFirestoreSource()`; satu-satunya importir `firebase-admin` |
+| `src/lib/data/firestore-mapping.ts` | validasi `investor_agreement` dan `investor_payments` |
+| `src/lib/data/ttl-cache.ts` | cache per instance, berbagi promise yang sedang berjalan, maksimal 64 kunci |
+| `src/lib/data/load.ts` | `loadPortfolio()` per request; `InvestorDataError` menjadi pesan halaman |
+| `src/app/(portal)/portfolio.tsx` | cek sesi di titik akses data, lalu render `PortfolioView` dan `AutoRefresh` |
+| `src/components/portal/auto-refresh.tsx` | `router.refresh()` tiap 30 detik saat terlihat dan aktif 15 menit terakhir |
+| `src/lib/auth/investor-credentials.ts` | hash scrypt async, validasi parameter, `sessionKey()` |
+
+## Read budget
+
+Sales dipecah di batas kemarin: rentang `[kemarin, ...)` di-cache 25 detik; tiap bulan sebelum kemarin di-cache 1 jam dengan kunci `from|to`, sehingga pergantian hari membuka rentang baru. Kemarin ikut rentang langsung karena dasbor internal mengisi tanggal default dengan tanggal UTC.
+
+## Data contract
+
+`investor_agreement/current`: `effectiveDate` (YYYY-MM-DD atau null), `totalInvestment`, `termMonths`, `commissionRateBasisPoints`, `tranches[{amount, receivedDate}]`, `repayments[3]{dueMonth, percentBasisPoints}`. `investor_payments/{id}`: `kind` (commission/repayment), `periodMonth`, `amount`, `paidDate`, `repaymentNumber` untuk repayment, `note` opsional.
+
+## Testing
+
+Unit test untuk pemetaan, cache, kredensial; `npm run test:emulator` untuk proyeksi kolom, total bulanan, batas bulan, cache, dan perjanjian hilang.

@@ -39,6 +39,6 @@ Portal memberi investor akses tambahan ke hasil penjualan bulanan serta rekap Ko
 ## Constraints that shape product decisions
 
 - Satu database Firestore dengan dasbor internal, realtime (ADR-0001).
-- Investor tidak boleh membaca data mentah; Security Rules tidak bisa menyaring field (ADR-0002, belum diputuskan).
+- Investor tidak boleh membaca data mentah. Server portal membaca `sales` hanya empat kolom (tanggal, revenue, harga jual, jumlah) dan mengirim total bulanan ke browser; investor tidak punya akun Firebase (ADR-0006).
 - Nilai yang belum ditetapkan perjanjian tampil "belum ditetapkan", tidak ditebak.
 - Bukti dan rincian kebutuhan: `docs/product/prd.md`, pertanyaan terbuka: `docs/context/ASSUMPTIONS.md`.

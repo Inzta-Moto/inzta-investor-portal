@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: 53365353f9f3bff0643f497f536d2696b9959bf24e1c1df0b1ecfaf4204566eb -->
+source_hash: 96f01898d0d1d7cda7a1f603fba85badb600a12ce4ad4961a3760d5ce78437e8 -->
 
 # Project Progress
 
@@ -31,6 +31,7 @@ source_hash: 53365353f9f3bff0643f497f536d2696b9959bf24e1c1df0b1ecfaf4204566eb --
 | T-003 Halaman Penjualan dan grafik | done | FR-003 | T-001 | EV-003 |
 | T-004 Halaman Komisi dan Pengembalian, kartu sudah masuk | done | FR-004, FR-005, FR-007 | T-001 | EV-002, EV-003 |
 | T-005 Kondisi memuat dan gagal, verifikasi responsif | done | FR-006, FR-001 | T-002, T-003, T-004 | EV-003 |
+| T-006 Pagination jadwal komisi dan kartu angka dua kolom | done | FR-004 | T-004 | EV-004 |
 
 ## F-004 — Login mode demo (`implemented`, complete)
 
@@ -46,12 +47,13 @@ source_hash: 53365353f9f3bff0643f497f536d2696b9959bf24e1c1df0b1ecfaf4204566eb --
 | T-001 Pilih hosting dan siapkan project | blocked | FR-001, FR-002 |  |  |
 | T-002 Domain dan verifikasi header | blocked | FR-001 | T-001 |  |
 
-## F-006 — Integrasi Firebase (ditahan) (`draft`, blocked)
+## F-006 — Integrasi Firestore lewat server (`verification`, blocked)
 
 | Task | Status | Requirements | Depends on | Evidence |
 |---|---|---|---|---|
-| T-001 Ekspor rules aktif dan siapkan emulator | blocked | FR-003 |  |  |
-| T-002 Adaptor Firestore untuk InvestorDataSource | blocked | FR-001 | T-001 |  |
-| T-003 Cloud Function ringkasan penjualan dan backfill | blocked | FR-002 | T-001 |  |
-| T-004 Firebase Auth dan role investor | blocked | FR-004, FR-003 | T-001 |  |
-| T-005 Gerbang role di dasbor internal | blocked | FR-005 |  |  |
+| T-001 Admin SDK, konfigurasi, dan emulator | done | FR-001 |  | EV-001, EV-002 |
+| T-002 Adaptor Firestore dengan proyeksi kolom | done | FR-001, FR-002 | T-001 | EV-002, EV-004 |
+| T-003 Cache dan pembaruan otomatis | done | FR-003 | T-002 | EV-002, EV-003 |
+| T-004 Login milik portal | done | FR-004 |  | EV-001, EV-003 |
+| T-005 Hapus mock dan akun demo | done | FR-005 | T-002, T-004 | EV-001, EV-004 |
+| T-006 Sambungkan ke produksi | blocked | FR-001, FR-002, FR-004 | T-001, T-002, T-003, T-004, T-005 |  |

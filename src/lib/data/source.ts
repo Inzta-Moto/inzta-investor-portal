@@ -1,19 +1,15 @@
-import type { DataSourceKind, InvestorSnapshot, IsoDate } from "../investment/types.ts";
-import { createMockSource, type MockScenario } from "./mock.ts";
+import type { InvestorSnapshot, IsoDate } from "../investment/types.ts";
+import { adminDb, createFirestoreSource } from "./firestore-source.ts";
 
-/** The only way pages get investor data (ADR-0003). A Firestore adapter implements the same contract in F-006. */
+/** The only way pages get investor data (ADR-0003, ADR-0006): the server reads Firestore with the Admin SDK. */
 export interface InvestorDataSource {
-  readonly kind: DataSourceKind;
-  getSnapshot(today: IsoDate): Promise<InvestorSnapshot>;
+  getSnapshot(today: IsoDate, nowMs?: number): Promise<InvestorSnapshot>;
 }
 
-/** Never throws, so the layout can render its shell even when the setting is wrong. */
-export function dataSourceKind(setting: string | undefined): DataSourceKind {
-  return (setting?.trim() || "mock") === "mock" ? "mock" : "firestore";
-}
+// One source per server instance, so its month cache survives between requests.
+let source: InvestorDataSource | null = null;
 
-export function getDataSource(setting: string | undefined, scenario: MockScenario = "awal"): InvestorDataSource {
-  const value = setting?.trim() || "mock";
-  if (value === "mock") return createMockSource(scenario);
-  throw new Error(`Sumber data "${value}" belum tersedia; integrasi Firestore ditahan sampai F-006. Pakai INVESTOR_DATA_SOURCE=mock.`);
+export function getDataSource(): InvestorDataSource {
+  source ??= createFirestoreSource(adminDb());
+  return source;
 }

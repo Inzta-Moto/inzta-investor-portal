@@ -18,17 +18,20 @@ export function StatCard({
   children,
   className = "",
   pending = false,
+  compact = false,
 }: {
   label: string;
   value: ReactNode;
   children?: ReactNode;
   className?: string;
   pending?: boolean;
+  /** Smaller figure for two cards side by side on a phone, where a full Rupiah amount must still fit. */
+  compact?: boolean;
 }) {
   return (
     <Card className={`grid content-start gap-1.5 ${pending ? "border-dashed" : ""} ${className}`}>
       <CardLabel>{label}</CardLabel>
-      <p className="text-2xl leading-tight font-bold tracking-[-0.015em] lg:text-[28px]">{value}</p>
+      <p className={`leading-tight font-bold tracking-[-0.015em] ${compact ? "tabular text-[17px] sm:text-xl lg:text-[28px]" : "text-2xl lg:text-[28px]"}`}>{value}</p>
       {children}
     </Card>
   );

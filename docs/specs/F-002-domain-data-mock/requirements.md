@@ -61,6 +61,8 @@ The system shall menjumlahkan penjualan per bulan kalender seperti `getSaleReven
 
 ### FR-005 — Kontrak sumber data dan adaptor mock
 
+> Superseded 2026-10-21 oleh F-006 FR-005: adaptor mock dihapus; kontrak `InvestorDataSource` tetap, kini diisi adaptor Firestore (ADR-0006).
+
 The system shall menyediakan `InvestorDataSource` dengan adaptor mock yang deterministik terhadap tanggal hari ini.
 
 - AC-012: Given tanggal apa pun, then mock menghasilkan bulan perjanjian ke-3 dengan komisi bulan 1 dan 2 sudah dibayar, persentase pengembalian kosong.

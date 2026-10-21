@@ -32,31 +32,31 @@ Sumber: VN Raja Purnama 2026-10-20, draf Perjanjian Kerja Sama Investasi versi 2
 - status: confirmed
 - feature: F-006
 - raised: 2026-10-21
-- resolution: Dikonfirmasi Sehan 2026-10-21 ("1 database 2 web agar realtime"); dicatat di ADR-0001.
+- resolution: Dikonfirmasi Sehan 2026-10-21 ("1 database 2 web agar realtime"); dicatat di ADR-0001. Cara baca diubah oleh ADR-0006: server portal dengan Admin SDK dan refresh 30 detik.
 
-Portal membaca project Firestore yang sama dengan `inztamoto-erp-dashboard` lewat Firebase client SDK dengan listener realtime. Portal tidak menulis ke koleksi milik dasbor internal.
+Portal membaca project Firestore yang sama dengan `inztamoto-erp-dashboard` (`inzta-5244e`). Portal tidak menulis ke Firestore sama sekali.
 
 ### A-002 — Cara investor melihat penjualan tanpa membaca data mentah
 - status: confirmed
 - feature: F-006
 - raised: 2026-10-21
-- resolution: [delegasi] Portal hanya membaca bentuk ringkasan (`InvestorSnapshot`); koleksi ringkasan `investor_*` diisi Cloud Function (ADR-0002 Option A). Implementasi Firestore ditahan sampai F-006.
+- resolution: Diputuskan Sehan 2026-10-21 ("ambil sebagian kolom itu aja", "pakai jalan tengah"): server portal membaca `sales` hanya kolom `date`, `revenue`, `sellingPrice`, `quantity`, browser menerima total bulanan saja (ADR-0006). Menggantikan resolusi delegasi sebelumnya (Cloud Function, ADR-0002).
 
-Security Rules Firestore bekerja per dokumen, bukan per field, sehingga `sales` tidak pernah dibuka ke akun investor.
+Security Rules Firestore bekerja per dokumen, bukan per field, sehingga `sales` tidak pernah dibuka ke browser investor.
 
 ### A-003 — Security Rules Firestore yang berlaku sekarang tidak diketahui
-- status: open
+- status: confirmed
 - feature: F-006
 - raised: 2026-10-21
-- resolution:
+- resolution: Tidak lagi memblokir (ADR-0006): portal tidak mengubah rules dan tidak memakai akun Firebase untuk investor; Admin SDK di server tidak bergantung pada rules. Isi rules aktif tetap tidak diketahui dan tidak disentuh.
 
 Repo `inztamoto-erp-dashboard` tidak menyimpan `firestore.rules`. Aturan aktif hanya terlihat di Firebase Console; mengubahnya adalah aksi produksi. Tanya Raja: siapa pemegang akses Owner project Firebase, dan boleh-kah rules diekspor ke repo? Tidak memblokir mode mock.
 
 ### A-004 — Akun investor bisa masuk ke dasbor internal
-- status: open
+- status: confirmed
 - feature: F-006
 - raised: 2026-10-21
-- resolution:
+- resolution: Tidak berlaku lagi (ADR-0006): investor tidak dibuatkan akun Firebase Auth, sehingga tidak bisa masuk ke dasbor internal. Celah role fallback di dasbor internal tetap ada untuk akun lain; di luar lingkup portal.
 
 `loadUserProfile` di dasbor internal memberi role fallback "User" kepada akun Firebase Auth mana pun. Akun investor di project Auth yang sama bisa login ke dasbor internal. Perlu perubahan di repo dasbor internal; tanya Raja apakah masuk lingkup proyek ini. Tidak memblokir mode mock.
 
@@ -64,7 +64,7 @@ Repo `inztamoto-erp-dashboard` tidak menyimpan `firestore.rules`. Aturan aktif h
 - status: confirmed
 - feature: F-004
 - raised: 2026-10-21
-- resolution: [delegasi] Layar masuk memakai field Username dan Kata sandi. Mode demo membandingkan dengan variabel server; pemetaan Username ke Firebase Auth diputuskan di F-006.
+- resolution: Layar masuk memakai field Username dan Kata sandi, dicek server terhadap `INVESTOR_USERNAME` dan hash scrypt `INVESTOR_PASSWORD_HASH` (ADR-0006). Sehan menetapkan username `investor@inzta.id` pada 2026-10-21.
 
 ### A-006 — Definisi margin yang ditampilkan
 - status: confirmed
@@ -82,7 +82,7 @@ Repo `inztamoto-erp-dashboard` tidak menyimpan `firestore.rules`. Aturan aktif h
 - status: confirmed
 - feature: F-002
 - raised: 2026-10-21
-- resolution: [delegasi] Admin Inzta mencatat di koleksi `investor_payments` dan `investor_agreement`; halaman input admin di luar lingkup M1. Selama mode mock, data berasal dari `src/lib/data/mock.ts`.
+- resolution: [delegasi] Admin Inzta mencatat di koleksi `investor_payments` dan `investor_agreement`; halaman input admin di luar lingkup M1. Portal hanya membaca keduanya.
 
 ### A-009 — Tanggal Efektif dan nilai ketiga pengembalian
 - status: confirmed
@@ -119,13 +119,21 @@ Rencana domain `capital.inzta.id`. Tanya Raja: hosting di mana, akun milik siapa
 Pasal 4 ayat 3 tidak menjelaskan apakah Tanggal Efektif sebelum tanggal 25 membuat komisi pertama jatuh di bulan yang sama. Bila Raja menafsirkan lain, cukup ubah `agreementMonthDate` di `src/lib/investment/calendar.ts` beserta test-nya.
 
 ### A-014 — Integrasi Firebase ditahan, portal memakai data mock
-- status: confirmed
+- status: rejected
 - feature: F-006
 - raised: 2026-10-21
-- resolution: Permintaan klien lewat Sehan 2026-10-21: "pakai data mock dulu aja, hold dulu integrasi ke firebase". Portal membaca lewat antarmuka `InvestorDataSource`; adaptor mock aktif, adaptor Firestore dibangun di F-006.
+- resolution: Dibatalkan Sehan 2026-10-21 ("integrasikan saja langsung", lalu "pastikan tidak ada data mock lagi"). Adaptor mock dihapus di F-006; data contoh hanya ada di `scripts/emulator/`. Sebelumnya: "pakai data mock dulu aja, hold dulu integrasi ke firebase".
 
 ### A-015 — Login mode demo selama data mock
-- status: confirmed
+- status: rejected
 - feature: F-004
 - raised: 2026-10-21
-- resolution: [delegasi] Selama mode mock, login dicek di server terhadap `DEMO_INVESTOR_USERNAME` dan `DEMO_INVESTOR_PASSWORD`, sesi disimpan di cookie httpOnly bertanda tangan HMAC (`SESSION_SECRET`). Kredensial demo bawaan hanya berlaku di `next dev`. Ini bukan pengganti Firebase Auth; diganti di F-006.
+- resolution: [delegasi] Selama mode mock, login dicek di server terhadap `DEMO_INVESTOR_USERNAME` dan `DEMO_INVESTOR_PASSWORD`, sesi disimpan di cookie httpOnly bertanda tangan HMAC (`SESSION_SECRET`). Kredensial demo bawaan hanya berlaku di `next dev`. Digantikan F-006 FR-004 (ADR-0006): `DEMO_INVESTOR_*` dihapus, kredensial memakai hash scrypt; akun pengembangan hanya untuk `next dev` tanpa env.
+
+### A-016 — Penyambungan ke Firestore produksi
+- status: open
+- feature: F-006
+- raised: 2026-10-21
+- resolution:
+
+Belum dikerjakan agen karena butuh kredensial dan aksi produksi: (1) Sehan membuat kunci service account untuk `inzta-5244e` di Firebase Console dan mengisi `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` di `.env.local` dan secret hosting; (2) `INVESTOR_USERNAME=investor@inzta.id`, `INVESTOR_PASSWORD_HASH` dari `npm run auth:hash-password`, `SESSION_SECRET` acak 32+ karakter; (3) admin membuat `investor_agreement/current` dan `investor_payments` di Console sesuai kontrak di F-006 design; (4) hosting A-011. Kata sandi awal pilihan Sehan (11 karakter, pola kata umum ditambah angka) lebih lemah dari minimal skrip (12) dan ada di daftar tebakan umum; ganti sebelum portal dibuka di internet. Volume penjualan per hari belum diketahui, jadi beban kuota baca Spark dicek setelah tersambung. Memblokir F-006 T-006 saja.

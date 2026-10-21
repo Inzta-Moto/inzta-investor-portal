@@ -1,29 +1,10 @@
 import { Suspense, type ReactNode } from "react";
 
 import { signOut } from "@/app/masuk/actions";
-import type { DataSourceKind } from "@/lib/investment/types";
 
 import { LogoutIcon } from "../icons";
 import { LogoMark } from "./logo-mark";
 import { BottomNav, SidebarNav } from "./nav-links";
-import { ScenarioSwitch } from "./scenario-switch";
-
-function SourceBadge({ source }: { source: DataSourceKind }) {
-  if (source === "mock") {
-    // Sample figures must never be mistaken for Inzta's real numbers (ADR-0003).
-    return (
-      <span className="rounded-md border border-dashed border-line-strong px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-ink-3">
-        Data contoh
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink-3">
-      <span className="size-2 rounded-full bg-good" aria-hidden="true" />
-      Data langsung
-    </span>
-  );
-}
 
 function SignOutButton({ compact }: { compact?: boolean }) {
   return (
@@ -45,7 +26,7 @@ function SignOutButton({ compact }: { compact?: boolean }) {
   );
 }
 
-export function AppShell({ source, children }: { source: DataSourceKind; children: ReactNode }) {
+export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-dvh flex-col lg:flex-row">
       <aside className="brand-stripe sticky top-0 hidden h-dvh w-62 shrink-0 flex-col border-r border-line bg-surface lg:flex">
@@ -82,21 +63,11 @@ export function AppShell({ source, children }: { source: DataSourceKind; childre
             <p className="text-[15px] font-bold">Portal Investor</p>
           </div>
           <p className="hidden text-sm text-ink-3 lg:block">Laporan investasi PT Inzta Gear Indonesia · tas motor dan riding gear InztaMoto</p>
-          <div className="flex items-center gap-1">
-            <SourceBadge source={source} />
-            <div className="lg:hidden">
-              <SignOutButton compact />
-            </div>
+          <div className="lg:hidden">
+            <SignOutButton compact />
           </div>
         </header>
-        <main className="mx-auto grid w-full max-w-[1180px] flex-1 content-start gap-3 px-4 pt-4 pb-24 lg:gap-4 lg:px-8 lg:pt-7 lg:pb-12">
-          {source === "mock" ? (
-            <Suspense>
-              <ScenarioSwitch />
-            </Suspense>
-          ) : null}
-          {children}
-        </main>
+        <main className="mx-auto grid w-full max-w-[1180px] flex-1 content-start gap-3 px-4 pt-4 pb-24 lg:gap-4 lg:px-8 lg:pt-7 lg:pb-12">{children}</main>
       </div>
       <Suspense>
         <BottomNav />

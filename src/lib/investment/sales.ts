@@ -26,18 +26,6 @@ export function saleRevenue(sale: SaleLike): number {
   return Math.round(price * quantity);
 }
 
-const DATE_PREFIX = /^(\d{4}-\d{2})-\d{2}/;
-
-export function aggregateMonthlySales(sales: SaleLike[]): MonthlySales[] {
-  const totals = new Map<MonthKey, number>();
-  for (const sale of sales) {
-    const match = typeof sale.date === "string" ? DATE_PREFIX.exec(sale.date) : null;
-    if (!match) continue;
-    totals.set(match[1], (totals.get(match[1]) ?? 0) + saleRevenue(sale));
-  }
-  return [...totals.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([month, revenue]) => ({ month, revenue }));
-}
-
 export type SalesPoint = { month: MonthKey; revenue: number; running: boolean };
 
 /** Twelve consecutive months ending in today's month; missing months are zero, the last one is still running. */

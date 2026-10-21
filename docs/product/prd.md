@@ -91,7 +91,7 @@ PT Inzta Gear Indonesia memproduksi dan menjual tas serta perlengkapan berkendar
 ## Milestones
 
 - M1 (data mock): seluruh layar, login demo, domain teruji. Exit: F-001 sampai F-004 implemented.
-- M2: rilis produksi dan integrasi Firebase. Exit: F-005 dan F-006 implemented.
+- M2: rilis produksi dan integrasi Firestore. Exit: F-005 dan F-006 implemented. Mock dan login demo M1 sudah dihapus di F-006.
 
 ## Feature map
 
@@ -102,7 +102,7 @@ PT Inzta Gear Indonesia memproduksi dan menjual tas serta perlengkapan berkendar
 | F-003 | tampilan portal | FR-002 sampai FR-007, desktop dan HP | F-002 | implemented |
 | F-004 | login mode demo | FR-001, sesi bertanda tangan | F-001 | implemented |
 | F-005 | rilis produksi | `capital.inzta.id` | F-003, F-004, A-011 | draft |
-| F-006 | integrasi Firebase | data nyata, Firebase Auth, rules | ditahan klien, A-003, A-004 | draft |
+| F-006 | integrasi Firestore lewat server | data nyata, proyeksi kolom `sales`, login milik portal, tanpa mock (ADR-0006) | A-016 untuk produksi | verification |
 
 ## Approval
 

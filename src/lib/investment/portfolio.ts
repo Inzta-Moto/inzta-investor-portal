@@ -11,6 +11,7 @@ export type Portfolio = {
   effectiveDate: IsoDate | null;
   termMonths: number;
   totalInvestment: number;
+  commissionRateBasisPoints: number;
   phase: AgreementPhase;
   commission: { items: CommissionItem[]; totals: CommissionTotals; current: CommissionItem | null };
   repayment: { items: RepaymentItem[]; totals: RepaymentTotals; next: RepaymentItem | null };
@@ -25,7 +26,7 @@ export function buildPortfolio(snapshot: InvestorSnapshot, today: IsoDate): Port
   const items = buildCommissionSchedule(agreement, payments, today);
   const repayments = buildRepaymentSchedule(agreement, payments, today);
   const points = lastTwelveMonths(snapshot.monthlySales, today);
-  const warnings: string[] = [];
+  const warnings: string[] = [...(snapshot.warnings ?? [])];
   const split = validateRepaymentSplit(agreement);
   if (!split.ok) warnings.push(split.reason);
 
@@ -37,6 +38,7 @@ export function buildPortfolio(snapshot: InvestorSnapshot, today: IsoDate): Port
     effectiveDate: agreement.effectiveDate,
     termMonths: agreement.termMonths,
     totalInvestment: agreement.totalInvestment,
+    commissionRateBasisPoints: agreement.commissionRateBasisPoints,
     phase,
     commission: { items, totals: commissionTotals(agreement, payments), current },
     repayment: { items: repayments, totals: repaymentTotals(agreement, payments), next: repayments.find((r) => r.status !== "paid") ?? null },

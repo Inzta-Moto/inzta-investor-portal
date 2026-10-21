@@ -1,0 +1,58 @@
+// Test data for the local Firestore emulator only (project "demo-inzta"); it is never written to the real project.
+// The sales documents mirror the internal dashboard's shape, including fields the investor must never receive.
+
+function monthKey(year, month) {
+  return `${year}-${String(month).padStart(2, "0")}`;
+}
+
+function shift(year, month, delta) {
+  const index = year * 12 + (month - 1) + delta;
+  return { year: Math.floor(index / 12), month: (index % 12) + 1 };
+}
+
+/** Builds fixtures relative to `today` (YYYY-MM-DD) so the emulator always shows agreement month 3. */
+export function buildFixtures(today) {
+  const [year, month] = today.split("-").map(Number);
+  const effective = shift(year, month, -3);
+  const effectiveDate = `${monthKey(effective.year, effective.month)}-10`;
+  const due = (n) => {
+    const m = shift(effective.year, effective.month, n);
+    return `${monthKey(m.year, m.month)}-25`;
+  };
+
+  const agreement = {
+    effectiveDate,
+    termMonths: 24,
+    totalInvestment: 200000000,
+    commissionRateBasisPoints: 320,
+    tranches: [
+      { amount: 150000000, receivedDate: effectiveDate },
+      { amount: 50000000, receivedDate: null },
+    ],
+    repayments: [
+      { dueMonth: 16, percentBasisPoints: 2500 },
+      { dueMonth: 20, percentBasisPoints: 2500 },
+      { dueMonth: 24, percentBasisPoints: 5000 },
+    ],
+  };
+
+  const payments = {
+    "commission-1": { kind: "commission", periodMonth: 1, amount: 6400000, paidDate: due(1), note: "Transfer BCA" },
+    "commission-2": { kind: "commission", periodMonth: 2, amount: 6400000, paidDate: due(2) },
+  };
+
+  const current = monthKey(year, month);
+  const previous = (() => {
+    const m = shift(year, month, -1);
+    return monthKey(m.year, m.month);
+  })();
+  const sales = {
+    "sale-a": { date: `${previous}-03`, revenue: 165000, quantity: 1, sellingPrice: 165000, costPrice: 85000, customer: "Pelanggan A", city: "Bandung", resellerName: "Reseller X" },
+    "sale-b": { date: `${previous}-17`, revenue: 390000, quantity: 2, sellingPrice: 195000, costPrice: 95000, customer: "Pelanggan B", city: "Jakarta" },
+    // A legacy document without `revenue`: the dashboard falls back to sellingPrice * quantity.
+    "sale-c": { date: `${current}-02`, quantity: 3, sellingPrice: 295000, costPrice: 150000, customer: "Pelanggan C", city: "Surabaya" },
+    "sale-d": { date: `${current}-05`, revenue: 165000, quantity: 1, sellingPrice: 165000, costPrice: 85000, customer: "Pelanggan D", district: "Coblong" },
+  };
+
+  return { agreement, payments, sales, current, previous };
+}

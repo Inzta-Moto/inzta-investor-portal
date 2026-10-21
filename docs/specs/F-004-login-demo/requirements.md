@@ -13,6 +13,8 @@ supersedes: null
 
 # Requirements: Login mode demo
 
+> Diperbarui 2026-10-21 oleh F-006 FR-004 (ADR-0006): `DEMO_INVESTOR_*` diganti `INVESTOR_USERNAME` dan hash scrypt `INVESTOR_PASSWORD_HASH`; layar masuk, cookie sesi, gerbang, dan pembatas percobaan dari fitur ini tetap dipakai.
+
 ## Problem
 
 Firebase Auth ditahan (A-014), tetapi pratinjau portal untuk klien tidak boleh terbuka bebas. Satu akun investor masuk dengan username dan kata sandi (VN Raja, A-005, ADR-0004).

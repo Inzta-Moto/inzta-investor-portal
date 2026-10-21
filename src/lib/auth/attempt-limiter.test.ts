@@ -20,3 +20,11 @@ test("a successful login clears the counter", () => {
   limiter.reset("k");
   assert.equal(limiter.retryAfter("k", 10), 0);
 });
+
+test("a higher ceiling for the all-clients key only blocks after its own count", () => {
+  const limiter = new AttemptLimiter();
+  for (let i = 0; i < 49; i += 1) limiter.recordFailure("all", i);
+  assert.equal(limiter.retryAfter("all", 100, 50), 0);
+  limiter.recordFailure("all", 100);
+  assert.ok(limiter.retryAfter("all", 200, 50) > 0);
+});

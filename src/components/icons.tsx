@@ -25,6 +25,8 @@ export const HomeIcon = (p: IconProps) => <Icon {...p}><path d="M4 10.5 12 4l8 6
 export const SalesIcon = (p: IconProps) => <Icon {...p}><path d="M4 20h16" /><path d="M7 16v-5" /><path d="M12 16V7" /><path d="M17 16v-8" /></Icon>;
 export const CommissionIcon = (p: IconProps) => <Icon {...p}><rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="2.5" /><path d="M6.5 9.5h.01M17.5 14.5h.01" /></Icon>;
 export const ReturnIcon = (p: IconProps) => <Icon {...p}><path d="M9 7H5V3" /><path d="M5.3 7.2A8 8 0 1 1 4 12" /><path d="M12 8v4l2.5 2" /></Icon>;
+export const ChevronLeftIcon = (p: IconProps) => <Icon {...p}><path d="m14.5 6-6 6 6 6" /></Icon>;
+export const ChevronRightIcon = (p: IconProps) => <Icon {...p}><path d="m9.5 6 6 6-6 6" /></Icon>;
 export const CheckIcon = (p: IconProps) => <Icon {...p}><path d="m5 12.5 4.5 4.5L19 7.5" /></Icon>;
 export const ClockIcon = (p: IconProps) => <Icon {...p}><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" /></Icon>;
 export const CalendarIcon = (p: IconProps) => <Icon {...p}><rect x="4" y="5.5" width="16" height="15" rx="2" /><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" /></Icon>;

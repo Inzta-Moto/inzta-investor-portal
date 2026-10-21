@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { LogoMark } from "@/components/portal/logo-mark";
-import { demoAuthConfig, hasValidSession } from "@/lib/auth/session";
+import { credentialConfig, hasValidSession } from "@/lib/auth/session";
 
 import { LoginForm } from "./login-form";
 
@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Masuk" };
 
 export default async function MasukPage() {
   if (await hasValidSession()) redirect("/ringkasan");
-  const config = demoAuthConfig();
+  const config = credentialConfig();
 
   return (
     <main className="grid min-h-dvh place-items-center bg-bg px-4 py-6">

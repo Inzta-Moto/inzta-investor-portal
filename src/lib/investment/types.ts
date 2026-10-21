@@ -1,5 +1,5 @@
 // Shapes the portal reads. They mirror the proposed `investor_*` collections (docs/architecture/data-model.md),
-// never the raw `sales` documents, so the mock and the future Firestore adapter return the same contract (ADR-0003).
+// never the raw `sales` documents; the server reads only the sales fields it needs (ADR-0006).
 
 /** Calendar date `YYYY-MM-DD`, the same string format the internal dashboard stores. */
 export type IsoDate = string;
@@ -45,7 +45,7 @@ export type MonthlySales = {
   revenue: number;
 };
 
-export type DataSourceKind = "mock" | "firestore";
+export type DataSourceKind = "firestore";
 
 export type InvestorSnapshot = {
   source: DataSourceKind;
@@ -54,6 +54,8 @@ export type InvestorSnapshot = {
   monthlySales: MonthlySales[];
   /** When the summary was produced; shown as "Diperbarui". */
   asOf: IsoDate;
+  /** Admin-entered documents that were skipped because they were malformed. */
+  warnings?: string[];
 };
 
 export type ScheduleStatus = "paid" | "due" | "late" | "upcoming" | "unset";

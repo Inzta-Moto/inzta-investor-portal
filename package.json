@@ -14,7 +14,11 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "node --test \"src/**/*.test.ts\"",
+    "test:emulator": "firebase emulators:exec --only firestore --project demo-inzta \"node --test \"src/**/*.itest.ts\"\"",
+    "emulator:start": "firebase emulators:start --only firestore --project demo-inzta",
+    "emulator:seed": "node scripts/emulator/seed.mjs",
     "test:sdd": "node --test \"scripts/**/*.test.mjs\"",
+    "auth:hash-password": "node scripts/auth/hash-password.mjs",
     "context:render": "node scripts/context/render.mjs",
     "context:validate": "node scripts/context/validate-context.mjs",
     "context:archive-handoff": "node scripts/context/archive-handoff.mjs",
@@ -22,7 +26,7 @@
     "sdd:init": "node scripts/init/init.mjs"
   },
   "dependencies": {
-    "firebase": "^13.0.0",
+    "firebase-admin": "^14.5.0",
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0"

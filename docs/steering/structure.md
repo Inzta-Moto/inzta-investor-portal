@@ -16,12 +16,14 @@ Where things live and which direction dependencies point. Document only what an 
 | `docs/architecture/` | cross-feature boundaries and invariants | module reasoning stays in the feature |
 | `docs/context/` | rendered state, brief, assumptions log | only `ASSUMPTIONS.md` is hand-edited |
 | `docs/handoff/current.md` | session delta | updated at the end of every implementation session |
-| `src/app/(portal)/` | the four investor pages and the session gate | pages are Server Components that call `portfolioFor()` |
+| `src/app/(portal)/` | the four investor pages and the session gate | pages render `PortfolioPage`, which checks the session and calls `loadPortfolio()` |
 | `src/app/masuk/` | login page and server actions | the only place that sets or clears the session cookie |
 | `src/lib/investment/` | commission, repayment, sales rules (Pasal 4, 5) | pure, no I/O, `.ts` relative imports, tested with `node --test` |
-| `src/lib/data/` | `InvestorDataSource`, mock adapter, `loadPortfolio()` | the only way pages get data (ADR-0003) |
-| `src/lib/auth/` | demo session token and config | `node:crypto` only; server code |
-| `src/components/portal/` | shell, cards, chart, schedules | no data fetching; props in, markup out |
+| `src/lib/data/` | `InvestorDataSource`, Firestore adapter (Admin SDK), document mapping, TTL cache, `loadPortfolio()` | the only way pages get data and the only place that imports `firebase-admin` (ADR-0003, ADR-0006) |
+| `src/lib/auth/` | investor credentials (scrypt), session token, login attempt limiter | `node:crypto` only; server code |
+| `src/components/portal/` | shell, views, cards, chart, schedules, auto refresh | no data fetching; props in, markup out; `auto-refresh.tsx` only asks the router to re-render |
+| `scripts/emulator/` | emulator fixtures and seed script | never writes outside the emulator |
+| `scripts/auth/` | password hash generator | reads the password from stdin, prints only the hash |
 | `docs/design/` | design system and clickable prototype (HTML) | the visual source of truth for UI tasks |
 | `src/app/` | routes, layouts, route handlers | Server Components by default; `'use client'` only where state or browser APIs are needed |
 | `src/components/` | shared UI components | no data fetching; props in, markup out |
@@ -54,7 +56,7 @@ ui -> application -> domain <- data
 
 - Inner layers never import outer layers.
 - Framework and provider SDKs stay behind a project-owned boundary.
-- Project-specific rule: hanya `src/lib/firebase/` yang mengimpor paket `firebase`; modul domain di `src/lib/` lainnya menerima data biasa sehingga bisa diuji tanpa Firestore.
+- Project-specific rule: hanya `src/lib/data/firestore-source.ts` yang mengimpor `firebase-admin`, dan koleksi `sales` hanya dibaca lewat `SALES_FIELDS`; modul domain di `src/lib/` lainnya menerima data biasa sehingga bisa diuji tanpa Firestore. Paket `firebase` (client SDK) tidak dipakai.
 
 ## Naming
 

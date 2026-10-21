@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { aggregateMonthlySales, lastTwelveMonths, latestCompleteChange, saleRevenue } from "./sales.ts";
+import { lastTwelveMonths, latestCompleteChange, saleRevenue } from "./sales.ts";
 
 test("AC-010: revenue first, then selling price times quantity, then zero", () => {
   assert.equal(saleRevenue({ revenue: 165_000, sellingPrice: 999, quantity: 9 }), 165_000);
@@ -9,20 +9,6 @@ test("AC-010: revenue first, then selling price times quantity, then zero", () =
   assert.equal(saleRevenue({ revenue: "abc", sellingPrice: 100_000, quantity: 3 }), 300_000);
   assert.equal(saleRevenue({ revenue: "195000" }), 195_000);
   assert.equal(saleRevenue({}), 0);
-});
-
-test("sales are summed per calendar month of their date and undated rows are skipped", () => {
-  const monthly = aggregateMonthlySales([
-    { date: "2026-11-02", revenue: 165_000 },
-    { date: "2026-11-30", sellingPrice: 195_000, quantity: 2 },
-    { date: "2026-12-01", revenue: 295_000 },
-    { date: "", revenue: 1 },
-    { revenue: 1 },
-  ]);
-  assert.deepEqual(monthly, [
-    { month: "2026-11", revenue: 555_000 },
-    { month: "2026-12", revenue: 295_000 },
-  ]);
 });
 
 test("AC-011: twelve consecutive months ending today, zero-filled, last one running", () => {
