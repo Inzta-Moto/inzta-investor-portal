@@ -2,7 +2,7 @@
 id: ADR-0002
 title: Isolasi data investor di database bersama
 type: adr
-status: review
+status: approved
 tier: full
 owner: "VXerys"
 created: 2026-10-21
@@ -13,7 +13,7 @@ supersedes: null
 
 # ADR-0002: Isolasi data investor di database bersama
 
-Status `review`: usulan, belum diputuskan. Menunggu A-002, A-003, A-004, A-008.
+Disetujui 2026-10-21 oleh agen atas delegasi Sehan (perlu dicek ulang). Implementasi Firestore ditahan sampai F-006 (A-014); A-003 dan A-004 tetap terbuka untuk tahap itu.
 
 ## Context
 
@@ -51,7 +51,7 @@ ADR-0001 menetapkan portal membaca Firestore yang sama dengan dasbor internal. D
 
 ## Decision
 
-Belum diputuskan. Rekomendasi awal: Option A, dengan Option B sebagai cadangan bila paket Blaze tidak disetujui.
+We will memakai Option A: koleksi ringkasan `investor_monthly_sales`, `investor_agreement`, dan `investor_payments`, dengan ringkasan penjualan dihitung Cloud Function dari `sales`. Option B menjadi cadangan bila paket Blaze tidak disetujui. Kontrak data portal (`InvestorSnapshot`, ADR-0003) sudah mengikuti bentuk ringkasan ini sehingga adaptor mock dan Firestore bisa saling ganti.
 
 ## Rationale
 

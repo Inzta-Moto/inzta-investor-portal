@@ -16,6 +16,13 @@ Where things live and which direction dependencies point. Document only what an 
 | `docs/architecture/` | cross-feature boundaries and invariants | module reasoning stays in the feature |
 | `docs/context/` | rendered state, brief, assumptions log | only `ASSUMPTIONS.md` is hand-edited |
 | `docs/handoff/current.md` | session delta | updated at the end of every implementation session |
+| `src/app/(portal)/` | the four investor pages and the session gate | pages are Server Components that call `portfolioFor()` |
+| `src/app/masuk/` | login page and server actions | the only place that sets or clears the session cookie |
+| `src/lib/investment/` | commission, repayment, sales rules (Pasal 4, 5) | pure, no I/O, `.ts` relative imports, tested with `node --test` |
+| `src/lib/data/` | `InvestorDataSource`, mock adapter, `loadPortfolio()` | the only way pages get data (ADR-0003) |
+| `src/lib/auth/` | demo session token and config | `node:crypto` only; server code |
+| `src/components/portal/` | shell, cards, chart, schedules | no data fetching; props in, markup out |
+| `docs/design/` | design system and clickable prototype (HTML) | the visual source of truth for UI tasks |
 | `src/app/` | routes, layouts, route handlers | Server Components by default; `'use client'` only where state or browser APIs are needed |
 | `src/components/` | shared UI components | no data fetching; props in, markup out |
 | `src/lib/` | domain logic, data access, service facades | framework-free; the only place that talks to the data store |

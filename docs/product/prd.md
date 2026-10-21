@@ -50,9 +50,10 @@ PT Inzta Gear Indonesia memproduksi dan menjual tas serta perlengkapan berkendar
 
 - FR-001: the system shall meminta login akun investor sebelum menampilkan data apa pun.
 - FR-002: the system shall menampilkan hasil penjualan per bulan kalender (definisi: A-007), diperbarui realtime.
-- FR-003: the system shall menampilkan margin per bulan hanya bila A-006 dikonfirmasi.
+- FR-003: the system shall tidak menampilkan margin di M1 (A-006 [delegasi]); bisa ditambah lewat fitur baru bila Inzta meminta.
 - FR-004: the system shall menampilkan jadwal 24 bulan Komisi dengan nominal, tanggal jatuh tempo, dan status bayar.
-- FR-005: the system shall menampilkan tiga jadwal pengembalian, nominal yang sudah ditetapkan, status bayar, total kembali, dan sisa.
+- FR-005: the system shall menampilkan tiga jadwal pengembalian seperti tabel Pasal 5 (persentase, jumlah, sudah masuk), status bayar, total kembali, dan sisa.
+- FR-007: the system shall menampilkan kartu "Komisi sudah masuk" dan "Pengembalian dana sudah masuk": nominal yang sudah diterima, dari total berapa, dan rincian per pengembalian (permintaan Sehan 2026-10-21).
 - FR-006: the system shall tidak menyediakan tombol unduh, ekspor, atau cetak, dan menyembunyikan halaman saat dicetak.
 - BR-001: Komisi = 3,2% flat per bulan dari total Dana Investasi Rp200.000.000 = Rp6.400.000 per bulan sejak bulan pertama, selama 24 bulan (total Rp153.600.000), tidak bergantung pada tahap penyerahan dana.
 - BR-002: Komisi tidak berkurang meski sebagian dana sudah dikembalikan.
@@ -85,22 +86,23 @@ PT Inzta Gear Indonesia memproduksi dan menjual tas serta perlengkapan berkendar
 
 - R-001: kebocoran data mentah lewat rules yang longgar; mitigasi ADR-0002 dan uji emulator.
 - R-002: tenggat ketat dari Inzta; mitigasi rilis bertahap (M1 penjualan, M2 komisi dan pengembalian).
-- Assumptions: A-001 (confirmed), A-002 sampai A-012 (open).
+- Assumptions: A-003, A-004, A-011 open; lainnya confirmed, sebagian [delegasi] (lihat `docs/context/ASSUMPTIONS.md`).
 
 ## Milestones
 
-- M1: login dan laporan penjualan bulanan. Exit: F-001 sampai F-003 implemented.
-- M2: komisi dan pengembalian dana, lalu rilis produksi. Exit: F-004 dan F-005 implemented.
+- M1 (data mock): seluruh layar, login demo, domain teruji. Exit: F-001 sampai F-004 implemented.
+- M2: rilis produksi dan integrasi Firebase. Exit: F-005 dan F-006 implemented.
 
 ## Feature map
 
 | Feature | Capability | Outcome | Depends on | Status |
 |---|---|---|---|---|
-| F-001 | fondasi proyek | Next.js, Firebase client, verifikasi hijau | none | implementing |
-| F-002 | akun investor | login, gerbang role | F-001, A-003 sampai A-005 | draft |
-| F-003 | laporan penjualan bulanan | FR-002, FR-003, FR-006 | F-002, A-002, A-006, A-007 | draft |
-| F-004 | komisi dan pengembalian dana | FR-004, FR-005 | F-002, A-008, A-009 | draft |
+| F-001 | fondasi proyek | Next.js, Firebase client lazy, verifikasi hijau | none | implemented |
+| F-002 | domain investasi dan data mock | aturan Pasal 4 dan 5, kontrak data, mock | F-001 | implemented |
+| F-003 | tampilan portal | FR-002 sampai FR-007, desktop dan HP | F-002 | implemented |
+| F-004 | login mode demo | FR-001, sesi bertanda tangan | F-001 | implemented |
 | F-005 | rilis produksi | `capital.inzta.id` | F-003, F-004, A-011 | draft |
+| F-006 | integrasi Firebase | data nyata, Firebase Auth, rules | ditahan klien, A-003, A-004 | draft |
 
 ## Approval
 

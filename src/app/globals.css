@@ -1,26 +1,109 @@
 /* Scans src/ only, so words in docs/*.md never become utilities. */
 @import "tailwindcss" source("..");
 
-/* Provisional neutral tokens; the visual direction is decided in a later feature (see docs/product/roadmap.md). */
-@theme {
-  --color-background: #f7f7f5;
-  --color-surface: #ffffff;
-  --color-text: #1c1c1a;
-  --color-text-muted: #5f5f5a;
-  --color-rule: #e2e2dc;
-  --color-accent: #1f4e79;
+/* Tokens from docs/design/design-system.html v0.1: white base, Inzta charcoal, Inzta orange as the data accent.
+   Pale yellow and cream from the internal dashboard are deliberately not used (owner decision 2026-10-21). */
+:root {
+  color-scheme: light;
+  --c-bg: #fafaf9;
+  --c-surface: #ffffff;
+  --c-surface-sunk: #f5f5f4;
+  --c-line: #e7e5e4;
+  --c-line-strong: #d6d3d1;
+  --c-ink: #1c1917;
+  --c-ink-2: #57534e;
+  --c-ink-3: #78716c;
+  --c-solid: #1a1a1a;
+  --c-on-solid: #ffffff;
+  --c-hero: #1a1a1a;
+  --c-hero-border: transparent;
+  --c-nav-active: #1a1a1a;
+  --c-nav-active-icon: #f59e0b;
+  --c-nav-active-text: #ffffff;
+  --c-good: #15803d;
+  --c-good-soft: #f0fdf4;
+  --c-warn: #b45309;
+  --c-warn-soft: #fffbeb;
+  --c-bad: #b91c1c;
+  --c-bad-soft: #fef2f2;
+  --c-track: #e7e5e4;
+}
 
-  --font-sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, "Cascadia Mono", Menlo, monospace;
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --c-bg: #0c0a09;
+    --c-surface: #1c1917;
+    --c-surface-sunk: #151311;
+    --c-line: #292524;
+    --c-line-strong: #44403c;
+    --c-ink: #f5f5f4;
+    --c-ink-2: #d6d3d1;
+    --c-ink-3: #a8a29e;
+    --c-solid: #f59e0b;
+    --c-on-solid: #1a1a1a;
+    --c-hero: #1a1a1a;
+    --c-hero-border: rgb(245 158 11 / 0.45);
+    --c-nav-active: #f59e0b;
+    --c-nav-active-icon: #1a1a1a;
+    --c-nav-active-text: #1a1a1a;
+    --c-good: #4ade80;
+    --c-good-soft: #052e16;
+    --c-warn: #fbbf24;
+    --c-warn-soft: #422006;
+    --c-bad: #f87171;
+    --c-bad-soft: #450a0a;
+    --c-track: #292524;
+  }
+}
+
+@theme inline {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-sunk: var(--c-surface-sunk);
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-ink: var(--c-ink);
+  --color-ink-2: var(--c-ink-2);
+  --color-ink-3: var(--c-ink-3);
+  --color-solid: var(--c-solid);
+  --color-on-solid: var(--c-on-solid);
+  --color-hero: var(--c-hero);
+  --color-hero-border: var(--c-hero-border);
+  --color-nav-active: var(--c-nav-active);
+  --color-nav-active-icon: var(--c-nav-active-icon);
+  --color-nav-active-text: var(--c-nav-active-text);
+  --color-good: var(--c-good);
+  --color-good-soft: var(--c-good-soft);
+  --color-warn: var(--c-warn);
+  --color-warn-soft: var(--c-warn-soft);
+  --color-bad: var(--c-bad);
+  --color-bad-soft: var(--c-bad-soft);
+  --color-track: var(--c-track);
+  --color-brand-charcoal: #1a1a1a;
+  --color-brand-orange: #f59e0b;
+  --color-brand-amber: #d97706;
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
 }
 
 @layer base {
   html {
-    background: var(--color-background);
-    color: var(--color-text);
+    background: var(--c-bg);
+    color: var(--c-ink);
+    -webkit-text-size-adjust: 100%;
   }
 
-  /* The portal is view-only (Pasal 7 ayat 3); printing is a download by another name. */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(217 119 6 / 0.45);
+    border-radius: 8px;
+  }
+
+  /* View-only portal (A-010): printing is a download by another name. */
   @media print {
     body {
       display: none;
@@ -30,4 +113,44 @@
 
 @utility tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* The 3px stripe comes from the internal dashboard's top bar (charcoal into Inzta orange): a brand motif. */
+@utility brand-stripe {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, #1a1a1a, #d97706, #f59e0b);
+  }
+}
+
+/* The running month is incomplete, so it is hatched in the same orange rather than given a second colour. */
+@utility hatch-now {
+  background: repeating-linear-gradient(45deg, #d97706 0 3px, rgb(217 119 6 / 0.3) 3px 6px);
+  outline: 1.5px solid #d97706;
+  outline-offset: -1.5px;
+}
+
+@utility repay-marker {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid var(--c-ink);
+  }
+}
+
+/* Hero numbers scale with their card so "Rp6.400.000" never overflows a 360px phone or a desktop column. */
+@utility hero-value {
+  font-size: clamp(32px, 14.5cqi, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
 }

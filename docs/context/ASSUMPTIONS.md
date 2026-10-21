@@ -26,87 +26,75 @@ What was assumed, why it could not be verified, and what changes if it is wrong.
 
 ## Entries
 
-Sumber: VN Raja Purnama 2026-10-20, draf Perjanjian Kerja Sama Investasi, dan revisi Sehan 2026-10-21 (komisi flat Rp6.400.000, nominal pengembalian diinput admin, dasbor bukan kewajiban kontrak). Pertanyaan untuk Raja atau PT Inzta Gear Indonesia ditandai "Tanya:".
+Sumber: VN Raja Purnama 2026-10-20, draf Perjanjian Kerja Sama Investasi versi 2026-10-21 08.37, dan arahan Sehan 2026-10-21. Pada 2026-10-21 Sehan mendelegasikan keputusan pertanyaan terbuka kepada agen ("langsung approve aja") dan klien meminta data mock dulu, integrasi Firebase ditahan. Resolusi bertanda **[delegasi]** dibuat agen atas delegasi itu dan perlu dicek ulang Sehan.
 
 ### A-001 — Satu database Firestore dengan dasbor internal, data realtime
 - status: confirmed
-- feature: F-001
+- feature: F-006
 - raised: 2026-10-21
 - resolution: Dikonfirmasi Sehan 2026-10-21 ("1 database 2 web agar realtime"); dicatat di ADR-0001.
 
 Portal membaca project Firestore yang sama dengan `inztamoto-erp-dashboard` lewat Firebase client SDK dengan listener realtime. Portal tidak menulis ke koleksi milik dasbor internal.
 
 ### A-002 — Cara investor melihat penjualan tanpa membaca data mentah
-- status: open
-- feature: F-003
+- status: confirmed
+- feature: F-006
 - raised: 2026-10-21
-- resolution:
+- resolution: [delegasi] Portal hanya membaca bentuk ringkasan (`InvestorSnapshot`); koleksi ringkasan `investor_*` diisi Cloud Function (ADR-0002 Option A). Implementasi Firestore ditahan sampai F-006.
 
-Security Rules Firestore bekerja per dokumen, bukan per field. Bila akun investor diberi akses baca ke `sales`, investor bisa membaca seluruh field lewat devtools (nama pelanggan, kota, harga modal, reseller), melanggar kebutuhan "tidak bisa akses data mentah". Opsi di ADR-0002 (status proposed). Memblokir F-003 dan F-004.
+Security Rules Firestore bekerja per dokumen, bukan per field, sehingga `sales` tidak pernah dibuka ke akun investor.
 
 ### A-003 — Security Rules Firestore yang berlaku sekarang tidak diketahui
 - status: open
-- feature: F-002
+- feature: F-006
 - raised: 2026-10-21
 - resolution:
 
-Repo `inztamoto-erp-dashboard` tidak menyimpan `firestore.rules`. Aturan aktif hanya terlihat di Firebase Console. Mengubahnya adalah aksi produksi yang juga memengaruhi dasbor internal. Tanya: siapa pemegang akses Owner project Firebase, dan boleh-kah rules diekspor ke repo lalu dikelola sebagai kode?
+Repo `inztamoto-erp-dashboard` tidak menyimpan `firestore.rules`. Aturan aktif hanya terlihat di Firebase Console; mengubahnya adalah aksi produksi. Tanya Raja: siapa pemegang akses Owner project Firebase, dan boleh-kah rules diekspor ke repo? Tidak memblokir mode mock.
 
 ### A-004 — Akun investor bisa masuk ke dasbor internal
 - status: open
-- feature: F-002
+- feature: F-006
 - raised: 2026-10-21
 - resolution:
 
-`loadUserProfile` di dasbor internal memberi role fallback "User" kepada akun Firebase Auth mana pun yang tidak punya dokumen di `users`, lalu `enterApp()` tetap jalan. Bila akun investor dibuat di project Auth yang sama, investor bisa login ke dasbor internal. Perlu perubahan di repo dasbor internal (tolak role `investor` dan akun tanpa profil) serta rules berbasis role. Di luar repo ini; Tanya: masuk lingkup proyek ini atau terpisah?
+`loadUserProfile` di dasbor internal memberi role fallback "User" kepada akun Firebase Auth mana pun. Akun investor di project Auth yang sama bisa login ke dasbor internal. Perlu perubahan di repo dasbor internal; tanya Raja apakah masuk lingkup proyek ini. Tidak memblokir mode mock.
 
 ### A-005 — Format "username" akun investor
-- status: open
-- feature: F-002
+- status: confirmed
+- feature: F-004
 - raised: 2026-10-21
-- resolution:
-
-VN menyebut username dan password; Firebase Auth email/password memakai email. Usulan: investor login dengan username yang dipetakan ke email sintetis di domain Inzta, atau langsung memakai email investor. Tanya: pilih yang mana, dan siapa yang membuat serta menyerahkan kredensial?
+- resolution: [delegasi] Layar masuk memakai field Username dan Kata sandi. Mode demo membandingkan dengan variabel server; pemetaan Username ke Firebase Auth diputuskan di F-006.
 
 ### A-006 — Definisi margin yang ditampilkan
-- status: open
+- status: confirmed
 - feature: F-003
 - raised: 2026-10-21
-- resolution:
-
-VN meminta penjualan dan margin; perjanjian tidak mengatur isi dasbor. Dasbor internal punya dua angka: margin kotor (jumlah `sales.profit` dibagi omzet) dan laba bersih (dikurangi belanja produksi dan gaji). Tanya: tampilkan margin atau tidak, dan bila ya, margin kotor dalam persen saja atau nominal juga? Menampilkan nominal laba membuka struktur biaya Inzta.
+- resolution: [delegasi] Margin tidak ditampilkan di M1. Perjanjian hanya mengatur laporan hasil penjualan, dan nominal laba membuka struktur biaya Inzta. Bisa ditambah lewat fitur baru bila Raja meminta.
 
 ### A-007 — Definisi "hasil penjualan" bulanan
-- status: open
-- feature: F-003
+- status: confirmed
+- feature: F-002
 - raised: 2026-10-21
-- resolution:
-
-Usulan: jumlah `revenue` (fallback `sellingPrice * quantity`, sama seperti `getSaleRevenue` dasbor internal) dari dokumen `sales` dengan `date` di bulan tersebut, semua channel. Tanya: semua channel dihitung, dan apakah ditampilkan sejak Tanggal Efektif saja atau termasuk riwayat sebelumnya?
+- resolution: [delegasi] Jumlah `revenue` (cadangan `sellingPrice * quantity`, sama dengan `getSaleRevenue` dasbor internal) per bulan kalender dari `date`, semua kanal. Portal menampilkan 12 bulan terakhir.
 
 ### A-008 — Siapa dan di mana pembayaran komisi dan pengembalian dicatat
-- status: open
-- feature: F-004
+- status: confirmed
+- feature: F-002
 - raised: 2026-10-21
-- resolution:
-
-Data ini belum ada di Firestore. Usulan desain koleksi di `docs/architecture/data-model.md`. Tanya: admin Inzta mencatat lewat halaman baru di dasbor internal (perubahan di repo lain), lewat halaman admin di portal ini, atau sementara lewat Firebase Console?
+- resolution: [delegasi] Admin Inzta mencatat di koleksi `investor_payments` dan `investor_agreement`; halaman input admin di luar lingkup M1. Selama mode mock, data berasal dari `src/lib/data/mock.ts`.
 
 ### A-009 — Tanggal Efektif dan nilai ketiga pengembalian
-- status: open
-- feature: F-004
+- status: confirmed
+- feature: F-002
 - raised: 2026-10-21
-- resolution:
-
-Tanggal Efektif dan persentase atau nominal ketiga pengembalian (bulan ke-16, 20, 24) ditulis tangan di perjanjian, totalnya 100% dari Rp200.000.000. Admin menginputnya; portal menampilkan "belum ditetapkan" sampai diisi. Tidak ada nilai bawaan, termasuk pengembalian ke-1. Tidak memblokir pembangunan, memblokir data produksi.
+- resolution: [delegasi] Draf 2026-10-21 menyatakan persentase dan jumlah diisi saat penandatanganan. Nilai disimpan sebagai data admin; portal menampilkan "Belum ditetapkan" selama kosong dan tidak memakai angka bawaan.
 
 ### A-010 — Arti "tidak dapat diunduh"
-- status: open
+- status: confirmed
 - feature: F-003
 - raised: 2026-10-21
-- resolution:
-
-Portal tidak menyediakan ekspor, PDF, atau cetak (cetak disembunyikan lewat CSS). Browser tidak bisa mencegah tangkapan layar atau salin teks sepenuhnya. Tanya: cukup dengan batasan ini?
+- resolution: [delegasi] Tanpa ekspor, PDF, atau cetak (CSS print menyembunyikan halaman), tidak bisa di-frame, tidak diindeks. Tangkapan layar tidak bisa dicegah; disampaikan ke klien.
 
 ### A-011 — Domain, hosting, dan akun deploy
 - status: open
@@ -114,12 +102,30 @@ Portal tidak menyediakan ekspor, PDF, atau cetak (cetak disembunyikan lewat CSS)
 - raised: 2026-10-21
 - resolution:
 
-Rencana domain `capital.inzta.id`. Tanya: hosting di Vercel atau lainnya, akun milik siapa, dan siapa yang mengatur DNS `inzta.id`? Memblokir deploy saja.
+Rencana domain `capital.inzta.id`. Tanya Raja: hosting di mana, akun milik siapa, siapa yang mengatur DNS `inzta.id`. Memblokir deploy saja.
 
 ### A-012 — Tampilan saat Keadaan Memaksa (Pasal 9)
-- status: open
+- status: confirmed
+- feature: F-002
+- raised: 2026-10-21
+- resolution: [delegasi] Tidak ada status khusus di M1; admin menulis keterangan di field `note` pembayaran. Status "Ditangguhkan" sudah ada di sistem desain bila nanti diperlukan.
+
+### A-013 — Arti "bulan pertama setelah Tanggal Efektif"
+- status: confirmed
+- feature: F-002
+- raised: 2026-10-21
+- resolution: [delegasi] Bulan ke-n adalah bulan kalender ke-n setelah bulan Tanggal Efektif; komisi bulan ke-n jatuh tempo tanggal 25 sampai 26 bulan itu. Contoh: Tanggal Efektif 10 Nov 2026, komisi pertama 25 sampai 26 Des 2026. Pengembalian ke-1, 2, 3 jatuh tempo bersama komisi bulan ke-16, 20, 24.
+
+Pasal 4 ayat 3 tidak menjelaskan apakah Tanggal Efektif sebelum tanggal 25 membuat komisi pertama jatuh di bulan yang sama. Bila Raja menafsirkan lain, cukup ubah `agreementMonthDate` di `src/lib/investment/calendar.ts` beserta test-nya.
+
+### A-014 — Integrasi Firebase ditahan, portal memakai data mock
+- status: confirmed
+- feature: F-006
+- raised: 2026-10-21
+- resolution: Permintaan klien lewat Sehan 2026-10-21: "pakai data mock dulu aja, hold dulu integrasi ke firebase". Portal membaca lewat antarmuka `InvestorDataSource`; adaptor mock aktif, adaptor Firestore dibangun di F-006.
+
+### A-015 — Login mode demo selama data mock
+- status: confirmed
 - feature: F-004
 - raised: 2026-10-21
-- resolution:
-
-Draf perjanjian mengatur penangguhan kewajiban selama masa pemulihan. Tanya: perlu status "ditangguhkan" pada jadwal komisi dan pengembalian, atau cukup dicatat admin sebagai catatan? Tidak memblokir.
+- resolution: [delegasi] Selama mode mock, login dicek di server terhadap `DEMO_INVESTOR_USERNAME` dan `DEMO_INVESTOR_PASSWORD`, sesi disimpan di cookie httpOnly bertanda tangan HMAC (`SESSION_SECRET`). Kredensial demo bawaan hanya berlaku di `next dev`. Ini bukan pengganti Firebase Auth; diganti di F-006.

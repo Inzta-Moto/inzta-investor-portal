@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run adapters:sync`.
 Source: docs/steering/, sdd.config.json.
-source_hash: 0997ea64898b99a2a75a9b6e992f16712d7a90bb834d4d1cc3733f985c626bb1 -->
+source_hash: 145ba819edc89174275be69fcd4fe062a3bbc5382754296ef803f50c59177355 -->
 
 # Repository contract: Inzta Investor Portal
 
@@ -105,12 +105,12 @@ Stack and commands. `npm run init` filled the preset values; everything else com
 |---|---|---|
 | Language and runtime | TypeScript 5 on Node 22+ (developed on Node 24) | `"type": "module"` so `node --test` loads `.ts` with type stripping |
 | Application framework | Next.js 16.4 (App Router, Turbopack), React 19.3 | Server Components by default |
-| Styling | Tailwind CSS v4 through `@tailwindcss/turbopack` | provisional tokens in `@theme` in `src/app/globals.css`; visual direction not decided |
+| Styling | Tailwind CSS v4 through `@tailwindcss/turbopack` | tokens from `docs/design/design-system.html` in `@theme` of `src/app/globals.css`: white base, Inzta charcoal, Inzta orange accent, no pale yellow |
 | Data store | Firebase Firestore, the project shared with `inztamoto-erp-dashboard` | one database, two web apps, realtime (ADR-0001) |
-| Data access | Firebase JS SDK 13 (modular), browser listeners | isolation model pending (ADR-0002, A-002) |
-| Auth | Firebase Auth, one investor account | account format pending (A-005); internal dashboard gate pending (A-004) |
+| Data access | `InvestorDataSource` contract (ADR-0003); mock adapter active, Firestore adapter on hold (A-014, F-006) | pages read `Portfolio` built by `src/lib/investment/` |
+| Auth | Demo login: server action + httpOnly HMAC-signed cookie (ADR-0004); Firebase Auth in F-006 | gate in `src/app/(portal)/layout.tsx` |
 | Authorization | Firestore Security Rules | current rules unknown (A-003); UI hiding is never authorization |
-| Test framework | Node test runner with type stripping (`node --test`) | pure logic only; rules tests need the emulator (A-003) |
+| Test framework | Node test runner with type stripping (`node --test`) | pure logic in `src/lib/**`; relative imports carry the `.ts` extension; rules tests need the emulator (F-006) |
 | Deployment target | not decided; planned domain `capital.inzta.id` | A-011 |
 | Source and test paths | `src/**`, `public/**` | globs used by `fileMatch` steering rules |
 
@@ -137,13 +137,17 @@ Run these before claiming any task done. Report a command that cannot run; never
 - Secrets are read in server code only; a variable reaches the browser only with the `NEXT_PUBLIC_` prefix. The Firebase web config is public by design; no service account or Admin SDK credential is used by this app.
 - `npm run typecheck` at 0 errors and `npm run lint` clean before a task is done. It runs `next typegen` first because `next-env.d.ts` and `.next/types` are generated, not committed.
 - Next.js 16 differs from older versions; read the matching guide in `node_modules/next/dist/docs/` before using an unfamiliar API. `agentRules: false` in `next.config.ts` stops `next dev` from appending to the rendered `AGENTS.md`.
-- The Firebase app is created lazily in `src/lib/firebase/client.ts`; nothing connects at import time or during `next build`.
+- The Firebase app is created lazily in `src/lib/firebase/client.ts`; nothing connects at import time or during `next build`. Nothing calls it while the mock is active.
+- Domain code takes "today" as a parameter; pages compute it once with `todayInJakarta()` so the 25th and 26th are counted in WIB.
+- Every page shows the "Data contoh" label while `INVESTOR_DATA_SOURCE` is `mock`; sample numbers are never presented as Inzta's.
+- Type-only imports use `import type` so `node --test` can strip them.
 - Money is whole Rupiah as safe integers, formatted through `src/lib/money/rupiah.ts`, shown with the `tabular` utility.
 
 ### Environment and secrets
 
 - Secrets come from the environment or a secret manager; `.env*`, key files, and store credentials are never read, printed, or committed by an agent.
-- `.env.example` documents the four `NEXT_PUBLIC_FIREBASE_*` variables without values. The owner fills `.env.local`.
+- `.env.example` lists `INVESTOR_DATA_SOURCE`, `DEMO_INVESTOR_USERNAME`, `DEMO_INVESTOR_PASSWORD`, `SESSION_SECRET`, and the four `NEXT_PUBLIC_FIREBASE_*` variables without values. The owner fills `.env.local`.
+- `next dev` falls back to the demo account documented in README only when the three login variables are all empty; production builds never do.
 
 ### Dependency policy
 
@@ -167,6 +171,13 @@ Where things live and which direction dependencies point. Document only what an 
 | `docs/architecture/` | cross-feature boundaries and invariants | module reasoning stays in the feature |
 | `docs/context/` | rendered state, brief, assumptions log | only `ASSUMPTIONS.md` is hand-edited |
 | `docs/handoff/current.md` | session delta | updated at the end of every implementation session |
+| `src/app/(portal)/` | the four investor pages and the session gate | pages are Server Components that call `portfolioFor()` |
+| `src/app/masuk/` | login page and server actions | the only place that sets or clears the session cookie |
+| `src/lib/investment/` | commission, repayment, sales rules (Pasal 4, 5) | pure, no I/O, `.ts` relative imports, tested with `node --test` |
+| `src/lib/data/` | `InvestorDataSource`, mock adapter, `loadPortfolio()` | the only way pages get data (ADR-0003) |
+| `src/lib/auth/` | demo session token and config | `node:crypto` only; server code |
+| `src/components/portal/` | shell, cards, chart, schedules | no data fetching; props in, markup out |
+| `docs/design/` | design system and clickable prototype (HTML) | the visual source of truth for UI tasks |
 | `src/app/` | routes, layouts, route handlers | Server Components by default; `'use client'` only where state or browser APIs are needed |
 | `src/components/` | shared UI components | no data fetching; props in, markup out |
 | `src/lib/` | domain logic, data access, service facades | framework-free; the only place that talks to the data store |

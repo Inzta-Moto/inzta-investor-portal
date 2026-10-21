@@ -48,43 +48,238 @@ features:
           - EV-002
           - EV-003
           - EV-004
+  - id: F-002
+    title: Domain investasi dan data mock
+    status: implementing
+    phase: in_progress
+    spec_path: docs/specs/F-002-domain-data-mock
+    tasks:
+      - id: T-001
+        title: Kalender perjanjian dan jadwal komisi
+        status: in_progress
+        requirements:
+          - FR-001
+          - FR-003
+        depends_on: []
+        evidence: []
+      - id: T-002
+        title: Jadwal pengembalian
+        status: planned
+        requirements:
+          - FR-002
+        depends_on:
+          - T-001
+        evidence: []
+      - id: T-003
+        title: Penjualan bulanan dan format ringkas
+        status: planned
+        requirements:
+          - FR-004
+          - FR-006
+        depends_on: []
+        evidence: []
+      - id: T-004
+        title: Kontrak sumber data, adaptor mock, portfolio
+        status: planned
+        requirements:
+          - FR-005
+          - FR-001
+          - FR-002
+          - FR-004
+        depends_on:
+          - T-001
+          - T-002
+          - T-003
+        evidence: []
+      - id: T-005
+        title: Verifikasi
+        status: planned
+        requirements:
+          - FR-001
+          - FR-002
+          - FR-003
+          - FR-004
+          - FR-005
+          - FR-006
+        depends_on:
+          - T-004
+        evidence: []
+  - id: F-003
+    title: Tampilan portal investor
+    status: implementing
+    phase: not_started
+    spec_path: docs/specs/F-003-tampilan-portal
+    tasks:
+      - id: T-001
+        title: Token desain, font, logo, kerangka aplikasi
+        status: planned
+        requirements:
+          - FR-001
+          - FR-006
+        depends_on: []
+        evidence: []
+      - id: T-002
+        title: Halaman Ringkasan
+        status: planned
+        requirements:
+          - FR-002
+        depends_on:
+          - T-001
+        evidence: []
+      - id: T-003
+        title: Halaman Penjualan dan grafik
+        status: planned
+        requirements:
+          - FR-003
+        depends_on:
+          - T-001
+        evidence: []
+      - id: T-004
+        title: Halaman Komisi dan Pengembalian, kartu sudah masuk
+        status: planned
+        requirements:
+          - FR-004
+          - FR-005
+          - FR-007
+        depends_on:
+          - T-001
+        evidence: []
+      - id: T-005
+        title: Kondisi memuat dan gagal, verifikasi responsif
+        status: planned
+        requirements:
+          - FR-006
+          - FR-001
+        depends_on:
+          - T-002
+          - T-003
+          - T-004
+        evidence: []
+  - id: F-004
+    title: Login mode demo
+    status: implementing
+    phase: not_started
+    spec_path: docs/specs/F-004-login-demo
+    tasks:
+      - id: T-001
+        title: Token sesi dan konfigurasi demo
+        status: planned
+        requirements:
+          - FR-002
+          - FR-005
+        depends_on: []
+        evidence: []
+      - id: T-002
+        title: Layar masuk, gerbang, keluar
+        status: planned
+        requirements:
+          - FR-001
+          - FR-003
+          - FR-004
+        depends_on:
+          - T-001
+        evidence: []
+  - id: F-005
+    title: Rilis produksi capital.inzta.id
+    status: draft
+    phase: blocked
+    spec_path: docs/specs/F-005-rilis-produksi
+    tasks:
+      - id: T-001
+        title: Pilih hosting dan siapkan project
+        status: blocked
+        requirements:
+          - FR-001
+          - FR-002
+        depends_on: []
+        evidence: []
+      - id: T-002
+        title: Domain dan verifikasi header
+        status: blocked
+        requirements:
+          - FR-001
+        depends_on:
+          - T-001
+        evidence: []
+  - id: F-006
+    title: Integrasi Firebase (ditahan)
+    status: draft
+    phase: blocked
+    spec_path: docs/specs/F-006-integrasi-firebase
+    tasks:
+      - id: T-001
+        title: Ekspor rules aktif dan siapkan emulator
+        status: blocked
+        requirements:
+          - FR-003
+        depends_on: []
+        evidence: []
+      - id: T-002
+        title: Adaptor Firestore untuk InvestorDataSource
+        status: blocked
+        requirements:
+          - FR-001
+        depends_on:
+          - T-001
+        evidence: []
+      - id: T-003
+        title: Cloud Function ringkasan penjualan dan backfill
+        status: blocked
+        requirements:
+          - FR-002
+        depends_on:
+          - T-001
+        evidence: []
+      - id: T-004
+        title: Firebase Auth dan role investor
+        status: blocked
+        requirements:
+          - FR-004
+          - FR-003
+        depends_on:
+          - T-001
+        evidence: []
+      - id: T-005
+        title: Gerbang role di dasbor internal
+        status: blocked
+        requirements:
+          - FR-005
+        depends_on: []
+        evidence: []
 active:
-  feature_id: F-001
-  task_id: T-003
+  feature_id: F-002
+  task_id: T-001
 assumptions_open:
-  - id: A-002
-    feature: F-003
-    title: Cara investor melihat penjualan tanpa membaca data mentah
   - id: A-003
-    feature: F-002
+    feature: F-006
     title: Security Rules Firestore yang berlaku sekarang tidak diketahui
   - id: A-004
-    feature: F-002
+    feature: F-006
     title: Akun investor bisa masuk ke dasbor internal
-  - id: A-005
-    feature: F-002
-    title: Format "username" akun investor
-  - id: A-006
-    feature: F-003
-    title: Definisi margin yang ditampilkan
-  - id: A-007
-    feature: F-003
-    title: Definisi "hasil penjualan" bulanan
-  - id: A-008
-    feature: F-004
-    title: Siapa dan di mana pembayaran komisi dan pengembalian dicatat
-  - id: A-009
-    feature: F-004
-    title: Tanggal Efektif dan nilai ketiga pengembalian
-  - id: A-010
-    feature: F-003
-    title: Arti "tidak dapat diunduh"
   - id: A-011
     feature: F-005
     title: Domain, hosting, dan akun deploy
-  - id: A-012
-    feature: F-004
-    title: Tampilan saat Keadaan Memaksa (Pasal 9)
-blockers: []
-generated_at: 2026-10-21T01:53:36.925Z
-source_hash: cf09c5f80f3a56337dd01f274da984fd4a13e60f343775acb03fb54613cb6e32
+blockers:
+  - feature_id: F-005
+    task_id: T-001
+    title: Pilih hosting dan siapkan project
+  - feature_id: F-005
+    task_id: T-002
+    title: Domain dan verifikasi header
+  - feature_id: F-006
+    task_id: T-001
+    title: Ekspor rules aktif dan siapkan emulator
+  - feature_id: F-006
+    task_id: T-002
+    title: Adaptor Firestore untuk InvestorDataSource
+  - feature_id: F-006
+    task_id: T-003
+    title: Cloud Function ringkasan penjualan dan backfill
+  - feature_id: F-006
+    task_id: T-004
+    title: Firebase Auth dan role investor
+  - feature_id: F-006
+    task_id: T-005
+    title: Gerbang role di dasbor internal
+generated_at: 2026-10-21T03:19:46.879Z
+source_hash: d86ee4c91ab8cf7913dce478defcba5b8560cbef509664c1cec44dd3b54fe6d4

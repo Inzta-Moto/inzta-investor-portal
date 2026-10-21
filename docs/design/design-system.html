@@ -1,0 +1,1528 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sistem Desain Portal Investor</title>
+<meta name="description" content="Sistem desain mobile-first untuk portal investor PT Inzta Gear Indonesia: warna, tipografi, ruang, ikon, komponen, grafik, status, dan contoh layar.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Tokens. Brand values come from the internal Inzta dashboard (ink #1A1A1A, amber #D97706, stone neutrals,
+   Plus Jakarta Sans) so the investor portal reads as the same company. */
+:root {
+  color-scheme: light;
+  --font: "Plus Jakarta Sans", ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+
+  /* Brand colours sampled from the Inzta assets: logo mark #F59E0B, PWA theme #D97706, charcoal #1A1A1A.
+     The pale yellow and cream tones of the internal dashboard are deliberately not used (owner decision 2026-10-21). */
+  --brand-charcoal: #1A1A1A;
+  --brand-orange: #F59E0B;
+  --brand-amber: #D97706;
+  --brand-stripe: linear-gradient(90deg, #1A1A1A, #D97706, #F59E0B);
+
+  --bg: #FAFAF9;
+  --surface: #FFFFFF;
+  --surface-sunk: #F5F5F4;
+  --line: #E7E5E4;
+  --line-strong: #D6D3D1;
+
+  --ink: #1C1917;
+  --ink-2: #57534E;
+  --ink-3: #78716C;
+  --ink-on-solid: #FFFFFF;
+  --solid: #1A1A1A;
+
+  --hero-bg: #1A1A1A;
+  --hero-ink: #FFFFFF;
+  --hero-ink-2: #F59E0B;
+  --hero-ink-3: #D6D3D1;
+  --nav-active-bg: #1A1A1A;
+  --nav-active-ink: #F59E0B;
+
+  --accent: #D97706;
+  --hatch-now: repeating-linear-gradient(45deg, var(--brand-amber) 0 3px, color-mix(in srgb, var(--brand-amber) 30%, transparent) 3px 6px);
+
+  --good: #15803D;
+  --good-soft: #F0FDF4;
+  --warn: #B45309;
+  --warn-soft: #FFFBEB;
+  --bad: #B91C1C;
+  --bad-soft: #FEF2F2;
+
+  --chart-base: #D97706;
+  --chart-now: #D97706;
+  --chart-grid: #E7E5E4;
+  --track: #E7E5E4;
+  --hero-border: transparent;
+
+  --shadow-1: 0 1px 0 var(--line), 0 6px 16px rgba(28, 25, 23, 0.06);
+  --shadow-2: 0 12px 32px rgba(28, 25, 23, 0.14);
+  --focus: 0 0 0 3px rgba(217, 119, 6, 0.45);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0C0A09;
+    --surface: #1C1917;
+    --surface-sunk: #151311;
+    --line: #292524;
+    --line-strong: #44403C;
+    --ink: #F5F5F4;
+    --ink-2: #D6D3D1;
+    --ink-3: #A8A29E;
+    --ink-on-solid: #1A1A1A;
+    --solid: #F59E0B;
+    --hero-bg: #1A1A1A;
+    --hero-border: rgba(245, 158, 11, 0.45);
+    --nav-active-bg: #F59E0B;
+    --nav-active-ink: #1A1A1A;
+    --accent: #D97706;
+    --good: #4ADE80;
+    --good-soft: #052E16;
+    --warn: #FBBF24;
+    --warn-soft: #422006;
+    --bad: #F87171;
+    --bad-soft: #450A0A;
+    --chart-base: #D97706;
+    --chart-now: #D97706;
+    --chart-grid: #292524;
+    --track: #292524;
+    --shadow-1: 0 1px 0 var(--line), 0 6px 16px rgba(0, 0, 0, 0.4);
+    --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.6);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0C0A09;
+  --surface: #1C1917;
+  --surface-sunk: #151311;
+  --line: #292524;
+  --line-strong: #44403C;
+  --ink: #F5F5F4;
+  --ink-2: #D6D3D1;
+  --ink-3: #A8A29E;
+  --ink-on-solid: #1A1A1A;
+  --solid: #F59E0B;
+  --hero-bg: #1A1A1A;
+  --hero-border: rgba(245, 158, 11, 0.45);
+  --nav-active-bg: #F59E0B;
+  --nav-active-ink: #1A1A1A;
+  --accent: #D97706;
+  --good: #4ADE80;
+  --good-soft: #052E16;
+  --warn: #FBBF24;
+  --warn-soft: #422006;
+  --bad: #F87171;
+  --bad-soft: #450A0A;
+  --chart-base: #D97706;
+  --chart-now: #D97706;
+  --chart-grid: #292524;
+  --track: #292524;
+  --shadow-1: 0 1px 0 var(--line), 0 6px 16px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 64px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 6px; }
+h1, h2, h3, h4 { margin: 0; line-height: 1.25; }
+p { margin: 0; }
+code { font-family: ui-monospace, "Cascadia Mono", Menlo, monospace; font-size: 0.86em; background: var(--surface-sunk); padding: 1px 5px; border-radius: 4px; border: 1px solid var(--line); }
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-3); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Document shell */
+.doc-head { position: relative; padding: 31px 16px 20px; border-bottom: 1px solid var(--line); background: var(--surface); }
+/* The 3px stripe is lifted from the internal dashboard top bar (charcoal into Inzta orange): a real brand motif, not decoration. */
+.brand-stripe::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--brand-stripe); }
+.mark { width: 32px; height: 32px; flex: none; display: block; }
+.mark--sm { width: 26px; height: 26px; }
+.mark--lg { width: 56px; height: 56px; }
+.doc-head__inner, .doc-main, .doc-nav__inner { max-width: 1120px; margin: 0 auto; }
+.doc-head__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.wordmark { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.01em; }
+.wordmark__text { display: grid; line-height: 1.15; }
+.wordmark__brand { font-size: 17px; }
+.wordmark__product { font-size: 13px; font-weight: 500; color: var(--ink-3); }
+.doc-head h1 { margin-top: 20px; font-size: clamp(26px, 6vw, 40px); letter-spacing: -0.02em; font-weight: 700; max-width: 18ch; }
+.doc-head__lede { margin-top: 10px; max-width: 62ch; color: var(--ink-2); }
+.doc-meta { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-3); }
+.doc-nav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.doc-nav__inner { display: flex; gap: 4px; overflow-x: auto; padding: 8px 16px; scrollbar-width: none; }
+.doc-nav__inner::-webkit-scrollbar { display: none; }
+.doc-nav a { flex: none; text-decoration: none; font-size: 13px; font-weight: 600; color: var(--ink-2); padding: 8px 12px; border-radius: 6px; min-height: 36px; display: inline-flex; align-items: center; }
+.doc-nav a:hover { background: var(--surface-sunk); color: var(--ink); }
+.doc-main { padding: 0 16px 80px; }
+.section { padding-top: 48px; }
+.section__head { display: grid; gap: 8px; margin-bottom: 20px; }
+.section__kicker { font-size: 13px; font-weight: 600; color: var(--ink-3); }
+.section h2 { font-size: clamp(22px, 4.5vw, 30px); font-weight: 700; letter-spacing: -0.015em; }
+.section__intro { color: var(--ink-2); max-width: 66ch; }
+.sub { margin-top: 32px; margin-bottom: 12px; font-size: 17px; font-weight: 700; }
+.note { font-size: 13px; color: var(--ink-3); margin-top: 8px; max-width: 70ch; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.grid { display: grid; gap: 12px; }
+@media (min-width: 600px) { .grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.sample-flag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--ink-3); border: 1px dashed var(--line-strong); border-radius: 6px; padding: 2px 8px; }
+.spec-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.spec-table th, .spec-table td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.spec-table th { font-size: 12px; font-weight: 600; color: var(--ink-3); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.table-wrap .spec-table th:first-child, .table-wrap .spec-table td:first-child { padding-left: 16px; }
+
+/* Theme switch */
+.theme-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font: 600 13px var(--font); cursor: pointer; }
+.theme-btn svg { width: 18px; height: 18px; }
+
+/* Principles */
+.principle { padding: 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
+.principle__n { font-size: 13px; font-weight: 700; color: var(--ink-3); }
+.principle h3 { margin-top: 6px; font-size: 16px; font-weight: 700; }
+.principle p { margin-top: 6px; font-size: 14px; color: var(--ink-2); }
+
+/* References */
+.ref-pattern { display: grid; gap: 4px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.ref-pattern:last-child { border-bottom: 0; }
+.ref-pattern__take { font-weight: 700; font-size: 15px; }
+.ref-pattern__from { font-size: 13px; color: var(--ink-3); }
+.ref-pattern__from a { color: var(--ink-2); }
+.ref-lib details { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.ref-lib details + details { margin-top: 8px; }
+.ref-lib summary { cursor: pointer; list-style: none; padding: 14px 16px; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-weight: 700; }
+.ref-lib summary::-webkit-details-marker { display: none; }
+.ref-lib summary .count { font-size: 12px; font-weight: 600; color: var(--ink-3); }
+.ref-lib summary::after { content: ""; width: 10px; height: 10px; border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3); transform: rotate(45deg); margin-top: -4px; flex: none; }
+.ref-lib details[open] summary::after { transform: rotate(-135deg); margin-top: 4px; }
+.ref-lib ul { margin: 0; padding: 0 16px 14px 34px; display: grid; gap: 6px; font-size: 14px; }
+@media (min-width: 900px) { .ref-lib ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; } }
+.ref-lib li span { color: var(--ink-3); font-size: 13px; }
+
+/* Color swatches */
+.swatch { display: grid; grid-template-columns: 48px 1fr; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.swatch:last-child { border-bottom: 0; }
+.swatch__chip { width: 48px; height: 48px; border-radius: 10px; border: 1px solid var(--line); }
+.swatch__name { font-weight: 700; font-size: 14px; }
+.swatch__meta { font-size: 13px; color: var(--ink-3); }
+.swatch__meta code { background: transparent; border: 0; padding: 0; color: var(--ink-2); }
+.palette-col h3 { font-size: 13px; font-weight: 700; color: var(--ink-3); margin-bottom: 4px; }
+
+/* Type specimens */
+.type-row { display: grid; gap: 4px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.type-row:last-child { border-bottom: 0; }
+.type-row__meta { font-size: 12px; color: var(--ink-3); }
+.t-hero { font-size: clamp(40px, 11vw, 52px); line-height: 1.05; font-weight: 700; letter-spacing: -0.025em; }
+.t-title { font-size: clamp(24px, 6vw, 28px); line-height: 1.2; font-weight: 700; letter-spacing: -0.015em; }
+.t-section { font-size: 18px; line-height: 1.35; font-weight: 700; }
+.t-body { font-size: 15px; line-height: 1.5; }
+.t-label { font-size: 13px; line-height: 1.4; font-weight: 600; }
+.t-micro { font-size: 12px; line-height: 1.35; font-weight: 500; }
+.t-figure { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Spacing / radius / elevation */
+.space-row { display: flex; align-items: center; gap: 12px; padding: 6px 0; font-size: 13px; }
+.space-row__bar { height: 12px; background: var(--ink-3); border-radius: 2px; }
+.space-row__label { width: 72px; color: var(--ink-3); flex: none; }
+.radius-demo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.radius-demo div { aspect-ratio: 1.4; border: 1px solid var(--line-strong); background: var(--surface-sunk); display: grid; place-items: center; font-size: 12px; font-weight: 600; color: var(--ink-2); text-align: center; padding: 6px; }
+.elev-demo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.elev-demo div { height: 80px; border-radius: 12px; background: var(--surface); display: grid; place-items: center; font-size: 12px; font-weight: 600; color: var(--ink-2); text-align: center; padding: 8px; }
+.bp { display: grid; gap: 8px; }
+.bp__row { display: grid; grid-template-columns: 96px 1fr; gap: 12px; font-size: 14px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.bp__row:last-child { border-bottom: 0; }
+.bp__row b { font-variant-numeric: tabular-nums; }
+
+/* Icons */
+.icon { width: 24px; height: 24px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon--sm { width: 16px; height: 16px; }
+.icon--md { width: 20px; height: 20px; }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.icon-cell { display: grid; justify-items: center; gap: 8px; padding: 14px 6px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); font-size: 12px; color: var(--ink-2); text-align: center; }
+
+/* Product components */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.card__label { font-size: 13px; font-weight: 600; color: var(--ink-3); }
+.card__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.card__title { font-size: 16px; font-weight: 700; }
+.link-row { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: var(--ink-2); text-decoration: none; min-height: 44px; }
+.link-row:hover { color: var(--ink); text-decoration: underline; }
+
+.chip { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px 0 8px; border-radius: 6px; font-size: 12px; font-weight: 700; white-space: nowrap; border: 1px solid transparent; }
+.chip .icon { width: 14px; height: 14px; stroke-width: 2.25; }
+.chip--paid { background: var(--good-soft); color: var(--good); }
+.chip--now { background: var(--brand-orange); color: #1C1917; }
+.chip--late { background: var(--bad-soft); color: var(--bad); }
+.chip--hold { background: var(--warn-soft); color: var(--warn); }
+.chip--upcoming { background: var(--surface-sunk); color: var(--ink-2); border-color: var(--line); }
+.chip--unset { background: transparent; color: var(--ink-3); border: 1px dashed var(--line-strong); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px; border-radius: 10px; font: 700 15px var(--font); cursor: pointer; border: 1px solid transparent; text-decoration: none; }
+.btn--primary { background: var(--solid); color: var(--ink-on-solid); }
+.btn--primary:hover { opacity: 0.9; }
+.btn--secondary { background: var(--surface); color: var(--ink); border-color: var(--line-strong); }
+.btn--secondary:hover { background: var(--surface-sunk); }
+.btn--ghost { background: transparent; color: var(--ink-2); min-height: 44px; padding: 0 12px; }
+.btn--ghost:hover { background: var(--surface-sunk); color: var(--ink); }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.btn--block { width: 100%; }
+
+.field { display: grid; gap: 6px; }
+.field label { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.field__control { position: relative; }
+.field input { width: 100%; min-height: 48px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); padding: 0 14px; font: 500 16px var(--font); }
+.field input::placeholder { color: var(--ink-3); }
+.field input:focus { outline: none; border-color: var(--accent); box-shadow: var(--focus); }
+.field--error input { border-color: var(--bad); }
+.field__msg { font-size: 13px; color: var(--ink-3); }
+.field--error .field__msg { color: var(--bad); display: flex; gap: 6px; align-items: center; }
+.field__toggle { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border: 0; background: transparent; color: var(--ink-3); border-radius: 8px; cursor: pointer; display: grid; place-items: center; }
+
+/* App bar + live status */
+.appbar { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 16px 12px; background: var(--surface); border-bottom: 1px solid var(--line); min-height: 63px; }
+.appbar__lead { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.appbar__id { display: grid; gap: 2px; }
+.appbar__brand { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+.live { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--ink-3); }
+.live__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); }
+.live--off .live__dot { background: var(--warn); }
+.icon-btn { width: 44px; height: 44px; border-radius: 10px; border: 0; background: transparent; color: var(--ink-2); display: grid; place-items: center; cursor: pointer; }
+.icon-btn:hover { background: var(--surface-sunk); color: var(--ink); }
+
+/* Bottom navigation */
+.tabbar { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+.tabbar a { position: relative; display: grid; justify-items: center; gap: 4px; padding: 10px 4px 12px; min-height: 64px; font-size: 11px; font-weight: 600; color: var(--ink-3); text-decoration: none; }
+.tabbar a .icon { width: 52px; height: 30px; padding: 4px 14px; border-radius: 999px; }
+/* Same treatment as the internal dashboard's active menu: charcoal with soft yellow. */
+.tabbar a[aria-current="page"] { color: var(--ink); font-weight: 700; }
+.tabbar a[aria-current="page"] .icon { background: var(--nav-active-bg); color: var(--nav-active-ink); }
+
+/* Hero payment card */
+/* Sized from the card's own width so "Rp6.400.000" never overflows, whether the card sits in a phone or a desktop column. */
+.hero-card { container-type: inline-size; position: relative; overflow: hidden; background: var(--hero-bg); color: var(--hero-ink); border: 1px solid var(--hero-border); border-radius: 12px; padding: 20px 16px 16px; display: grid; gap: 12px; }
+.hero-card .card__label { color: var(--hero-ink-2); }
+.hero-card .sample-flag { color: var(--hero-ink-3); border-color: rgba(253, 230, 138, 0.35); }
+.hero-card .hero-card__foot { color: var(--hero-ink-3); }
+.hero-card .chip--now { background: var(--brand-orange); color: #1C1917; }
+.hero-card .chip--paid { background: rgba(74, 222, 128, 0.16); color: #86EFAC; }
+.hero-card > * { position: relative; }
+/* The logo mark sits large and faint in the corner so the one hero card carries the brand without extra ornament. */
+.hero-card__mark { position: absolute; right: -28px; bottom: -36px; width: 150px; height: 150px; opacity: 0.12; pointer-events: none; }
+.hero-card__value { font-size: clamp(32px, 14.5cqi, 52px); line-height: 1.05; font-weight: 700; letter-spacing: -0.025em; }
+.hero-card__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 13px; color: var(--ink-3); }
+.flash { animation: flash 1.4s ease-out; border-radius: 6px; }
+@keyframes flash { from { box-shadow: 0 0 0 3px var(--brand-orange); } to { box-shadow: 0 0 0 3px transparent; } }
+@media (prefers-reduced-motion: reduce) { .flash { animation: none; } }
+
+/* Contract timeline: 24 cells, one per agreement month; the identity motif of the portal. */
+.timeline { display: grid; gap: 10px; }
+.timeline__cells { display: grid; grid-template-columns: repeat(24, minmax(0, 1fr)); gap: 2px; }
+.timeline__cell { height: 28px; border-radius: 3px; background: var(--track); position: relative; }
+.timeline__cell--past { background: var(--brand-amber); }
+.timeline__cell--now { background: var(--hatch-now); outline: 1.5px solid var(--brand-amber); outline-offset: -1.5px; }
+.timeline__cell--repay::after { content: ""; position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%); width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 5px solid var(--ink); }
+.timeline__axis { display: grid; grid-template-columns: repeat(24, minmax(0, 1fr)); gap: 2px; font-size: 11px; color: var(--ink-3); font-variant-numeric: tabular-nums; margin-top: 4px; }
+.timeline__axis span { text-align: center; }
+.timeline__years { display: grid; grid-template-columns: 12fr 12fr; gap: 2px; font-size: 12px; color: var(--ink-3); }
+.timeline__years div { border-top: 1px solid var(--line-strong); padding-top: 6px; }
+.timeline__years div + div { padding-left: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+/* Meter */
+.meter { display: grid; gap: 8px; }
+.meter__track { height: 8px; border-radius: 4px; background: var(--track); overflow: hidden; }
+.meter__fill { height: 100%; background: var(--brand-amber); border-radius: 4px; }
+.meter__row { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--ink-3); }
+
+/* Stat tile */
+.stat { display: grid; gap: 6px; }
+.stat__value { font-size: 26px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.15; }
+.stat__delta { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; }
+.stat__delta--up { color: var(--good); }
+.stat__delta--down { color: var(--bad); }
+.stat--pending { border-style: dashed; }
+
+/* Schedule list */
+.sched { list-style: none; margin: 0; padding: 0; }
+.sched__item { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.sched__item:last-child { border-bottom: 0; }
+/* A left edge here marks real state: the month that is due now. */
+.sched__item--now { box-shadow: inset 3px 0 0 var(--brand-amber); }
+.sched__main { display: grid; gap: 2px; min-width: 0; }
+.sched__month { font-weight: 700; font-size: 15px; }
+.sched__sub { font-size: 13px; color: var(--ink-3); }
+.sched__amount { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.sched__chip { grid-column: 2; justify-self: end; }
+.sched__extra { grid-column: 1 / -1; font-size: 12px; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+.sched__more { display: flex; justify-content: center; padding: 8px; border-top: 1px solid var(--line); }
+
+/* Repayment milestones */
+.milestones { display: grid; gap: 8px; }
+.milestone { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.milestone__n { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-sunk); font-weight: 700; font-variant-numeric: tabular-nums; border: 1px solid var(--line); }
+.milestone__title { font-weight: 700; }
+.milestone__sub { font-size: 13px; color: var(--ink-3); }
+.milestone__amt { text-align: right; display: grid; gap: 4px; justify-items: end; }
+.milestone__amt b { font-variant-numeric: tabular-nums; }
+
+/* Chart */
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart__tick { font-size: 11px; fill: var(--ink-3); font-family: var(--font); font-variant-numeric: tabular-nums; }
+.chart__hit { fill: transparent; cursor: pointer; }
+.chart__hit:focus { outline: none; }
+.chart__hit:focus-visible { stroke: var(--accent); stroke-width: 2; }
+.tooltip { position: absolute; z-index: 5; pointer-events: none; background: var(--solid); color: var(--ink-on-solid); border-radius: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.35; box-shadow: var(--shadow-2); white-space: nowrap; transform: translate(-50%, calc(-100% - 10px)); opacity: 0; transition: opacity 120ms; }
+.tooltip b { display: block; font-size: 14px; font-variant-numeric: tabular-nums; }
+.tooltip[data-show="true"] { opacity: 1; }
+.chart-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.seg { display: inline-flex; padding: 3px; border-radius: 8px; background: var(--surface-sunk); border: 1px solid var(--line); }
+.seg button { min-height: 32px; padding: 0 10px; border: 0; border-radius: 6px; background: transparent; color: var(--ink-2); font: 600 12px var(--font); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.data-table th, .data-table td { padding: 10px 0; border-bottom: 1px solid var(--line); text-align: left; }
+.data-table th { font-size: 12px; color: var(--ink-3); font-weight: 600; }
+.data-table td:last-child, .data-table th:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.data-table tr.is-now td { font-weight: 700; }
+
+/* States */
+.state { display: grid; gap: 10px; justify-items: start; padding: 20px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.state__icon { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-sunk); color: var(--ink-2); }
+.state--warn .state__icon { background: var(--warn-soft); color: var(--warn); }
+.state--bad .state__icon { background: var(--bad-soft); color: var(--bad); }
+.state__title { font-weight: 700; }
+.state__body { font-size: 14px; color: var(--ink-2); }
+.skeleton { display: grid; gap: 8px; width: 100%; }
+.skeleton i { display: block; height: 12px; border-radius: 4px; background: var(--surface-sunk); }
+.banner { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 10px; background: var(--warn-soft); color: var(--ink); font-size: 13px; border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent); }
+.banner .icon { color: var(--warn); }
+
+/* Phone mockups */
+.phones { display: grid; gap: 24px; }
+@media (min-width: 820px) { .phones { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .phones { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.phone-wrap { display: grid; gap: 10px; justify-items: center; }
+.phone-cap { font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.phone { width: 100%; max-width: 390px; height: 780px; display: flex; flex-direction: column; background: var(--bg); border: 1px solid var(--line-strong); border-radius: 32px; overflow: hidden; box-shadow: var(--shadow-1); }
+.phone__status { height: 28px; flex: none; background: var(--surface); display: flex; justify-content: space-between; align-items: center; padding: 0 22px; font-size: 12px; font-weight: 700; color: var(--ink); }
+.phone__body { flex: 1; overflow-y: auto; padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-content: start; }
+.phone__title { display: grid; gap: 2px; }
+.phone__title h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.015em; }
+.phone__title p { font-size: 13px; color: var(--ink-3); }
+.login { flex: 1; display: grid; align-content: center; padding: 24px 16px; background: var(--bg); }
+.login__card { display: grid; gap: 22px; padding: 24px 20px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-1); }
+
+/* Brand section */
+.logo-tiles { display: grid; gap: 12px; }
+@media (min-width: 700px) { .logo-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.logo-tile { border-radius: 12px; border: 1px solid var(--line); overflow: hidden; display: grid; }
+.logo-tile__stage { min-height: 168px; display: grid; place-items: center; padding: 24px; }
+.logo-tile__stage img { width: 96px; height: 96px; object-fit: contain; }
+.logo-tile__meta { padding: 12px 14px; background: var(--surface); font-size: 13px; color: var(--ink-2); border-top: 1px solid var(--line); }
+.logo-tile__meta b { display: block; color: var(--ink); font-size: 14px; }
+.facts { display: grid; gap: 0; }
+.facts div { display: grid; grid-template-columns: 140px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.facts div:last-child { border-bottom: 0; }
+.facts dt { color: var(--ink-3); font-weight: 600; }
+.facts dd { margin: 0; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 6px; background: var(--surface-sunk); border: 1px solid var(--line); color: var(--ink-2); }
+.brand-row { display: grid; gap: 12px; }
+@media (min-width: 900px) { .brand-row { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 600px) and (max-width: 899px) { .brand-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) {
+  .phone { height: auto; max-height: none; border-radius: 16px; }
+  .phone__body { overflow: visible; }
+}
+
+/* Desktop layout sketch */
+.desk { display: grid; grid-template-columns: 180px 1fr; min-height: 260px; border: 1px solid var(--line-strong); border-radius: 12px; overflow: hidden; background: var(--bg); }
+.desk__rail { background: var(--surface); border-right: 1px solid var(--line); padding: 14px 10px; display: grid; gap: 4px; align-content: start; font-size: 13px; font-weight: 600; color: var(--ink-3); }
+.desk__rail div { padding: 8px 10px; border-radius: 8px; }
+.desk__rail div.on { background: var(--surface-sunk); color: var(--ink); }
+.desk__main { padding: 14px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; align-content: start; }
+.desk__main div { border: 1px dashed var(--line-strong); border-radius: 8px; padding: 10px; font-size: 12px; color: var(--ink-3); font-weight: 600; min-height: 56px; }
+
+.dodont { display: grid; gap: 12px; }
+@media (min-width: 700px) { .dodont { grid-template-columns: 1fr 1fr; } }
+.dodont > div { border-radius: 12px; padding: 16px; border: 1px solid var(--line); background: var(--surface); }
+.dodont h3 { font-size: 15px; display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.dodont ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; color: var(--ink-2); }
+.do h3 { color: var(--good); }
+.dont h3 { color: var(--bad); }
+.doc-foot { max-width: 1120px; margin: 0 auto; padding: 24px 16px 48px; font-size: 13px; color: var(--ink-3); border-top: 1px solid var(--line); }
+/* Inzta logo mark (public/logo.png of the internal dashboard), embedded so the file works when sent on its own. */
+:root { --logo-mark: url("data:image/png;base64,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"); }
+.logo-bg { display: block; flex: none; background: var(--logo-mark) center / contain no-repeat; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-sales" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16v-5"/><path d="M12 16V7"/><path d="M17 16v-8"/></symbol>
+    <symbol id="i-commission" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6.5 9.5h.01M17.5 14.5h.01"/></symbol>
+    <symbol id="i-return" viewBox="0 0 24 24"><path d="M9 7H5V3"/><path d="M5.3 7.2A8 8 0 1 1 4 12"/><path d="M12 8v4l2.5 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5"/><path d="M12 16.2h.01"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M10 9v6M14 9v6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="15" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></symbol>
+    <symbol id="i-dash" viewBox="0 0 24 24"><path d="M7 12h10"/></symbol>
+    <symbol id="i-offline" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M8.5 8.6A6 6 0 0 0 6 13.5"/><path d="M17.7 16.9A4.5 4.5 0 0 0 16 8.4a6 6 0 0 0-4.6-2.4"/><path d="M6 13.5A3.5 3.5 0 0 0 6.5 20.5H16"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="M10 16l-4-4 4-4"/><path d="M6 12h10"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="M10 7l5 5-5 5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></symbol>
+    <symbol id="i-table" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 10h16M4 14.5h16M10 10v9"/></symbol>
+  </defs>
+</svg>
+
+<header class="doc-head brand-stripe">
+  <div class="doc-head__inner">
+    <div class="doc-head__top">
+      <span class="wordmark"><span class="mark logo-bg" role="img" aria-label="Logo Inzta" style="width:32px;height:32px"></span><span class="wordmark__text"><span class="wordmark__brand">Portal Investor</span><span class="wordmark__product">PT Inzta Gear Indonesia</span></span></span>
+      <button class="theme-btn" type="button" id="themeBtn" aria-label="Ganti tema terang atau gelap">
+        <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg><span>Tema gelap</span>
+      </button>
+    </div>
+    <h1>Sistem desain Portal Investor</h1>
+    <p class="doc-head__lede">Panduan visual untuk portal hanya-baca yang dipakai investor PT Inzta Gear Indonesia memantau penjualan bulanan, komisi, dan pengembalian dana selama 24 bulan. Dirancang untuk layar HP terlebih dulu (lebar dasar 360 px), lalu melebar ke tablet dan desktop.</p>
+    <div class="doc-meta">
+      <span>Versi 0.1, draf untuk diskusi</span>
+      <span>21 Oktober 2026</span>
+      <span>Domain rencana: capital.inzta.id</span>
+      <span>Proyek: <code>inzta-investor-portal</code></span>
+      <a href="dashboard-desktop.html"><b>Buka prototipe dashboard (desktop dan HP)</b></a>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-nav" aria-label="Bagian dokumen">
+  <div class="doc-nav__inner">
+    <a href="#arah">Arah</a>
+    <a href="#brand">Brand Inzta</a>
+    <a href="#referensi">Referensi</a>
+    <a href="#warna">Warna</a>
+    <a href="#tipografi">Tipografi</a>
+    <a href="#ruang">Ruang &amp; layout</a>
+    <a href="#ikon">Ikon</a>
+    <a href="#komponen">Komponen</a>
+    <a href="#grafik">Grafik</a>
+    <a href="#kondisi">Kondisi layar</a>
+    <a href="#layar">Contoh layar</a>
+    <a href="#konten">Aturan konten</a>
+  </div>
+</nav>
+
+<main class="doc-main">
+
+<section class="section" id="arah" aria-labelledby="arah-h">
+  <div class="section__head">
+    <span class="section__kicker">01 · Arah desain</span>
+    <h2 id="arah-h">Tenang soal uang, jelas soal jadwal</h2>
+    <p class="section__intro">Investor membuka portal dengan satu pertanyaan utama: <b>apakah kewajiban bulan ini sudah dibayar, dan bagaimana usaha berjalan?</b> Layar pertama menjawab itu sebelum hal lain. Tidak ada keputusan yang diambil investor di portal (hanya lihat), jadi desain mengutamakan kepastian, bukan aksi.</p>
+  </div>
+  <div class="grid grid--2 grid--4">
+    <div class="principle"><span class="principle__n">Prinsip 1</span><h3>Satu jawaban di atas</h3><p>Komisi bulan berjalan dan statusnya selalu jadi elemen terbesar di Ringkasan. Angka lain menyusul di bawahnya.</p></div>
+    <div class="principle"><span class="principle__n">Prinsip 2</span><h3>Putih, dengan oranye Inzta</h3><p>Latar tetap putih. Oranye dari logo Inzta menjadi aksen data: batang grafik, progres, garis waktu, dan chip jatuh tempo. Kuning muda tidak dipakai.</p></div>
+    <div class="principle"><span class="principle__n">Prinsip 3</span><h3>Angka terbaca di HP</h3><p>Nominal Rupiah tidak terpotong di layar 360 px. Daftar memakai angka tabular agar kolom rata; angka besar memakai angka proporsional.</p></div>
+    <div class="principle"><span class="principle__n">Prinsip 4</span><h3>Jujur soal data</h3><p>Nilai yang belum ditetapkan tampil "Belum ditetapkan", bukan nol atau tebakan. Status koneksi realtime selalu terlihat.</p></div>
+  </div>
+</section>
+
+<section class="section" id="brand" aria-labelledby="brand-h">
+  <div class="section__head">
+    <span class="section__kicker">02 · Brand Inzta</span>
+    <h2 id="brand-h">Logo, nama, dan konteks Inzta</h2>
+    <p class="section__intro">Diambil dari codebase dasbor internal (<code>inztamoto-erp-dashboard</code>): logo di <code>public/logo.png</code> dan <code>public/logo-mtg.png</code>, ikon aplikasi, manifest PWA, stylesheet, dan daftar kategori produk. Portal memakai logo Z oranye dan charcoal; nuansa kuning dasbor internal tidak dipakai.</p>
+  </div>
+  <div class="logo-tiles">
+    <div class="logo-tile">
+      <div class="logo-tile__stage" style="background:#FFFFFF"><span class="logo-bg" role="img" aria-label="Logo Z Inzta oranye di latar putih" style="width:96px;height:96px"></span></div>
+      <div class="logo-tile__meta"><b>Tanda Z oranye · utama</b><code>#F59E0B</code> · bar atas, layar masuk, ikon aplikasi. Juga ikon PWA dasbor internal.</div>
+    </div>
+    <div class="logo-tile">
+      <div class="logo-tile__stage" style="background:#1A1A1A"><span class="logo-bg" role="img" aria-label="Logo Z Inzta oranye di latar charcoal" style="width:96px;height:96px"></span></div>
+      <div class="logo-tile__meta"><b>Tanda Z di atas charcoal</b>Kartu komisi utama, sebagai watermark 12% di sudut kanan bawah.</div>
+    </div>
+    <div class="logo-tile">
+      <div class="logo-tile__stage" style="background:var(--surface-sunk)"><img src="data:image/png;base64,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" alt="Logo INZTAMOTO versi kuning hitam" width="96" height="96"></div>
+      <div class="logo-tile__meta"><b>Logo INZTAMOTO versi kuning</b>Logo brand produk dengan wordmark. Dicatat sebagai aset Inzta, <b style="display:inline">tidak dipakai di UI portal</b>.</div>
+    </div>
+  </div>
+  <div class="grid grid--2" style="margin-top:12px">
+    <div class="panel">
+      <dl class="facts">
+        <div><dt>Badan usaha</dt><dd>PT Inzta Gear Indonesia, pihak kedua dalam perjanjian investasi</dd></div>
+        <div><dt>Brand produk</dt><dd>InztaMoto (ditulis INZTAMOTO di logo): tas motor dan riding gear</dd></div>
+        <div><dt>Aplikasi internal</dt><dd>Inztamoto Suite / INZTAMOTO ERP, sistem manajemen produksi dan penjualan</dd></div>
+        <div><dt>Domain</dt><dd><code>inztamoto.com</code> (dipakai dasbor internal) · portal: rencana <code>capital.inzta.id</code></dd></div>
+        <div><dt>Huruf</dt><dd>Plus Jakarta Sans, sama dengan dasbor internal</dd></div>
+      </dl>
+    </div>
+    <div class="panel" style="display:grid;gap:14px;align-content:start">
+      <div><p class="card__label" style="margin-bottom:8px">Kategori produk (SKU di dasbor internal)</p>
+        <div class="tags"><span class="tag">Tail Bag</span><span class="tag">Side Bag</span><span class="tag">Duffel Bag</span><span class="tag">Tank Bag</span><span class="tag">Tool Bag</span><span class="tag">Dry Bag</span><span class="tag">Pannier Bag</span><span class="tag">Accessories</span></div></div>
+      <div><p class="card__label" style="margin-bottom:8px">Kanal penjualan yang tercatat</p>
+        <div class="tags"><span class="tag">Website</span><span class="tag">Shopee</span><span class="tag">Tokopedia</span><span class="tag">WhatsApp</span><span class="tag">Offline Store</span></div></div>
+      <p class="note" style="margin:0">Konteks ini untuk penulisan teks portal (misalnya keterangan "tas motor dan riding gear"). Rincian per produk atau per kanal tidak ditampilkan ke investor kecuali disetujui.</p>
+    </div>
+  </div>
+  <div class="dodont" style="margin-top:12px">
+    <div class="do"><h3><svg class="icon icon--md"><use href="#i-check"/></svg>Aturan logo</h3><ul><li>Ruang kosong di sekeliling logo minimal seperempat lebarnya.</li><li>Ukuran minimum 24 px di layar.</li><li>Hanya oranye <code>#F59E0B</code> di latar putih atau charcoal.</li><li>File yang tersedia baru PNG 545 px; minta versi vektor (SVG) ke Inzta sebelum rilis.</li></ul></div>
+    <div class="dont"><h3><svg class="icon icon--md"><use href="#i-alert"/></svg>Hindari</h3><ul><li>Mengubah warna logo, memberi gradien, atau bayangan.</li><li>Meregangkan atau memutar logo.</li><li>Menaruh logo oranye di atas latar kuning atau oranye.</li><li>Membuat wordmark tiruan; tulis nama dengan Plus Jakarta Sans saja.</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="referensi" aria-labelledby="ref-h">
+  <div class="section__head">
+    <span class="section__kicker">03 · Riset referensi</span>
+    <h2 id="ref-h">Apa yang diambil dari referensi</h2>
+    <p class="section__intro">Riset 21 Oktober 2026 di Awwwards, Dribbble, Behance, studi kasus produk, dan galeri UI, sekitar 120 tautan. Yang diambil adalah <b>pola</b>, bukan tampilan: banyak referensi memakai gradien gelap atau neon khas kripto yang tidak cocok untuk laporan investor yang harus terasa tenang dan bisa dipercaya.</p>
+  </div>
+  <div class="panel" style="padding:0">
+    <div class="ref-pattern">
+      <span class="ref-pattern__take">Angka besar + status di kartu teratas</span>
+      <span class="ref-pattern__from">Dipakai untuk kartu Komisi bulan ini. Dari <a href="https://dribbble.com/shots/27756298-Fintech-Portfolio-Wealth-Management-App-UI-UX-Design">Fintech Portfolio &amp; Wealth Management App</a> dan <a href="https://dribbble.com/shots/27023088-Monity-Loan-App">Monity Loan App</a>.</span>
+    </div>
+    <div class="ref-pattern">
+      <span class="ref-pattern__take">Kalender pembayaran bertanda</span>
+      <span class="ref-pattern__from">Menjadi garis waktu 24 bulan dengan penanda bulan ke-16, 20, 24. Dari kalender dividen di <a href="https://dribbble.com/shots/27756298-Fintech-Portfolio-Wealth-Management-App-UI-UX-Design">Wealth Management App</a>.</span>
+    </div>
+    <div class="ref-pattern">
+      <span class="ref-pattern__take">Jadwal cicilan per bulan dengan status</span>
+      <span class="ref-pattern__from">Menjadi daftar komisi 24 bulan dan kartu pengembalian. Dari <a href="https://dribbble.com/shots/27023088-Monity-Loan-App">Monity</a>, dasbor arus kas bulanan <a href="https://upstart.com/news/new-dashboard-update-investors">Upstart</a>, dan portofolio <a href="https://www.investown.cz/en/post/new-portfolio-in-the-app">Investown</a> (halaman ini sudah tidak bisa diakses saat dicek).</span>
+    </div>
+    <div class="ref-pattern">
+      <span class="ref-pattern__take">Chip status dengan ikon di daftar</span>
+      <span class="ref-pattern__from">Dibayar, Jatuh tempo, Akan datang, Terlambat. Dari <a href="https://dribbble.com/shots/27355839-Finora-Investor-Portfolio-Mobile-Sleeko-Studio">Finora Investor Portfolio</a> dan <a href="https://dribbble.com/shots/26965864-Funds-Escrow-Transactions-FractionAcre">FractionAcre Funds &amp; Escrow</a>.</span>
+    </div>
+    <div class="ref-pattern">
+      <span class="ref-pattern__take">Grafik batang bulanan di HP</span>
+      <span class="ref-pattern__from">Penjualan per bulan dengan bulan berjalan disorot. Dari <a href="https://dribbble.com/shots/27229459-Sales-Analytics-Mobile-Dashboard-Clean-Data-Visualization-UI">Sales Analytics Mobile Dashboard</a> dan <a href="https://dribbble.com/shots/26984127-Sales-Overview-Dashboard-Mobile-Responsive">Sales Overview Dashboard, Mobile Responsive</a>.</span>
+    </div>
+    <div class="ref-pattern">
+      <span class="ref-pattern__take">Format Rupiah dan navigasi bawah yang akrab bagi investor Indonesia</span>
+      <span class="ref-pattern__from">Dari <a href="https://dribbble.com/shots/20560956-Reku-Mutual-Funds-Apps-Mobile">Reku Mutual Funds</a> dan <a href="https://dribbble.com/shots/4626067-Bareksa-Marketplace-Reksadana-Excerpt-001">Bareksa</a>.</span>
+    </div>
+    <div class="ref-pattern">
+      <span class="ref-pattern__take">Tenang, satu aksen, warna status hanya untuk status</span>
+      <span class="ref-pattern__from">Dari analisis desain Mercury (<a href="https://www.925studios.co/blog/mercury-design-breakdown">925studios</a>) dan nada situs perusahaan investasi di Awwwards seperti <a href="https://www.awwwards.com/sites/jera-capital">Jera Capital</a> dan <a href="https://www.awwwards.com/sites/astraeus-wealth-tech">Astraeus Wealth Tech</a>.</span>
+    </div>
+    <div class="ref-pattern">
+      <span class="ref-pattern__take">Identitas brand Inzta</span>
+      <span class="ref-pattern__from">Logo Z oranye, charcoal, oranye theme Inzta, garis brand di bar atas, dan Plus Jakarta Sans diambil dari dasbor internal Inzta agar portal terasa satu perusahaan. Nuansa kuning muda dasbor internal sengaja tidak dipakai.</span>
+    </div>
+  </div>
+
+  <h3 class="sub">Pustaka referensi lengkap</h3>
+  <div class="ref-lib">
+    <details>
+      <summary>Awwwards: dashboard <span class="count">10 tautan</span></summary>
+      <ul>
+        <li><a href="https://www.awwwards.com/sites/algorithmic-trading-dashboard">Algorithmic Trading Dashboard</a></li>
+        <li><a href="https://www.awwwards.com/sites/the-bluejack-group-dashboard">The Bluejack Group Dashboard</a></li>
+        <li><a href="https://www.awwwards.com/sites/viture-dashboard">Viture Dashboard</a></li>
+        <li><a href="https://www.awwwards.com/sites/captaindash">CaptainDash</a></li>
+        <li><a href="https://www.awwwards.com/sites/covid-19-data-dashboard">Covid-19 Data Dashboard</a></li>
+        <li><a href="https://www.awwwards.com/sites/bluemetrics">BlueMetrics</a></li>
+        <li><a href="https://www.awwwards.com/sites/dashcom-ui-kit">Dashcom UI Kit</a></li>
+        <li><a href="https://www.awwwards.com/sites/just-analyse">Just Analyse</a></li>
+        <li><a href="https://www.awwwards.com/sites/dashboard-engie-tennis-au-feminin">Dashboard ENGIE, Tennis au Féminin</a></li>
+        <li><a href="https://www.awwwards.com/inspiration/loan-manager-application-by-hanna-jung-dribbble">Loan Manager Application <span>(Inspiration)</span></a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Awwwards: aplikasi keuangan dan brand perusahaan investasi <span class="count">22 tautan</span></summary>
+      <ul>
+        <li><a href="https://www.awwwards.com/sites/cash-app-fall-release">Cash App Fall Release</a></li>
+        <li><a href="https://www.awwwards.com/sites/grassfeld-ai-budgeting-app">Grassfeld, AI Budgeting App</a></li>
+        <li><a href="https://www.awwwards.com/sites/oleumbudget">OleumBudget</a></li>
+        <li><a href="https://www.awwwards.com/sites/jera-capital">Jera Capital</a></li>
+        <li><a href="https://www.awwwards.com/sites/astraeus-wealth-tech">Astraeus Wealth Tech</a></li>
+        <li><a href="https://www.awwwards.com/sites/hark-capital">Hark Capital</a></li>
+        <li><a href="https://www.awwwards.com/sites/celeres-investments">Celeres Investments</a></li>
+        <li><a href="https://www.awwwards.com/sites/stone-investment">Stone Investment</a></li>
+        <li><a href="https://www.awwwards.com/sites/kaib-invest">KAIB Invest</a></li>
+        <li><a href="https://www.awwwards.com/sites/synthesis-capital">Synthesis Capital</a></li>
+        <li><a href="https://www.awwwards.com/sites/tresmares-capital">Tresmares Capital</a></li>
+        <li><a href="https://www.awwwards.com/sites/blink-capital">Blink Capital</a></li>
+        <li><a href="https://www.awwwards.com/sites/hayden-capital">Hayden Capital</a></li>
+        <li><a href="https://www.awwwards.com/sites/eider-investment">Eider Investment</a></li>
+        <li><a href="https://www.awwwards.com/sites/source-investments">Source Investments</a></li>
+        <li><a href="https://www.awwwards.com/sites/bosqar-invest">BOSQAR INVEST</a></li>
+        <li><a href="https://www.awwwards.com/sites/realevate">Realevate</a></li>
+        <li><a href="https://www.awwwards.com/sites/ova-investment">OVA investment</a></li>
+        <li><a href="https://www.awwwards.com/sites/reckoner-capital-management">Reckoner Capital Management</a></li>
+        <li><a href="https://www.awwwards.com/sites/pareto-impact-ventures">Pareto Impact Ventures</a></li>
+        <li><a href="https://www.awwwards.com/sites/cypher-capital">Cypher Capital</a></li>
+        <li><a href="https://www.awwwards.com/inspiration/investment-blog-rule-1-investing">Rule #1 Investing <span>(Inspiration)</span></a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Dribbble: portofolio dan dasbor investor mobile <span class="count">20 tautan</span></summary>
+      <ul>
+        <li><a href="https://dribbble.com/shots/27355839-Finora-Investor-Portfolio-Mobile-Sleeko-Studio">Finora, Investor Portfolio Mobile</a></li>
+        <li><a href="https://dribbble.com/shots/27362030-Finora-Personal-Wealth-Management-App">Finora, Personal Wealth Management</a></li>
+        <li><a href="https://dribbble.com/shots/27545380-FinEdge-Investment-Analytics-Mobile-App">FinEdge, Investment Analytics Mobile</a></li>
+        <li><a href="https://dribbble.com/shots/27711004-Stock-Offering-Solutions-Investor-Dashboard">Stock Offering Solutions, Investor Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/27699607-Investment-Portfolio-Tracker-App-UI-UX-Design">Investment Portfolio Tracker App</a></li>
+        <li><a href="https://dribbble.com/shots/27486465-Investment-Portfolio-Tracker-Premium-Finance-Mobile-App-Design">Investment Portfolio Tracker &amp; Premium Finance</a></li>
+        <li><a href="https://dribbble.com/shots/27756298-Fintech-Portfolio-Wealth-Management-App-UI-UX-Design">Fintech Portfolio &amp; Wealth Management App</a></li>
+        <li><a href="https://dribbble.com/shots/26926769-Investment-Platform-of-Kriviy-Rih-with-AI-Assistant">Investment Platform of Kriviy Rih</a></li>
+        <li><a href="https://dribbble.com/shots/25800257-Exploring-Investment-App-UI-Design">Exploring Investment App UI</a></li>
+        <li><a href="https://dribbble.com/shots/27407446-Nashrr-Halal-Investment-App">Nashrr, Halal Investment App</a></li>
+        <li><a href="https://dribbble.com/shots/25083818-Investment-App">Investment App</a></li>
+        <li><a href="https://dribbble.com/shots/27408630-Payno-Fintech-Investment-App-UI-Design">Payno, Fintech Investment App</a></li>
+        <li><a href="https://dribbble.com/shots/27702173-Mostt-Investment-App">Mostt, Investment App</a></li>
+        <li><a href="https://dribbble.com/shots/25044496-midasmind-AI-Investing-Roboadvisor-App-Light-Dark-Mode-Toggle">midasmind, Light/Dark Mode</a></li>
+        <li><a href="https://dribbble.com/shots/14916603-Investments-App">Investments App</a></li>
+        <li><a href="https://dribbble.com/shots/26869558-Investment-app-interaction">Investment app interaction</a></li>
+        <li><a href="https://dribbble.com/shots/27470644-Fintech-Balance-Growth-Widget-Clean-Dashboard-UI">Fintech Balance Growth Widget</a></li>
+        <li><a href="https://dribbble.com/shots/26151673-Financial-bank-components-UI-cards">Financial bank components, UI cards</a></li>
+        <li><a href="https://dribbble.com/shots/27238113-Fintech-Dashboard">Fintech Dashboard (27238113)</a></li>
+        <li><a href="https://dribbble.com/shots/26961153-Fintech-Dashboard">Fintech Dashboard (26961153)</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Dribbble: pinjaman, cicilan, dan payout <span class="count">14 tautan</span></summary>
+      <ul>
+        <li><a href="https://dribbble.com/shots/27023088-Monity-Loan-App">Monity, Loan App</a></li>
+        <li><a href="https://dribbble.com/shots/27628938-Loan-App-Design">Loan App Design</a></li>
+        <li><a href="https://dribbble.com/shots/24595979-Lend-Cash-Loan-Management-Dashboard-Design">Lend Cash, Loan Management Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/27736497-LendFlow-Loan-Management-Dashboard-Fintech-Lending-Platform">LendFlow, Loan Management Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/21481699-Social-Credit-Score-Lend-Borrow-Dashboard-Mobile-App-UX-Design">Lend &amp; Borrow Dashboard Mobile</a></li>
+        <li><a href="https://dribbble.com/shots/25335912-Loan-Fund-Finance-App-Design">Loan Fund, Finance App</a></li>
+        <li><a href="https://dribbble.com/shots/26933309-Abroad-Financing-App">Abroad Financing App</a></li>
+        <li><a href="https://dribbble.com/shots/27812101-Financial-Planning-Payout-Platform-Modern-Fintech-Web-UI-UX">Financial Planning &amp; Payout Platform</a></li>
+        <li><a href="https://dribbble.com/shots/26965864-Funds-Escrow-Transactions-FractionAcre">FractionAcre, Funds &amp; Escrow</a></li>
+        <li><a href="https://dribbble.com/shots/26936357-FractionAcre-Dashboard-Components-Filters">FractionAcre, Dashboard Components</a></li>
+        <li><a href="https://dribbble.com/shots/26935976-Fractional-Real-Estate-Investment-Dashboard-Web">Fractional Real Estate Investment Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/26421003-Vault-Finance-Management-Dashboard-UI-UX-Design">Vault, Finance Management Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/27111653-Smart-Payment-Processing-Dashboard">Smart Payment Processing Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/27766469-Financial-Services-Platform-Modern-Fintech-UI-UX">Financial Services Platform</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Dribbble: penjualan dan analitik mobile <span class="count">14 tautan</span></summary>
+      <ul>
+        <li><a href="https://dribbble.com/shots/27229459-Sales-Analytics-Mobile-Dashboard-Clean-Data-Visualization-UI">Sales Analytics Mobile Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/27505226-Sales-Dashboard-Mobile-App-Design">Sales Dashboard, Mobile App</a></li>
+        <li><a href="https://dribbble.com/shots/25455083-Admin-Sales-Dashboard-Mobile">Admin Sales Dashboard Mobile</a></li>
+        <li><a href="https://dribbble.com/shots/26984127-Sales-Overview-Dashboard-Mobile-Responsive">Sales Overview Dashboard, Mobile Responsive</a></li>
+        <li><a href="https://dribbble.com/shots/27146785-Momentum-Sales-Marketing-Dashboard-Mobile-Responsive">Momentum, Sales &amp; Marketing</a></li>
+        <li><a href="https://dribbble.com/shots/26886686-Sales-Analytics-Dashboard-Mobile-App-for-Performance-Tracking">Sales Analytics, Performance Tracking</a></li>
+        <li><a href="https://dribbble.com/shots/26992407-Maytech-Analytics-Sales-Mobile-Dashboard">Maytech, Analytics Sales Mobile</a></li>
+        <li><a href="https://dribbble.com/shots/27764377-Mobile-Responsive-Sales-Dashboard-UI-GeoSales">GeoSales, Mobile Responsive</a></li>
+        <li><a href="https://dribbble.com/shots/27110860-Dogoto-Sales-Marketing-Mobile-Responsive-Dashboard">Dogoto, Mobile Responsive Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/23934227-Ticaly-Sales-Analytics-Mobile-App">Ticaly, Sales Analytics Mobile</a></li>
+        <li><a href="https://dribbble.com/shots/26645959-SalesHive-Sales-Management-Mobile-App">SalesHive, Sales Management Mobile</a></li>
+        <li><a href="https://dribbble.com/shots/27430119-Modern-sales-report-dashboard-widget">Modern sales report widget</a></li>
+        <li><a href="https://dribbble.com/shots/27186226-Hyper-Charts-2-0">Hyper Charts 2.0</a></li>
+        <li><a href="https://dribbble.com/shots/27208557-NexaDash-Sales-Analytics-Revenue-Dashboard-Mobile-App-UI">NexaDash, Sales &amp; Revenue Mobile</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Dribbble: fintech mobile umum <span class="count">12 tautan</span></summary>
+      <ul>
+        <li><a href="https://dribbble.com/shots/27118150-Billzy-Fintech-Mobile-Dashboard">Billzy, Fintech Mobile Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/26017733-Fintech-App-UI-UX-Design">Fintech App UI/UX</a></li>
+        <li><a href="https://dribbble.com/shots/27644931-Fintech-App-Dashboard-Hash-Genie">Hash Genie, Fintech App Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/27365921-Finance-Mobile-App-UI">Finance Mobile App UI</a></li>
+        <li><a href="https://dribbble.com/shots/26499920-Fintech-Mobile-Banking-Dashboard">Fintech Mobile Banking Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/27763168-Fintech-Mobile-App-Dashboard-Concept">Fintech Mobile App, Dashboard Concept</a></li>
+        <li><a href="https://dribbble.com/shots/27578144-Trading-Platform-Fintech-Mobile-Web-Dashboard-UI">Trading Platform, Mobile &amp; Web</a></li>
+        <li><a href="https://dribbble.com/shots/27682302-Fintech-App-Sovran">Sovran, Fintech App</a></li>
+        <li><a href="https://dribbble.com/shots/27609599-SAVVY-Mobile-Banking-Dashboard-UI">SAVVY, Mobile Banking Dashboard</a></li>
+        <li><a href="https://dribbble.com/shots/27732059-Finance-Dashboard-Fintech-Mobile-App">Finance Dashboard, Fintech Mobile (27732059)</a></li>
+        <li><a href="https://dribbble.com/shots/27779242-Finance-Dashboard-Fintech-Mobile-App">Finance Dashboard, Fintech Mobile (27779242)</a></li>
+        <li><a href="https://dribbble.com/shots/27546534-Meridien-Financial-Brand-Identity-Visual-System">Meridien Financial, Visual System</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Dribbble: aplikasi investasi Indonesia <span class="count">10 tautan</span></summary>
+      <ul>
+        <li><a href="https://dribbble.com/shots/20560956-Reku-Mutual-Funds-Apps-Mobile">Reku, Mutual Funds Apps</a></li>
+        <li><a href="https://dribbble.com/shots/4626067-Bareksa-Marketplace-Reksadana-Excerpt-001">Bareksa, Marketplace Reksadana</a></li>
+        <li><a href="https://dribbble.com/shots/14579343-Redesign-Alur-Pembelian-Reksadana-Bareksa-Mobile-DLS-Week-3">Redesign alur pembelian reksadana (Bareksa)</a></li>
+        <li><a href="https://dribbble.com/shots/19770396-Reksadana-Invest-App">Reksadana Invest App</a></li>
+        <li><a href="https://dribbble.com/shots/18779999-Reksadana-Investments-Mobile-App">Reksadana Investments Mobile App</a></li>
+        <li><a href="https://dribbble.com/shots/14464458-Investation-App-Aplikasi-Investasi-dan-Reksa-Dana">Investation App</a></li>
+        <li><a href="https://dribbble.com/shots/14450347-Aplikasi-Reksadana">Aplikasi Reksadana</a></li>
+        <li><a href="https://dribbble.com/shots/15331825-Exploration-Reksadana-App">Exploration, Reksadana App</a></li>
+        <li><a href="https://dribbble.com/shots/20995418-Dinvest-Investment-App">Dinvest, Investment App</a></li>
+        <li><a href="https://dribbble.com/shots/14045734-Stockit-Web-App">Stockit, Web App</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Behance: studi kasus <span class="count">11 tautan</span></summary>
+      <ul>
+        <li><a href="https://www.behance.net/gallery/67109949/Investor-Relations-Dashboard-application">Investor Relations Dashboard application</a></li>
+        <li><a href="https://www.behance.net/gallery/256937035/Keel-Fintech-SaaS-Dashboard-UX-UI-Case-Study">Keel, Fintech SaaS Dashboard</a></li>
+        <li><a href="https://www.behance.net/gallery/254721609/ZIXO-Banking-Reimagined-Fintech-UIUX-Case-Study">ZIXO, Banking Reimagined</a></li>
+        <li><a href="https://www.behance.net/gallery/251881873/Maven-Finance-Management-Orbix-Studio-Mobile-App">Maven, Finance Management Mobile</a></li>
+        <li><a href="https://www.behance.net/gallery/256071917/Digital-banking-app-website-design-Emerald24">Emerald24, Digital banking app</a></li>
+        <li><a href="https://www.behance.net/gallery/256834293/Neobank-web-mobile-app-UXUI-design-Emerald24">Emerald24, Neobank web &amp; mobile</a></li>
+        <li><a href="https://www.behance.net/gallery/253733749/Banking-Platform-UXUI-Brand-Identity">Banking Platform, UX/UI &amp; Brand</a></li>
+        <li><a href="https://www.behance.net/gallery/59795591/Dashboard-collection-UIUX">Dashboard collection UI/UX</a></li>
+        <li><a href="https://www.behance.net/gallery/243705045/Fintech-Product-Design-Crypto-App-Web-UI-Branding">Fintech Product Design</a></li>
+        <li><a href="https://www.behance.net/gallery/256813357/Metria-AI-Crypto-Savings-SaaS-Platform-UX-UI-Design">Metria AI, Savings Platform</a></li>
+        <li><a href="https://www.behance.net/gallery/256731761/Production-Management-SaaS-Dashboard-Mobile-App">Production Management, Dashboard &amp; Mobile</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Studi kasus produk dan artikel <span class="count">10 tautan</span></summary>
+      <ul>
+        <li><a href="https://upstart.com/news/new-dashboard-update-investors">Upstart, dasbor arus kas bulanan investor</a></li>
+        <li><a href="https://www.agorareal.com/real-estate-blog/investor-portal">Agora, Investor Portal</a></li>
+        <li><a href="https://www.investown.cz/en/post/new-portfolio-in-the-app">Investown, portofolio di aplikasi <span>(tidak bisa diakses saat dicek)</span></a></li>
+        <li><a href="https://www.axisgroup.com/hubfs/Case%20Studies/Axis%20Group%20-%20Private%20Equity%20Financial%20Reporting.pdf">Axis Group, pelaporan private equity (PDF)</a></li>
+        <li><a href="https://merge.rocks/case-studies/noviscient">Noviscient, platform investasi (merge.rocks)</a></li>
+        <li><a href="https://www.925studios.co/blog/mercury-design-breakdown">Mercury design breakdown (925studios)</a></li>
+        <li><a href="https://contra.com/p/Ymo7Pmmb-finresi-website-and-ui-ux">Finresi, dasbor investor pinjaman properti</a></li>
+        <li><a href="https://contra.com/p/OsEb7Qlv-cruscott-finance-dashboard-mobile">Cruscott, Finance Dashboard Mobile</a></li>
+        <li><a href="https://fireart.studio/blog/top-20-dashboard-inspiration-ideas/">Fireart, 20 inspirasi dashboard</a></li>
+        <li><a href="https://www.saasfactor.co/blogs/fintech-mobile-app-design">Saasfactor, panduan desain aplikasi fintech</a></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Galeri dan pencarian untuk eksplorasi lanjutan <span class="count">12 tautan</span></summary>
+      <ul>
+        <li><a href="https://www.pinterest.com/search/pins/?q=investor%20dashboard%20mobile%20app">Pinterest: investor dashboard mobile app <span>(perlu login)</span></a></li>
+        <li><a href="https://www.pinterest.com/search/pins/?q=fintech%20dashboard%20mobile">Pinterest: fintech dashboard mobile <span>(perlu login)</span></a></li>
+        <li><a href="https://dribbble.com/search/investor-dashboard-mobile">Dribbble: investor dashboard mobile</a></li>
+        <li><a href="https://dribbble.com/search/loan-repayment-app">Dribbble: loan repayment app</a></li>
+        <li><a href="https://dribbble.com/search/payout-schedule">Dribbble: payout schedule</a></li>
+        <li><a href="https://dribbble.com/search/reksadana">Dribbble: reksadana</a></li>
+        <li><a href="https://www.behance.net/search/projects/investor%20dashboard%20mobile">Behance: investor dashboard mobile</a></li>
+        <li><a href="https://www.awwwards.com/inspiration_search/?text=dashboard">Awwwards: dashboard</a></li>
+        <li><a href="https://collectui.com/designs/dashboard-ui-design-inspiration">Collect UI: Dashboard</a></li>
+        <li><a href="https://collectui.com/designs/analytics-chart-ui-design-inspiration">Collect UI: Analytics Chart</a></li>
+        <li><a href="https://www.saasui.design/best-saas-dashboard-ui-inspiration">SaaSUI: situs inspirasi dashboard</a></li>
+        <li><a href="https://www.saasframe.io/categories/dashboard">SaaSFrame: Dashboard <span>(ada verifikasi Cloudflare)</span></a></li>
+      </ul>
+    </details>
+  </div>
+  <p class="note">Mobbin tidak bisa dipakai karena butuh paket berbayar. Pinterest perlu login, jadi pin tidak dikumpulkan otomatis; tautan pencariannya disertakan untuk dibuka sendiri.</p>
+</section>
+
+<section class="section" id="warna" aria-labelledby="warna-h">
+  <div class="section__head">
+    <span class="section__kicker">04 · Warna</span>
+    <h2 id="warna-h">Netral hangat, satu aksen, status khusus status</h2>
+    <p class="section__intro">Latar putih dan netral stone sebagai dasar, charcoal Inzta untuk teks, tombol, dan kartu utama, oranye Inzta sebagai aksen data. Hijau, merah, dan cokelat hanya muncul sebagai status dan selalu bersama ikon serta label. Semua pasangan teks di bawah lulus WCAG AA (minimal 4,5:1); warna grafik lulus 3:1 dan dicek dengan validator palet.</p>
+  </div>
+  <div class="grid grid--2 grid--4">
+    <div class="panel palette-col">
+      <h3>Dasar</h3>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--bg)"></span><div><div class="swatch__name">bg</div><div class="swatch__meta"><code>#FAFAF9</code> / <code>#0C0A09</code> · latar halaman</div></div></div>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--surface)"></span><div><div class="swatch__name">surface</div><div class="swatch__meta"><code>#FFFFFF</code> / <code>#1C1917</code> · kartu, bar</div></div></div>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--surface-sunk)"></span><div><div class="swatch__name">surface-sunk</div><div class="swatch__meta"><code>#F5F5F4</code> / <code>#151311</code> · isian, hover</div></div></div>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--line)"></span><div><div class="swatch__name">line</div><div class="swatch__meta"><code>#E7E5E4</code> / <code>#292524</code> · garis 1 px</div></div></div>
+    </div>
+    <div class="panel palette-col">
+      <h3>Teks</h3>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--ink)"></span><div><div class="swatch__name">ink</div><div class="swatch__meta"><code>#1C1917</code> / <code>#F5F5F4</code> · 16,7:1</div></div></div>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--ink-2)"></span><div><div class="swatch__name">ink-2</div><div class="swatch__meta"><code>#57534E</code> / <code>#D6D3D1</code> · 7,6:1</div></div></div>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--ink-3)"></span><div><div class="swatch__name">ink-3</div><div class="swatch__meta"><code>#78716C</code> / <code>#A8A29E</code> · 4,6:1 · label</div></div></div>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--solid)"></span><div><div class="swatch__name">solid</div><div class="swatch__meta">tombol utama, teks di atasnya 17,5:1</div></div></div>
+    </div>
+    <div class="panel palette-col">
+      <h3>Brand Inzta (aksen)</h3>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--brand-orange)"></span><div><div class="swatch__name">brand-orange</div><div class="swatch__meta"><code>#F59E0B</code> · warna logo · chip jatuh tempo, ikon menu aktif. Teks di atasnya charcoal (8,1:1)</div></div></div>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--brand-amber)"></span><div><div class="swatch__name">brand-amber</div><div class="swatch__meta"><code>#D97706</code> · theme Inzta · batang grafik, progres, garis waktu (3,2:1 ke putih)</div></div></div>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--brand-charcoal)"></span><div><div class="swatch__name">brand-charcoal</div><div class="swatch__meta"><code>#1A1A1A</code> · kartu komisi utama, menu aktif, tombol</div></div></div>
+    </div>
+    <div class="panel palette-col">
+      <h3>Status</h3>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--good)"></span><div><div class="swatch__name">good · Dibayar</div><div class="swatch__meta"><code>#15803D</code> / <code>#4ADE80</code> · 4,8:1</div></div></div>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--bad)"></span><div><div class="swatch__name">bad · Terlambat</div><div class="swatch__meta"><code>#B91C1C</code> / <code>#F87171</code> · 5,9:1</div></div></div>
+      <div class="swatch"><span class="swatch__chip" style="background:var(--warn)"></span><div><div class="swatch__name">warn · Ditangguhkan, koneksi</div><div class="swatch__meta"><code>#B45309</code> / <code>#FBBF24</code> · 4,8:1</div></div></div>
+    </div>
+  </div>
+  <h3 class="sub">Warna grafik</h3>
+  <div class="panel">
+    <div class="legend" style="font-size:13px">
+      <span><i style="background:var(--chart-base)"></i>chart-base <code>#D97706</code>: bulan yang sudah selesai</span>
+      <span><i style="background:var(--hatch-now)"></i>arsir oranye 45°: bulan berjalan (data belum lengkap)</span>
+      <span><i style="background:var(--chart-grid)"></i>chart-grid: garis bantu 1 px</span>
+    </div>
+    <p class="note">Satu seri = satu warna: semua batang oranye Inzta. Bulan berjalan memakai oranye yang sama dengan arsir 45° karena datanya belum lengkap, bukan warna kedua, sehingga tetap terbaca oleh pembaca buta warna dan saat dicetak hitam putih. Kontras batang ke permukaan: 3,19:1 (putih) dan 5,49:1 (gelap), lulus batas 3:1.</p>
+  </div>
+</section>
+
+<section class="section" id="tipografi" aria-labelledby="tipo-h">
+  <div class="section__head">
+    <span class="section__kicker">05 · Tipografi</span>
+    <h2 id="tipo-h">Plus Jakarta Sans, satu keluarga untuk semua</h2>
+    <p class="section__intro">Huruf yang sama dengan dasbor internal Inzta, dirancang di Indonesia, punya angka yang jelas pada ukuran kecil. Empat bobot: 400, 500, 600, 700. Tidak ada font kedua; angka besar pun memakai sans yang sama.</p>
+  </div>
+  <div class="panel">
+    <div class="type-row"><span class="type-row__meta">Hero · 32 → 52 px mengikuti lebar kartu (container query) · 700 · tracking −2,5% · satu per layar</span><span class="t-hero">Rp6.400.000</span></div>
+    <div class="type-row"><span class="type-row__meta">Judul layar · 24 → 28 px · 700</span><span class="t-title">Komisi bulan ke-3</span></div>
+    <div class="type-row"><span class="type-row__meta">Judul bagian · 18 px · 700</span><span class="t-section">Jadwal pengembalian dana</span></div>
+    <div class="type-row"><span class="type-row__meta">Isi · 15 px · 400 · tinggi baris 1,5 (input 16 px agar iOS tidak zoom)</span><span class="t-body">Komisi dibayarkan setiap tanggal 25 sampai 26 dan tidak berkurang meskipun sebagian dana sudah dikembalikan.</span></div>
+    <div class="type-row"><span class="type-row__meta">Label · 13 px · 600</span><span class="t-label">Dana sudah kembali</span></div>
+    <div class="type-row"><span class="type-row__meta">Mikro · 12 px · 500 · sumbu grafik, keterangan</span><span class="t-micro">Diperbarui 14.32 WIB</span></div>
+    <div class="type-row"><span class="type-row__meta">Angka di daftar · 15 px · 600 · tabular-nums</span><span class="t-figure">Rp6.400.000<br>Rp12.800.000<br>Rp153.600.000</span></div>
+  </div>
+  <p class="note">Angka besar (hero, nilai stat) memakai angka proporsional bawaan. <code>tabular-nums</code> hanya untuk kolom angka yang harus rata vertikal: daftar jadwal, tabel, sumbu grafik.</p>
+</section>
+
+<section class="section" id="ruang" aria-labelledby="ruang-h">
+  <div class="section__head">
+    <span class="section__kicker">06 · Ruang dan layout</span>
+    <h2 id="ruang-h">Kisi 4 px, HP dulu</h2>
+    <p class="section__intro">Semua jarak kelipatan 4. Margin tepi layar 16 px. Target sentuh minimal 44 × 44 px; tombol utama 48 px. Navigasi bawah 64 px ditambah area aman perangkat.</p>
+  </div>
+  <div class="grid grid--2">
+    <div class="panel">
+      <h3 class="card__label" style="margin-bottom:8px">Skala jarak</h3>
+      <div class="space-row"><span class="space-row__label">4 · s-1</span><span class="space-row__bar" style="width:4px"></span>jarak ikon dan teks</div>
+      <div class="space-row"><span class="space-row__label">8 · s-2</span><span class="space-row__bar" style="width:8px"></span>antar elemen dalam baris</div>
+      <div class="space-row"><span class="space-row__label">12 · s-3</span><span class="space-row__bar" style="width:12px"></span>antar kartu</div>
+      <div class="space-row"><span class="space-row__label">16 · s-4</span><span class="space-row__bar" style="width:16px"></span>padding kartu, margin layar</div>
+      <div class="space-row"><span class="space-row__label">24 · s-6</span><span class="space-row__bar" style="width:24px"></span>antar grup</div>
+      <div class="space-row"><span class="space-row__label">32 · s-8</span><span class="space-row__bar" style="width:32px"></span>antar bagian</div>
+      <div class="space-row"><span class="space-row__label">48 · s-12</span><span class="space-row__bar" style="width:48px"></span>bagian besar desktop</div>
+    </div>
+    <div class="panel">
+      <h3 class="card__label" style="margin-bottom:8px">Titik henti</h3>
+      <div class="bp">
+        <div class="bp__row"><b>360–599</b><span>Satu kolom, navigasi bawah. Ukuran dasar desain.</span></div>
+        <div class="bp__row"><b>600–1023</b><span>Kartu ringkasan dua kolom, navigasi bawah tetap.</span></div>
+        <div class="bp__row"><b>≥ 1024</b><span>Navigasi pindah ke rel kiri 220 px, konten maks 960 px, kisi 12 kolom.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid--2" style="margin-top:12px">
+    <div class="panel">
+      <h3 class="card__label" style="margin-bottom:12px">Radius: tiga ukuran saja</h3>
+      <div class="radius-demo">
+        <div style="border-radius:6px">6 px<br>chip, kode</div>
+        <div style="border-radius:10px">10 px<br>tombol, input</div>
+        <div style="border-radius:12px">12 px<br>kartu</div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3 class="card__label" style="margin-bottom:12px">Elevasi: kebanyakan datar</h3>
+      <div class="elev-demo">
+        <div style="border:1px solid var(--line)">e0 · kartu<br>garis 1 px</div>
+        <div style="box-shadow:var(--shadow-1)">e1 · bar atas saat digulir</div>
+        <div style="box-shadow:var(--shadow-2)">e2 · tooltip, sheet</div>
+      </div>
+    </div>
+  </div>
+  <h3 class="sub">Sketsa layout desktop (≥ 1024 px)</h3>
+  <div class="desk" aria-label="Sketsa layout desktop">
+    <div class="desk__rail"><div class="on">Ringkasan</div><div>Penjualan</div><div>Komisi</div><div>Pengembalian</div></div>
+    <div class="desk__main">
+      <div style="grid-column:span 7">Kartu komisi bulan ini (hero)</div>
+      <div style="grid-column:span 5">Dana kembali + total komisi</div>
+      <div style="grid-column:span 12">Garis waktu 24 bulan</div>
+      <div style="grid-column:span 8">Grafik penjualan 12 bulan</div>
+      <div style="grid-column:span 4">Jadwal terdekat</div>
+    </div>
+  </div>
+  <p class="note">Versi lengkap dan bisa diklik: <a href="dashboard-desktop.html"><b>prototipe dashboard</b></a>, responsif dari HP sampai desktop.</p>
+</section>
+
+<section class="section" id="ikon" aria-labelledby="ikon-h">
+  <div class="section__head">
+    <span class="section__kicker">07 · Ikon</span>
+    <h2 id="ikon-h">Garis 2 px, kisi 24 px, selalu dengan label</h2>
+    <p class="section__intro">Set ikon kecil yang digambar khusus, sudut membulat agar senada dengan Plus Jakarta Sans. Ikon tidak pernah berdiri sendiri sebagai satu-satunya penanda arti; status dan navigasi selalu disertai teks.</p>
+  </div>
+  <div class="icon-grid">
+    <div class="icon-cell"><svg class="icon"><use href="#i-home"/></svg>Ringkasan</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-sales"/></svg>Penjualan</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-commission"/></svg>Komisi</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-return"/></svg>Pengembalian</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-check"/></svg>Dibayar</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-clock"/></svg>Jatuh tempo</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-calendar"/></svg>Akan datang</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-alert"/></svg>Terlambat</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-pause"/></svg>Ditangguhkan</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-dash"/></svg>Belum ditetapkan</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-offline"/></svg>Terputus</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-lock"/></svg>Masuk</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-eye"/></svg>Lihat sandi</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-logout"/></svg>Keluar</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-table"/></svg>Tabel</div>
+    <div class="icon-cell"><svg class="icon"><use href="#i-info"/></svg>Info</div>
+  </div>
+</section>
+
+<section class="section" id="komponen" aria-labelledby="komp-h">
+  <div class="section__head">
+    <span class="section__kicker">08 · Komponen</span>
+    <h2 id="komp-h">Komponen portal</h2>
+    <p class="section__intro">Angka kontrak (Rp200.000.000, komisi Rp6.400.000 × 24, pengembalian bulan ke-16, 20, 24) berasal dari perjanjian. Angka penjualan, tanggal kalender, dan status pembayaran di halaman ini adalah <b>data contoh</b> untuk menunjukkan tampilan, bukan data Inzta.</p>
+  </div>
+
+  <h3 class="sub">Bar atas dan status data realtime</h3>
+  <div class="grid grid--2">
+    <div class="panel" style="padding:0;overflow:hidden">
+      <div class="appbar brand-stripe">
+        <div class="appbar__lead"><span class="mark mark--sm logo-bg" aria-hidden="true" style="width:26px;height:26px"></span><div class="appbar__id"><span class="appbar__brand">Portal Investor</span><span class="live"><span class="live__dot" aria-hidden="true"></span>Data langsung</span></div></div>
+        <button class="icon-btn" type="button" aria-label="Keluar"><svg class="icon"><use href="#i-logout"/></svg></button>
+      </div>
+    </div>
+    <div class="panel" style="padding:0;overflow:hidden">
+      <div class="appbar brand-stripe">
+        <div class="appbar__lead"><span class="mark mark--sm logo-bg" aria-hidden="true" style="width:26px;height:26px"></span><div class="appbar__id"><span class="appbar__brand">Portal Investor</span><span class="live live--off"><span class="live__dot" aria-hidden="true"></span>Terputus · data per 14.32</span></div></div>
+        <button class="icon-btn" type="button" aria-label="Keluar"><svg class="icon"><use href="#i-logout"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <p class="note">Titik hanya menandai status koneksi listener Firestore (hijau tersambung, cokelat terputus), tanpa animasi berdenyut. Teksnya selalu ada.</p>
+
+  <h3 class="sub">Chip status</h3>
+  <div class="panel" style="display:flex;flex-wrap:wrap;gap:8px">
+    <span class="chip chip--paid"><svg class="icon"><use href="#i-check"/></svg>Dibayar 25 Nov</span>
+    <span class="chip chip--now"><svg class="icon"><use href="#i-clock"/></svg>Jatuh tempo 25–26 Jan</span>
+    <span class="chip chip--upcoming"><svg class="icon"><use href="#i-calendar"/></svg>Akan datang</span>
+    <span class="chip chip--late"><svg class="icon"><use href="#i-alert"/></svg>Terlambat 3 hari</span>
+    <span class="chip chip--hold"><svg class="icon"><use href="#i-pause"/></svg>Ditangguhkan</span>
+    <span class="chip chip--unset"><svg class="icon"><use href="#i-dash"/></svg>Belum ditetapkan</span>
+  </div>
+  <p class="note">"Ditangguhkan" hanya dipakai bila diputuskan untuk masa Keadaan Memaksa (pertanyaan terbuka A-012).</p>
+
+  <h3 class="sub">Kartu komisi bulan ini (hero)</h3>
+  <div class="grid grid--2">
+    <div class="hero-card"><span class="hero-card__mark logo-bg" aria-hidden="true"></span>
+      <div class="card__row"><span class="card__label">Komisi bulan ke-3 · Jan 2027</span><span class="sample-flag">Contoh</span></div>
+      <span class="hero-card__value" id="heroValue">Rp6.400.000</span>
+      <div class="hero-card__foot"><span class="chip chip--now"><svg class="icon"><use href="#i-clock"/></svg>Jatuh tempo 25–26 Jan</span><span>3,2% × Rp200 jt, tetap 24 bulan</span></div>
+    </div>
+    <div class="hero-card"><span class="hero-card__mark logo-bg" aria-hidden="true"></span>
+      <div class="card__row"><span class="card__label">Komisi bulan ke-3 · Jan 2027</span><span class="sample-flag">Contoh</span></div>
+      <span class="hero-card__value">Rp6.400.000</span>
+      <div class="hero-card__foot"><span class="chip chip--paid"><svg class="icon"><use href="#i-check"/></svg>Dibayar 25 Jan</span><span>Bukti transfer dicatat admin</span></div>
+    </div>
+  </div>
+  <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+    <button class="btn btn--secondary" type="button" id="flashBtn">Simulasikan data berubah</button>
+    <span class="note" style="margin:0">Saat listener menerima perubahan, nilai diberi cincin oranye yang memudar dalam 1,4 detik. Dengan reduced motion tidak ada animasi; teks "Diperbarui" yang menandai.</span>
+  </div>
+
+  <h3 class="sub">Garis waktu 24 bulan</h3>
+  <div class="card">
+    <div class="card__row" style="margin-bottom:12px"><span class="card__title">Bulan ke-3 dari 24</span><span class="sample-flag">Contoh</span></div>
+    <div class="timeline" data-timeline data-now="3"></div>
+  </div>
+  <p class="note">Elemen identitas portal: satu sel per bulan perjanjian. Segitiga di bawah sel menandai jadwal pengembalian. Tahun pertama hanya komisi; tahun kedua komisi ditambah tiga pengembalian.</p>
+
+  <h3 class="sub">Stat dan meter</h3>
+  <div class="grid grid--2 grid--4">
+    <div class="card stat">
+      <span class="card__label">Dana sudah kembali</span>
+      <span class="stat__value">Rp0</span>
+      <div class="meter"><div class="meter__track"><div class="meter__fill" style="width:0%"></div></div><div class="meter__row"><span>0%</span><span>dari Rp200 jt</span></div></div>
+    </div>
+    <div class="card stat">
+      <div class="card__row"><span class="card__label">Komisi diterima</span><span class="sample-flag">Contoh</span></div>
+      <span class="stat__value">Rp12,8 jt</span>
+      <div class="meter"><div class="meter__track"><div class="meter__fill" style="width:8.33%"></div></div><div class="meter__row"><span>2 dari 24 bulan</span><span>Rp153,6 jt</span></div></div>
+    </div>
+    <div class="card stat">
+      <div class="card__row"><span class="card__label">Penjualan Des 2026</span><span class="sample-flag">Contoh</span></div>
+      <span class="stat__value">Rp66,8 jt</span>
+      <span class="stat__delta stat__delta--up"><svg class="icon icon--sm"><use href="#i-up"/></svg>8,6% dibanding Nov</span>
+    </div>
+    <div class="card stat stat--pending">
+      <span class="card__label">Margin kotor</span>
+      <span class="stat__value muted">Belum ditampilkan</span>
+      <span class="note" style="margin:0">Tampil hanya jika disetujui (A-006).</span>
+    </div>
+  </div>
+
+  <h3 class="sub">Jadwal komisi</h3>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="card__row" style="padding:14px 16px;border-bottom:1px solid var(--line)"><span class="card__title">Komisi per bulan</span><span class="sample-flag">Contoh</span></div>
+    <ul class="sched" data-schedule data-now="3" data-limit="6"></ul>
+  </div>
+
+  <h3 class="sub">Pengembalian dana</h3>
+  <div class="grid grid--2">
+    <div>
+      <p class="card__label" style="margin-bottom:8px">Sebelum admin mengisi nilai (kondisi awal yang sebenarnya)</p>
+      <div class="milestones" data-milestones></div>
+    </div>
+    <div>
+      <p class="card__label" style="margin-bottom:8px">Setelah diisi dari perjanjian, contoh 25 / 25 / 50%</p>
+      <div class="milestones" data-milestones data-split="2500,2500,5000"></div>
+    </div>
+  </div>
+  <p class="note">Persentase dan nominal setiap pengembalian diinput admin dari perjanjian yang ditulis tangan; totalnya 100% dari Rp200.000.000. Tidak ada angka bawaan di kode.</p>
+
+  <h3 class="sub">Tombol dan isian</h3>
+  <div class="grid grid--2">
+    <div class="panel" style="display:grid;gap:10px;align-content:start">
+      <button class="btn btn--primary btn--block" type="button">Masuk</button>
+      <button class="btn btn--secondary btn--block" type="button">Coba lagi</button>
+      <button class="btn btn--ghost" type="button"><svg class="icon icon--md"><use href="#i-table"/></svg>Lihat sebagai tabel</button>
+      <button class="btn btn--primary btn--block" type="button" disabled>Masuk</button>
+      <p class="note" style="margin:0">Portal hanya-baca, jadi tombol sangat sedikit: Masuk, Coba lagi, ganti tampilan tabel, Keluar. Tidak ada tombol unduh, ekspor, atau cetak.</p>
+    </div>
+    <div class="panel" style="display:grid;gap:14px;align-content:start">
+      <div class="field"><label for="f-user">Username</label><div class="field__control"><input id="f-user" placeholder="Username dari admin Inzta" autocomplete="username"></div></div>
+      <div class="field field--error"><label for="f-pass">Kata sandi</label><div class="field__control"><input id="f-pass" type="password" value="contohsandi" autocomplete="current-password"><button class="field__toggle" type="button" aria-label="Tampilkan kata sandi" data-toggle-pass="f-pass"><svg class="icon icon--md"><use href="#i-eye"/></svg></button></div><span class="field__msg"><svg class="icon icon--sm"><use href="#i-alert"/></svg>Username atau kata sandi salah.</span></div>
+    </div>
+  </div>
+
+  <h3 class="sub">Navigasi bawah</h3>
+  <div class="panel" style="padding:0;overflow:hidden;max-width:420px">
+    <nav class="tabbar" aria-label="Contoh navigasi bawah">
+      <a href="#komponen" aria-current="page"><svg class="icon"><use href="#i-home"/></svg>Ringkasan</a>
+      <a href="#grafik"><svg class="icon"><use href="#i-sales"/></svg>Penjualan</a>
+      <a href="#komponen"><svg class="icon"><use href="#i-commission"/></svg>Komisi</a>
+      <a href="#komponen"><svg class="icon"><use href="#i-return"/></svg>Pengembalian</a>
+    </nav>
+  </div>
+  <p class="note">Empat tujuan, label selalu tampil. Penanda aktif berupa garis tinta di atas, bukan warna aksen.</p>
+</section>
+
+<section class="section" id="grafik" aria-labelledby="grafik-h">
+  <div class="section__head">
+    <span class="section__kicker">09 · Grafik</span>
+    <h2 id="grafik-h">Penjualan per bulan, satu seri, satu sumbu</h2>
+    <p class="section__intro">Batang maks 24 px, ujung atas membulat 4 px, dasar rata. Semua batang oranye Inzta; bulan berjalan diarsir karena belum lengkap. Ketuk atau arahkan ke batang untuk melihat nilai; selalu ada tampilan tabel sebagai alternatif aksesibel.</p>
+  </div>
+  <div class="card">
+    <div class="chart-head">
+      <div><span class="card__title">Penjualan per bulan</span><p class="note" style="margin:2px 0 0">12 bulan terakhir · Jan 2027 berjalan, per 14 Jan</p></div>
+      <div class="seg" role="group" aria-label="Tampilan">
+        <button type="button" aria-pressed="true" data-view="chart">Grafik</button>
+        <button type="button" aria-pressed="false" data-view="table">Tabel</button>
+      </div>
+    </div>
+    <div data-chart-wrap>
+      <div class="chart" data-chart></div>
+      <div data-table hidden></div>
+    </div>
+    <div class="card__row" style="margin-top:8px"><span class="sample-flag">Data contoh</span><span class="legend"><span><i style="background:var(--hatch-now)"></i>Bulan berjalan, belum lengkap</span></span></div>
+  </div>
+  <div class="dodont" style="margin-top:12px">
+    <div class="do"><h3><svg class="icon icon--md"><use href="#i-check"/></svg>Lakukan</h3><ul><li>Judul grafik menyebut pertanyaannya: "Penjualan per bulan".</li><li>Label sumbu ringkas: 0, 25 jt, 50 jt.</li><li>Tandai bulan berjalan sebagai belum lengkap.</li><li>Sediakan tabel dengan angka lengkap.</li></ul></div>
+    <div class="dont"><h3><svg class="icon icon--md"><use href="#i-alert"/></svg>Hindari</h3><ul><li>Dua sumbu Y (misalnya penjualan dan margin di satu grafik).</li><li>Angka di atas setiap batang.</li><li>Donut untuk membandingkan bulan.</li><li>Gradien atau glow pada batang.</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="kondisi" aria-labelledby="kondisi-h">
+  <div class="section__head">
+    <span class="section__kicker">10 · Kondisi layar</span>
+    <h2 id="kondisi-h">Kosong, memuat, terputus, gagal</h2>
+    <p class="section__intro">Setiap kondisi menyebut penyebab dan langkah berikutnya. Investor tidak boleh menebak apakah angka sedang dimuat atau memang nol.</p>
+  </div>
+  <div class="grid grid--2">
+    <div class="state">
+      <span class="state__icon"><svg class="icon"><use href="#i-calendar"/></svg></span>
+      <span class="state__title">Belum ada penjualan bulan ini</span>
+      <span class="state__body">Penjualan akan muncul di sini begitu admin Inzta mencatat transaksi pertama di bulan Januari.</span>
+    </div>
+    <div class="state">
+      <span class="state__icon"><svg class="icon"><use href="#i-sales"/></svg></span>
+      <span class="state__title">Memuat penjualan 12 bulan…</span>
+      <div class="skeleton" aria-hidden="true"><i style="width:80%"></i><i style="width:60%"></i><i style="width:70%"></i></div>
+    </div>
+    <div class="state state--warn">
+      <span class="state__icon"><svg class="icon"><use href="#i-offline"/></svg></span>
+      <span class="state__title">Koneksi terputus</span>
+      <span class="state__body">Menampilkan data terakhir pukul 14.32 WIB. Angka akan diperbarui otomatis saat koneksi kembali.</span>
+    </div>
+    <div class="state state--bad">
+      <span class="state__icon"><svg class="icon"><use href="#i-alert"/></svg></span>
+      <span class="state__title">Data tidak bisa dimuat</span>
+      <span class="state__body">Server tidak merespons. Coba lagi beberapa saat; bila berlanjut, hubungi admin Inzta.</span>
+      <button class="btn btn--secondary" type="button">Coba lagi</button>
+    </div>
+  </div>
+  <div class="banner" style="margin-top:12px"><svg class="icon icon--md"><use href="#i-info"/></svg><span>Nominal pengembalian ke-2 dan ke-3 belum ditetapkan. Nilainya akan tampil setelah dicatat admin sesuai perjanjian.</span></div>
+</section>
+
+<section class="section" id="layar" aria-labelledby="layar-h">
+  <div class="section__head">
+    <span class="section__kicker">11 · Contoh layar</span>
+    <h2 id="layar-h">Lima layar di HP</h2>
+    <p class="section__intro">Komposisi komponen di lebar 390 px. Semua angka penjualan, tanggal, dan status adalah data contoh.</p>
+  </div>
+  <div class="phones">
+    <div class="phone-wrap">
+      <span class="phone-cap">1 · Ringkasan</span>
+      <div class="phone">
+        <div class="phone__status"><span>9.41</span><span>Contoh</span></div>
+        <div class="appbar brand-stripe"><div class="appbar__lead"><span class="mark mark--sm logo-bg" aria-hidden="true" style="width:26px;height:26px"></span><div class="appbar__id"><span class="appbar__brand">Portal Investor</span><span class="live"><span class="live__dot"></span>Data langsung</span></div></div><button class="icon-btn" type="button" aria-label="Keluar"><svg class="icon"><use href="#i-logout"/></svg></button></div>
+        <div class="phone__body">
+          <div class="phone__title"><h3>Ringkasan</h3><p>Bulan ke-3 dari 24 · Jan 2027</p></div>
+          <div class="hero-card"><span class="hero-card__mark logo-bg" aria-hidden="true"></span>
+            <span class="card__label">Komisi bulan ini</span>
+            <span class="hero-card__value">Rp6.400.000</span>
+            <div class="hero-card__foot"><span class="chip chip--now"><svg class="icon"><use href="#i-clock"/></svg>Jatuh tempo 25–26 Jan</span></div>
+          </div>
+          <div class="card"><div class="timeline" data-timeline data-now="3" data-compact></div></div>
+          <div class="grid" style="grid-template-columns:1fr 1fr">
+            <div class="card stat"><span class="card__label">Dana kembali</span><span class="stat__value" style="font-size:20px">Rp0</span><span class="note" style="margin:0">dari Rp200 jt</span></div>
+            <div class="card stat"><span class="card__label">Komisi diterima</span><span class="stat__value" style="font-size:20px">Rp12,8 jt</span><span class="note" style="margin:0">2 dari 24 bulan</span></div>
+          </div>
+          <div class="card stat">
+            <div class="card__row"><span class="card__label">Penjualan Des 2026</span><a class="link-row" href="#grafik">Penjualan<svg class="icon icon--sm"><use href="#i-right"/></svg></a></div>
+            <span class="stat__value">Rp66,8 jt</span>
+            <span class="stat__delta stat__delta--up"><svg class="icon icon--sm"><use href="#i-up"/></svg>8,6% dibanding Nov</span>
+          </div>
+        </div>
+        <nav class="tabbar" aria-label="Navigasi contoh"><a href="#layar" aria-current="page"><svg class="icon"><use href="#i-home"/></svg>Ringkasan</a><a href="#layar"><svg class="icon"><use href="#i-sales"/></svg>Penjualan</a><a href="#layar"><svg class="icon"><use href="#i-commission"/></svg>Komisi</a><a href="#layar"><svg class="icon"><use href="#i-return"/></svg>Pengembalian</a></nav>
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <span class="phone-cap">2 · Penjualan</span>
+      <div class="phone">
+        <div class="phone__status"><span>9.41</span><span>Contoh</span></div>
+        <div class="appbar brand-stripe"><div class="appbar__lead"><span class="mark mark--sm logo-bg" aria-hidden="true" style="width:26px;height:26px"></span><div class="appbar__id"><span class="appbar__brand">Portal Investor</span><span class="live"><span class="live__dot"></span>Data langsung</span></div></div><button class="icon-btn" type="button" aria-label="Keluar"><svg class="icon"><use href="#i-logout"/></svg></button></div>
+        <div class="phone__body">
+          <div class="phone__title"><h3>Penjualan</h3><p>Hasil penjualan per bulan</p></div>
+          <div class="card stat"><span class="card__label">Januari 2027, berjalan per 14 Jan</span><span class="stat__value">Rp24,3 jt</span></div>
+          <div class="card"><span class="card__title">Penjualan per bulan</span><div class="chart" data-chart data-mini style="margin-top:10px"></div></div>
+          <div class="card" style="padding:4px 16px"><div data-month-table></div></div>
+        </div>
+        <nav class="tabbar" aria-label="Navigasi contoh"><a href="#layar"><svg class="icon"><use href="#i-home"/></svg>Ringkasan</a><a href="#layar" aria-current="page"><svg class="icon"><use href="#i-sales"/></svg>Penjualan</a><a href="#layar"><svg class="icon"><use href="#i-commission"/></svg>Komisi</a><a href="#layar"><svg class="icon"><use href="#i-return"/></svg>Pengembalian</a></nav>
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <span class="phone-cap">3 · Komisi</span>
+      <div class="phone">
+        <div class="phone__status"><span>9.41</span><span>Contoh</span></div>
+        <div class="appbar brand-stripe"><div class="appbar__lead"><span class="mark mark--sm logo-bg" aria-hidden="true" style="width:26px;height:26px"></span><div class="appbar__id"><span class="appbar__brand">Portal Investor</span><span class="live"><span class="live__dot"></span>Data langsung</span></div></div><button class="icon-btn" type="button" aria-label="Keluar"><svg class="icon"><use href="#i-logout"/></svg></button></div>
+        <div class="phone__body">
+          <div class="phone__title"><h3>Komisi</h3><p>Rp6.400.000 per bulan selama 24 bulan</p></div>
+          <div class="card stat"><span class="card__label">Komisi diterima</span><span class="stat__value">Rp12.800.000</span><div class="meter"><div class="meter__track"><div class="meter__fill" style="width:8.33%"></div></div><div class="meter__row"><span>2 dari 24 bulan</span><span>Rp153.600.000</span></div></div></div>
+          <div class="card" style="padding:0;overflow:hidden"><ul class="sched" data-schedule data-now="3" data-limit="24"></ul></div>
+        </div>
+        <nav class="tabbar" aria-label="Navigasi contoh"><a href="#layar"><svg class="icon"><use href="#i-home"/></svg>Ringkasan</a><a href="#layar"><svg class="icon"><use href="#i-sales"/></svg>Penjualan</a><a href="#layar" aria-current="page"><svg class="icon"><use href="#i-commission"/></svg>Komisi</a><a href="#layar"><svg class="icon"><use href="#i-return"/></svg>Pengembalian</a></nav>
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <span class="phone-cap">4 · Pengembalian</span>
+      <div class="phone">
+        <div class="phone__status"><span>9.41</span><span>Contoh</span></div>
+        <div class="appbar brand-stripe"><div class="appbar__lead"><span class="mark mark--sm logo-bg" aria-hidden="true" style="width:26px;height:26px"></span><div class="appbar__id"><span class="appbar__brand">Portal Investor</span><span class="live"><span class="live__dot"></span>Data langsung</span></div></div><button class="icon-btn" type="button" aria-label="Keluar"><svg class="icon"><use href="#i-logout"/></svg></button></div>
+        <div class="phone__body">
+          <div class="phone__title"><h3>Pengembalian dana</h3><p>3 kali di tahun kedua</p></div>
+          <div class="card stat"><span class="card__label">Dana sudah kembali</span><span class="stat__value">Rp0</span><div class="meter"><div class="meter__track"><div class="meter__fill" style="width:0%"></div></div><div class="meter__row"><span>Sisa Rp200.000.000</span><span>0%</span></div></div></div>
+          <div class="milestones" data-milestones></div>
+          <div class="banner"><svg class="icon icon--md"><use href="#i-info"/></svg><span>Komisi tetap Rp6.400.000 per bulan walaupun sebagian dana sudah dikembalikan.</span></div>
+        </div>
+        <nav class="tabbar" aria-label="Navigasi contoh"><a href="#layar"><svg class="icon"><use href="#i-home"/></svg>Ringkasan</a><a href="#layar"><svg class="icon"><use href="#i-sales"/></svg>Penjualan</a><a href="#layar"><svg class="icon"><use href="#i-commission"/></svg>Komisi</a><a href="#layar" aria-current="page"><svg class="icon"><use href="#i-return"/></svg>Pengembalian</a></nav>
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <span class="phone-cap">5 · Masuk</span>
+      <div class="phone">
+        <div class="phone__status"><span>9.41</span><span>Contoh</span></div>
+        <div class="login"><div class="login__card">
+          <div style="display:grid;gap:8px">
+            <span class="wordmark"><span class="mark logo-bg" role="img" aria-label="Logo Inzta" style="width:32px;height:32px"></span><span class="wordmark__text"><span class="wordmark__brand">Portal Investor</span><span class="wordmark__product">PT Inzta Gear Indonesia</span></span></span>
+            <h3 class="t-title" style="margin-top:12px">Masuk ke portal</h3>
+            <p class="muted" style="font-size:14px">Gunakan akun khusus investor yang diberikan admin Inzta.</p>
+          </div>
+          <div style="display:grid;gap:14px">
+            <div class="field"><label for="m-user">Username</label><div class="field__control"><input id="m-user" placeholder="Username dari admin Inzta" autocomplete="username"></div></div>
+            <div class="field"><label for="m-pass">Kata sandi</label><div class="field__control"><input id="m-pass" type="password" autocomplete="current-password"><button class="field__toggle" type="button" aria-label="Tampilkan kata sandi" data-toggle-pass="m-pass"><svg class="icon icon--md"><use href="#i-eye"/></svg></button></div></div>
+            <button class="btn btn--primary btn--block" type="button">Masuk</button>
+          </div>
+          <p class="note" style="margin:0">Lupa kata sandi? Hubungi admin Inzta. Akses hanya untuk melihat; laporan bersifat rahasia.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="konten" aria-labelledby="konten-h">
+  <div class="section__head">
+    <span class="section__kicker">12 · Aturan konten</span>
+    <h2 id="konten-h">Bahasa, angka, dan tanggal</h2>
+  </div>
+  <div class="table-wrap">
+    <table class="spec-table">
+      <thead><tr><th>Hal</th><th>Aturan</th><th>Contoh</th></tr></thead>
+      <tbody>
+        <tr><td>Rupiah penuh</td><td>"Rp" menempel, titik pemisah ribuan, tanpa desimal</td><td class="num">Rp6.400.000</td></tr>
+        <tr><td>Rupiah ringkas</td><td>Untuk stat dan sumbu: jt atau M, satu desimal dengan koma</td><td class="num">Rp12,8 jt · Rp1,2 M</td></tr>
+        <tr><td>Persen</td><td>Koma desimal, tanpa spasi</td><td class="num">3,2% · 8,6%</td></tr>
+        <tr><td>Bulan perjanjian</td><td>"Bulan ke-n dari 24", ditambah nama bulan kalender bila sudah ada Tanggal Efektif</td><td>Bulan ke-3 dari 24 · Jan 2027</td></tr>
+        <tr><td>Tanggal</td><td>Hari, singkatan bulan Indonesia, tahun bila perlu</td><td>25 Jan 2027</td></tr>
+        <tr><td>Jam</td><td>Format 24 jam dengan titik dan zona waktu</td><td>14.32 WIB</td></tr>
+        <tr><td>Istilah</td><td>Komisi, Dana investasi, Pengembalian dana, Penjualan. Hindari istilah pasar modal (dividen, yield, ROI).</td><td>Pengembalian ke-1</td></tr>
+        <tr><td>Nilai kosong</td><td>"Belum ditetapkan" untuk nilai perjanjian, "Belum ada" untuk data operasional; tidak pernah Rp0 bila memang belum ada</td><td>Belum ditetapkan</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="dodont" style="margin-top:12px">
+    <div class="do"><h3><svg class="icon icon--md"><use href="#i-check"/></svg>Hanya lihat, sesuai permintaan Inzta</h3><ul><li>Tidak ada tombol unduh, ekspor, PDF, atau cetak.</li><li>Halaman disembunyikan saat dicetak (CSS <code>@media print</code>).</li><li>Tidak bisa ditanam di situs lain (<code>X-Frame-Options: DENY</code>) dan tidak diindeks mesin pencari.</li><li>Investor tidak melihat data per transaksi, pelanggan, reseller, atau harga modal.</li></ul></div>
+    <div class="dont"><h3><svg class="icon icon--md"><use href="#i-alert"/></svg>Batasan yang perlu disampaikan ke klien</h3><ul><li>Tangkapan layar dan foto layar tidak bisa dicegah oleh browser.</li><li>Teks tetap bisa dipilih demi aksesibilitas pembaca layar.</li><li>Kerahasiaan tetap bergantung pada kewajiban investor di perjanjian.</li></ul></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="doc-foot">
+  Sistem desain v0.1 untuk <code>inzta-investor-portal</code>. Token di halaman ini menjadi acuan <code>src/app/globals.css</code> saat fitur F-003 dibangun. Angka penjualan, tanggal, dan status pembayaran adalah data contoh.
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  // Sample calendar: month 1 of the agreement is shown as Nov 2026 until the real Effective Date is known (A-009).
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+  var START = { y: 2026, m: 10 };
+  var COMMISSION = 6400000;
+  var TOTAL = 200000000;
+  var REPAY_MONTHS = [16, 20, 24];
+
+  function calendarOf(n) {
+    var idx = START.m + (n - 1);
+    return { label: MONTHS[idx % 12], year: START.y + Math.floor(idx / 12) };
+  }
+  function rupiah(v) {
+    return "Rp" + String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+  function compact(v) {
+    if (v >= 1e9) return "Rp" + (v / 1e9).toFixed(1).replace(".", ",").replace(",0", "") + " M";
+    return "Rp" + (v / 1e6).toFixed(1).replace(".", ",").replace(",0", "") + " jt";
+  }
+  function icon(id, cls) {
+    return '<svg class="icon ' + (cls || "") + '" aria-hidden="true"><use href="#' + id + '"/></svg>';
+  }
+
+  // Theme toggle; storage can throw in private mode, so every access is guarded.
+  var root = document.documentElement;
+  var btn = document.getElementById("themeBtn");
+  function currentTheme() {
+    var set = root.getAttribute("data-theme");
+    if (set) return set;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function paintBtn() {
+    var dark = currentTheme() === "dark";
+    btn.innerHTML = icon(dark ? "i-sun" : "i-moon") + "<span>" + (dark ? "Tema terang" : "Tema gelap") + "</span>";
+  }
+  try { var saved = localStorage.getItem("inzta-ds-theme"); if (saved) root.setAttribute("data-theme", saved); } catch (e) {}
+  paintBtn();
+  btn.addEventListener("click", function () {
+    var next = currentTheme() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("inzta-ds-theme", next); } catch (e) {}
+    paintBtn();
+    renderCharts();
+  });
+
+  // 24-month timeline.
+  document.querySelectorAll("[data-timeline]").forEach(function (el) {
+    var now = Number(el.getAttribute("data-now"));
+    var compactMode = el.hasAttribute("data-compact");
+    var cells = "", axis = "";
+    for (var n = 1; n <= 24; n++) {
+      var cls = "timeline__cell";
+      if (n < now) cls += " timeline__cell--past";
+      if (n === now) cls += " timeline__cell--now";
+      if (REPAY_MONTHS.indexOf(n) > -1) cls += " timeline__cell--repay";
+      var c = calendarOf(n);
+      cells += '<div class="' + cls + '" title="Bulan ke-' + n + " · " + c.label + " " + c.year + '"></div>';
+      axis += "<span>" + ([1, 12, 16, 20, 24].indexOf(n) > -1 ? n : "") + "</span>";
+    }
+    el.innerHTML =
+      '<div class="timeline__cells" role="img" aria-label="Bulan ke-' + now + ' dari 24. Pengembalian dana di bulan ke-16, 20, dan 24.">' + cells + "</div>" +
+      '<div class="timeline__axis" aria-hidden="true">' + axis + "</div>" +
+      (compactMode ? "" : '<div class="timeline__years"><div>Tahun 1 · komisi saja</div><div>Tahun 2 · komisi + 3 pengembalian</div></div>') +
+      '<div class="legend"><span><i style="background:var(--brand-amber)"></i>Sudah lewat</span><span><i style="background:var(--hatch-now)"></i>Bulan ini</span><span><i style="background:var(--track)"></i>Akan datang</span>' +
+      (compactMode ? "" : '<span>▲ Jadwal pengembalian</span>') + "</div>";
+  });
+
+  // Commission schedule rows.
+  document.querySelectorAll("[data-schedule]").forEach(function (list) {
+    var now = Number(list.getAttribute("data-now"));
+    var limit = Number(list.getAttribute("data-limit"));
+    function row(n) {
+      var c = calendarOf(n);
+      var chip;
+      if (n < now) chip = '<span class="chip chip--paid">' + icon("i-check") + "Dibayar 25 " + c.label + "</span>";
+      else if (n === now) chip = '<span class="chip chip--now">' + icon("i-clock") + "Jatuh tempo</span>";
+      else chip = '<span class="chip chip--upcoming">' + icon("i-calendar") + "Akan datang</span>";
+      var extra = REPAY_MONTHS.indexOf(n) > -1
+        ? '<span class="sched__extra">' + icon("i-return", "icon--sm") + "Bersamaan pengembalian ke-" + (REPAY_MONTHS.indexOf(n) + 1) + "</span>"
+        : "";
+      return '<li class="sched__item' + (n === now ? " sched__item--now" : "") + '">' +
+        '<div class="sched__main"><span class="sched__month">Bulan ke-' + n + '</span><span class="sched__sub">25–26 ' + c.label + " " + c.year + "</span></div>" +
+        '<span class="sched__amount">' + rupiah(COMMISSION) + "</span>" +
+        '<span></span><span class="sched__chip">' + chip + "</span>" + extra + "</li>";
+    }
+    function render(count) {
+      var html = "";
+      for (var n = 1; n <= count; n++) html += row(n);
+      if (count < 24) html += '<li class="sched__more"><button class="btn btn--ghost" type="button" data-more>Tampilkan 24 bulan</button></li>';
+      list.innerHTML = html;
+      var more = list.querySelector("[data-more]");
+      if (more) more.addEventListener("click", function () { render(24); });
+    }
+    render(limit);
+  });
+
+  // Repayment milestones; amounts stay unset unless a split is supplied, mirroring admin-entered data.
+  document.querySelectorAll("[data-milestones]").forEach(function (el) {
+    var split = el.getAttribute("data-split");
+    var bps = split ? split.split(",").map(Number) : null;
+    el.innerHTML = REPAY_MONTHS.map(function (m, i) {
+      var c = calendarOf(m);
+      var amt = bps
+        ? "<b>" + rupiah(TOTAL * bps[i] / 10000) + '</b><span class="chip chip--upcoming">' + icon("i-calendar") + (bps[i] / 100).toString().replace(".", ",") + "%</span>"
+        : '<span class="chip chip--unset">' + icon("i-dash") + "Belum ditetapkan</span>";
+      return '<div class="milestone"><span class="milestone__n">' + (i + 1) + '</span>' +
+        '<div><div class="milestone__title">Pengembalian ke-' + (i + 1) + '</div><div class="milestone__sub">Bulan ke-' + m + " · " + c.label + " " + c.year + "</div></div>" +
+        '<div class="milestone__amt">' + amt + "</div></div>";
+    }).join("");
+  });
+
+  // Sample sales series, explicitly labelled as sample in the UI.
+  var SALES = [
+    ["Feb 26", 41200000], ["Mar 26", 38900000], ["Apr 26", 45600000], ["Mei 26", 52300000],
+    ["Jun 26", 47800000], ["Jul 26", 50100000], ["Agu 26", 55400000], ["Sep 26", 49700000],
+    ["Okt 26", 58200000], ["Nov 26", 61500000], ["Des 26", 66800000], ["Jan 27", 24300000]
+  ];
+  var NOW_INDEX = SALES.length - 1;
+
+  function css(name) { return getComputedStyle(root).getPropertyValue(name).trim(); }
+
+  function drawChart(host) {
+    var mini = host.hasAttribute("data-mini");
+    var width = Math.max(host.clientWidth, 260);
+    var height = mini ? 170 : 220;
+    var padL = 40, padR = 4, padT = 12, padB = 26;
+    var plotW = width - padL - padR, plotH = height - padT - padB;
+    var step = 25000000;
+    var max = Math.ceil(Math.max.apply(null, SALES.map(function (d) { return d[1]; })) / step) * step;
+    var band = plotW / SALES.length;
+    var barW = Math.min(24, band * 0.62);
+    var r = Math.min(4, barW / 2);
+    var base = padT + plotH;
+    // The running month is incomplete, so it is hatched in the same orange instead of getting a second hue.
+    var hatchId = "hatch-" + (host.dataset.uid || (host.dataset.uid = String(Math.random()).slice(2, 8)));
+    var orange = css("--chart-base");
+    var svg = '<svg viewBox="0 0 ' + width + " " + height + '" width="' + width + '" height="' + height + '" role="img" aria-label="Grafik batang penjualan per bulan, data contoh">' +
+      '<defs><pattern id="' + hatchId + '" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+      '<rect width="6" height="6" fill="' + orange + '" fill-opacity="0.3"/><rect width="3" height="6" fill="' + orange + '"/></pattern></defs>';
+    for (var t = 0; t <= max; t += step) {
+      var y = base - (t / max) * plotH;
+      svg += '<line x1="' + padL + '" x2="' + (width - padR) + '" y1="' + y + '" y2="' + y + '" stroke="' + css("--chart-grid") + '" stroke-width="1"/>';
+      svg += '<text class="chart__tick" x="' + (padL - 6) + '" y="' + (y + 4) + '" text-anchor="end">' + (t === 0 ? "0" : t / 1e6 + " jt") + "</text>";
+    }
+    SALES.forEach(function (d, i) {
+      var h = (d[1] / max) * plotH;
+      var x = padL + band * i + (band - barW) / 2;
+      var top = base - h;
+      var fill = i === NOW_INDEX ? "url(#" + hatchId + ")" : orange;
+      svg += '<path d="M' + x + "," + base + " V" + (top + r) + " a" + r + "," + r + " 0 0 1 " + r + "," + -r + " h" + (barW - 2 * r) + " a" + r + "," + r + " 0 0 1 " + r + "," + r + " V" + base + ' Z" fill="' + fill + '"/>';
+      var showLabel = mini ? (i % 3 === 2 || i === NOW_INDEX) : (i % 2 === 1 || i === NOW_INDEX);
+      if (showLabel) svg += '<text class="chart__tick" x="' + (padL + band * i + band / 2) + '" y="' + (height - 6) + '" text-anchor="middle">' + d[0].split(" ")[0] + "</text>";
+      svg += '<rect class="chart__hit" tabindex="0" data-i="' + i + '" x="' + (padL + band * i) + '" y="' + padT + '" width="' + band + '" height="' + plotH + '" aria-label="' + d[0] + ": " + rupiah(d[1]) + '"/>';
+    });
+    svg += "</svg>";
+    host.innerHTML = svg + '<div class="tooltip" role="status"></div>';
+    var tip = host.querySelector(".tooltip");
+    function show(e) {
+      var i = Number(e.target.getAttribute("data-i"));
+      var d = SALES[i];
+      var h = (d[1] / max) * plotH;
+      tip.innerHTML = d[0] + (i === NOW_INDEX ? " · berjalan" : "") + "<b>" + rupiah(d[1]) + "</b>";
+      var x = padL + band * i + band / 2;
+      x = Math.max(70, Math.min(width - 70, x));
+      tip.style.left = x + "px";
+      tip.style.top = (base - h) + "px";
+      tip.setAttribute("data-show", "true");
+    }
+    function hide() { tip.setAttribute("data-show", "false"); }
+    host.querySelectorAll(".chart__hit").forEach(function (hit) {
+      hit.addEventListener("pointerenter", show);
+      hit.addEventListener("click", show);
+      hit.addEventListener("focus", show);
+      hit.addEventListener("pointerleave", hide);
+      hit.addEventListener("blur", hide);
+    });
+  }
+
+  function tableHtml(desc) {
+    var rows = SALES.map(function (d, i) { return [d, i]; });
+    if (desc) rows.reverse();
+    return '<table class="data-table"><thead><tr><th>Bulan</th><th>Penjualan</th></tr></thead><tbody>' +
+      rows.map(function (p) {
+        var d = p[0], i = p[1];
+        return '<tr class="' + (i === NOW_INDEX ? "is-now" : "") + '"><td>' + d[0] + (i === NOW_INDEX ? " (berjalan)" : "") + "</td><td>" + rupiah(d[1]) + "</td></tr>";
+      }).join("") + "</tbody></table>";
+  }
+
+  function renderCharts() {
+    document.querySelectorAll("[data-chart]").forEach(drawChart);
+  }
+  renderCharts();
+  document.querySelectorAll("[data-month-table]").forEach(function (el) { el.innerHTML = tableHtml(true); });
+  var tableHost = document.querySelector("[data-table]");
+  tableHost.innerHTML = tableHtml(false);
+  document.querySelectorAll("[data-view]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var view = b.getAttribute("data-view");
+      document.querySelectorAll("[data-view]").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+      document.querySelector("[data-chart]").hidden = view !== "chart";
+      tableHost.hidden = view !== "table";
+    });
+  });
+  var resizeTimer;
+  window.addEventListener("resize", function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(renderCharts, 120); });
+
+  // Password visibility toggles.
+  document.querySelectorAll("[data-toggle-pass]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var input = document.getElementById(b.getAttribute("data-toggle-pass"));
+      var show = input.type === "password";
+      input.type = show ? "text" : "password";
+      b.setAttribute("aria-label", show ? "Sembunyikan kata sandi" : "Tampilkan kata sandi");
+    });
+  });
+
+  // Demonstrates the realtime update cue.
+  document.getElementById("flashBtn").addEventListener("click", function () {
+    var v = document.getElementById("heroValue");
+    v.classList.remove("flash");
+    void v.offsetWidth;
+    v.classList.add("flash");
+  });
+})();
+</script>
+</body>
+</html>

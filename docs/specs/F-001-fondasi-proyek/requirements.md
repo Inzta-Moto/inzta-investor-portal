@@ -51,7 +51,7 @@ The system shall membuat Firebase app hanya saat dipanggil, dari empat variabel 
 
 The system shall memformat nominal Rupiah bulat dengan pemisah titik dan spasi tak terputus, dan menolak pecahan.
 
-- AC-005: Given 4800000, when diformat, then hasilnya `Rp 4.800.000`; given 1.5, then RangeError.
+- AC-005: Given 6400000, when diformat, then hasilnya `Rp6.400.000` (simbol menempel, PUEBI; diubah 2026-10-21 mengikuti sistem desain); given 1.5, then RangeError.
 
 ### FR-004 — Hanya lihat
 

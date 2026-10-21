@@ -14,11 +14,12 @@ Task status belongs in each feature's `tasks.md`; `docs/context/state.yaml` and 
 
 | Feature ID | Feature | Spec path | Product priority | Lifecycle gate | Related milestone |
 |---|---|---|---|---|---|
-| `F-001` | fondasi proyek | `docs/specs/F-001-fondasi-proyek/` | P0 | approved | M1 |
-| `F-002` | akun investor dan gerbang role | belum dibuat | P0 | draft | M1 |
-| `F-003` | laporan penjualan bulanan | belum dibuat | P0 | draft | M1 |
-| `F-004` | komisi dan pengembalian dana | belum dibuat | P0 | draft | M2 |
-| `F-005` | rilis produksi `capital.inzta.id` | belum dibuat | P1 | draft | M2 |
+| `F-001` | fondasi proyek | `docs/specs/F-001-fondasi-proyek/` | P0 | implemented | M1 |
+| `F-002` | domain investasi dan data mock | `docs/specs/F-002-domain-data-mock/` | P0 | implemented | M1 |
+| `F-003` | tampilan portal investor | `docs/specs/F-003-tampilan-portal/` | P0 | implemented | M1 |
+| `F-004` | login mode demo | `docs/specs/F-004-login-demo/` | P0 | implemented | M1 |
+| `F-005` | rilis produksi `capital.inzta.id` | `docs/specs/F-005-rilis-produksi/` | P1 | draft | M2 |
+| `F-006` | integrasi Firebase (ditahan) | `docs/specs/F-006-integrasi-firebase/` | P0 | draft | M2 |
 
 ## Lifecycle gate meaning
 

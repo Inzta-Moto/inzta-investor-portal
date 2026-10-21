@@ -12,19 +12,19 @@ Strategic capability order, release intent, and dependency rationale. Not the ex
 
 ## Releases and milestones
 
-### M1 — Investor melihat penjualan bulanan
+### M1 — Portal lengkap dengan data mock
 
-- Outcome: investor login dan melihat hasil penjualan per bulan, realtime, tanpa akses ke data mentah.
-- Capabilities: F-001 fondasi proyek; F-002 akun investor dan gerbang role; F-003 laporan penjualan bulanan.
-- Dependencies: A-002 sampai A-007 terjawab; ADR-0002 diputuskan.
-- Excluded: komisi, pengembalian, deploy produksi.
-- Exit criteria: uji rules investor (allow dan deny) hijau di emulator; angka bulanan sama dengan dasbor internal untuk data contoh.
+- Outcome: klien bisa meninjau seluruh portal (Ringkasan, Penjualan, Komisi, Pengembalian, Masuk) di HP dan desktop dengan data contoh berlabel.
+- Capabilities: F-001 fondasi; F-002 domain dan data mock; F-003 tampilan portal; F-004 login mode demo.
+- Dependencies: tidak ada; Firebase ditahan klien (A-014).
+- Excluded: data nyata, Firebase Auth, deploy.
+- Exit criteria: lint, typecheck, test, build, validasi konteks hijau; pemeriksaan 360 px dan 1366 px.
 
-### M2 — Komisi, pengembalian, dan rilis
+### M2 — Data nyata dan rilis
 
-- Outcome: investor melihat rekap Komisi 24 bulan dan progres pengembalian; portal hidup di `capital.inzta.id`.
-- Capabilities: F-004 komisi dan pengembalian dana; F-005 rilis produksi.
-- Dependencies: A-008, A-009, A-011.
+- Outcome: portal membaca Firestore bersama secara realtime dan hidup di `capital.inzta.id`.
+- Capabilities: F-006 integrasi Firebase; F-005 rilis produksi.
+- Dependencies: A-003, A-004, A-011, paket Blaze, keputusan klien membuka integrasi.
 - Excluded: ekspor, notifikasi, akun investor kedua.
 - Exit criteria: Komisi 24 x Rp6.400.000 dan pengembalian dari input admin teruji; deploy disetujui pemilik.
 
@@ -33,10 +33,11 @@ Strategic capability order, release intent, and dependency rationale. Not the ex
 | Capability | Why now | Depends on | Intended milestone |
 |---|---|---|---|
 | F-001 fondasi proyek | prasyarat semua fitur | none | M1 |
-| F-002 akun investor | akun khusus investor (VN Raja) | F-001, A-003, A-004, A-005 | M1 |
-| F-003 laporan penjualan | kebutuhan utama investor (VN Raja) | F-002, A-002, A-006, A-007 | M1 |
-| F-004 komisi dan pengembalian | rekap Komisi flat dan pengembalian yang diinput admin; Komisi bulan pertama jatuh tempo tanggal 25 sampai 26 | F-002, A-008, A-009 | M2 |
-| F-005 rilis produksi | investor butuh URL tetap | F-003, F-004, A-011 | M2 |
+| F-002 domain dan data mock | aturan uang teruji tanpa Firebase | F-001 | M1 |
+| F-003 tampilan portal | kebutuhan utama investor (VN Raja), kartu sudah masuk | F-002 | M1 |
+| F-004 login mode demo | pratinjau tidak terbuka bebas | F-001 | M1 |
+| F-006 integrasi Firebase | data nyata realtime | A-003, A-004, keputusan klien | M2 |
+| F-005 rilis produksi | investor butuh URL tetap | F-006, A-011 | M2 |
 
 ## Roadmap changes
 
@@ -46,3 +47,4 @@ Material priority or scope changes with date and rationale. Task progress is nev
 |---|---|---|---|
 | 2026-10-21 | roadmap awal | VN Raja 2026-10-20 dan draf perjanjian | belum disetujui |
 | 2026-10-21 | Komisi flat Rp6.400.000 sejak bulan 1; nominal pengembalian diinput admin; dasbor bukan kewajiban kontrak | revisi aturan dari Sehan | Sehan |
+| 2026-10-21 | M1 memakai data mock; integrasi Firebase pindah ke M2 (F-006); fitur disusun ulang menjadi F-002 domain, F-003 tampilan, F-004 login demo | permintaan klien "pakai data mock dulu" | Sehan, lewat klien |

@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: cf09c5f80f3a56337dd01f274da984fd4a13e60f343775acb03fb54613cb6e32 -->
+source_hash: d86ee4c91ab8cf7913dce478defcba5b8560cbef509664c1cec44dd3b54fe6d4 -->
 
 # Brief
 
@@ -9,19 +9,15 @@ Inzta Investor Portal adalah portal daring hanya-baca untuk investor PT Inzta Ge
 Project `Inzta Investor Portal`, tier `full`. Rendered from sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
 
 ## Active
-Feature F-001 — Fondasi proyek (`verification`, docs/specs/F-001-fondasi-proyek/)
-Task T-003 — Verifikasi fondasi dan konteks SDD (`review`); requirements: FR-001, FR-002, FR-003, FR-004; depends on: T-001, T-002
+Feature F-002 — Domain investasi dan data mock (`implementing`, docs/specs/F-002-domain-data-mock/)
+Task T-001 — Kalender perjanjian dan jadwal komisi (`in_progress`); requirements: FR-001, FR-003; depends on: none
 
-Jalankan semua perintah di `docs/steering/tech.md`, catat evidence, perbarui handoff.
+`calendar.ts`, `commission.ts` dan test. AC-001 sampai AC-004, AC-009.
 
 Acceptance criteria:
-- AC-001: Given build produksi, when `npm run build` selesai, then rute `/` dirender statis tanpa variabel Firebase.
-- AC-002: Given respons halaman mana pun, when diperiksa, then terdapat meta `robots` `noindex, nofollow` dan header `X-Robots-Tag: noindex, nofollow`.
-- AC-003: Given semua variabel terisi, when konfigurasi dibaca, then hasilnya berisi `apiKey`, `authDomain`, `projectId`, `appId`.
-- AC-004: Given variabel kosong atau spasi, when konfigurasi dibaca, then hasilnya gagal dan mencantumkan setiap nama variabel yang kosong.
-- AC-005: Given 4800000, when diformat, then hasilnya `Rp 4.800.000`; given 1.5, then RangeError.
-- AC-006: Given respons halaman, when diperiksa, then header `X-Frame-Options: DENY` ada.
-- AC-007: Given media cetak, when stylesheet diterapkan, then `body` bernilai `display: none`.
+- AC-001: Given Dana Investasi Rp200.000.000 dan tarif 320 basis poin, then komisi per bulan Rp6.400.000 dan total Rp153.600.000.
+- AC-004: Given Tanggal Efektif kosong, then jadwal tetap 24 baris tanpa tanggal dan semua berstatus Akan datang.
+- AC-009: Given Tanggal Efektif 2026-11-10 dan hari ini 2027-01-14, then bulan berjalan = 2; sebelum Desember 2026 = 0; setelah November 2028 = selesai.
 
 ## Rules
 Stop conditions:
@@ -53,10 +49,17 @@ Next step:
 Kirim pertanyaan A-002 sampai A-012 ke Raja; setelah dijawab, putuskan ADR-0002 dan tulis spec F-002 (akun investor) dari `docs/specs/_templates/`. Verifikasi: `npm run context:validate`.
 
 ## Other open tasks
-- T-001 — Kerangka Next.js, Tailwind, ESLint, halaman placeholder (`review`)
-- T-002 — Konfigurasi Firebase lazy dan format Rupiah (`review`)
+- T-002 — Jadwal pengembalian (`planned`)
+- T-003 — Penjualan bulanan dan format ringkas (`planned`)
+- T-004 — Kontrak sumber data, adaptor mock, portfolio (`planned`)
+- T-005 — Verifikasi (`planned`)
 
 ## Features
 | Feature | Status | Phase | Done/Total |
 |---|---|---|---|
 | F-001 Fondasi proyek | verification | in_progress | 0/3 |
+| F-002 Domain investasi dan data mock | implementing | in_progress | 0/5 |
+| F-003 Tampilan portal investor | implementing | not_started | 0/5 |
+| F-004 Login mode demo | implementing | not_started | 0/2 |
+| F-005 Rilis produksi capital.inzta.id | draft | blocked | 0/2 |
+| F-006 Integrasi Firebase (ditahan) | draft | blocked | 0/5 |
