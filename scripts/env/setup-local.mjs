@@ -6,10 +6,10 @@
 //   npm run env:setup -- --service-account C:\path\to\inzta-5244e-key.json
 import { randomBytes } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { createInterface } from "node:readline";
 
 import { hashPassword } from "../../src/lib/auth/investor-credentials.ts";
 import { removeKeys, upsertEnv } from "./env-file.mjs";
+import { createPrompter } from "./prompt.mjs";
 
 const ENV_FILE = ".env.local";
 // Variables from the mock era (ADR-0004, ADR-0005) that the app no longer reads; DEMO_INVESTOR_PASSWORD is plain text.
@@ -29,7 +29,13 @@ function argValue(name) {
 }
 
 function readServiceAccount(path) {
-  const key = JSON.parse(readFileSync(path, "utf8"));
+  let key;
+  try {
+    key = JSON.parse(readFileSync(path, "utf8"));
+  } catch {
+    // The parser's own message quotes the file, which would print part of the private key.
+    throw new Error("Berkas kunci tidak bisa dibaca sebagai JSON; unduh ulang dari Firebase Console.");
+  }
   if (key.type !== "service_account" || !key.client_email || !key.private_key) {
     throw new Error("Berkas itu bukan kunci service account Firebase (JSON dari Project settings, Service accounts).");
   }
@@ -38,38 +44,27 @@ function readServiceAccount(path) {
   return { projectId: key.project_id, clientEmail: key.client_email, privateKey: key.private_key };
 }
 
-// Reads one line per prompt from a terminal or a pipe; readline/promises loses piped lines between questions.
-async function askAll(prompts) {
-  const rl = createInterface({ input: process.stdin, output: process.stderr, terminal: Boolean(process.stdin.isTTY) });
-  const lines = rl[Symbol.asyncIterator]();
-  const answers = [];
-  for (const prompt of prompts) {
-    process.stderr.write(prompt);
-    const { value, done } = await lines.next();
-    answers.push(done ? "" : value);
-  }
-  rl.close();
-  return answers;
-}
-
 const keyPath = argValue("--service-account");
 const serviceAccount = keyPath ? readServiceAccount(keyPath) : null;
 
-const [typedUsername, password] = await askAll(["Username investor [investor@inzta.id]: ", "Kata sandi investor: "]);
-const username = typedUsername.trim() || "investor@inzta.id";
+const prompter = createPrompter();
+const username = (await prompter.ask("Username investor [investor@inzta.id]: ")).trim() || "investor@inzta.id";
+const password = await prompter.ask("Kata sandi investor: ", { hidden: true });
+prompter.close();
 if (password.length < 8) {
   console.error("Kata sandi minimal 8 karakter.");
   process.exit(1);
 }
 
 const original = existsSync(ENV_FILE) ? readFileSync(ENV_FILE, "utf8") : "";
-const existingSecret = /^\s*SESSION_SECRET\s*=\s*"?([^"\r\n]*)"?\s*$/m.exec(original)?.[1] ?? "";
+// Only a plain token is reused; anything with quotes, escapes, or "$" is replaced rather than re-escaped on every run.
+const existingSecret = /^\s*SESSION_SECRET\s*=\s*"?([A-Za-z0-9+/=_-]{32,})"?\s*$/m.exec(original)?.[1] ?? "";
 
 const values = {
   INVESTOR_USERNAME: username,
   INVESTOR_PASSWORD_HASH: hashPassword(password),
   // An existing strong secret is kept so devices already signed in stay signed in.
-  SESSION_SECRET: existingSecret.length >= 32 ? existingSecret : randomBytes(32).toString("hex"),
+  SESSION_SECRET: existingSecret || randomBytes(32).toString("hex"),
 };
 if (serviceAccount) {
   values.FIREBASE_PROJECT_ID = serviceAccount.projectId;

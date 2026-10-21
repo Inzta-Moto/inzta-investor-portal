@@ -75,12 +75,22 @@ export function createFirestoreSource(db: Firestore) {
     // No document yet is normal before signing: the contract terms carry the portal until the admin adds the dates.
     const agreement = toAgreement(agreementSnap.exists ? agreementSnap.data() : undefined);
     const payments: Payment[] = [];
-    const warnings: string[] = [...agreement.warnings];
+    const warnings: string[] = [];
+    // The investor sees a plain sentence; the field names and document ids go to the server log for the admin.
+    if (agreement.invalidFields.length) {
+      console.warn(`investor_agreement/current: invalid ${agreement.invalidFields.join(", ")}; using the contract terms.`);
+      warnings.push("Sebagian data perjanjian belum terbaca dengan benar, jadi portal memakai ketentuan perjanjian sampai admin Inzta memperbaikinya.");
+    }
+    let skippedPayments = 0;
     for (const doc of paymentsSnap.docs) {
       const mapped = toPayment(doc.id, doc.data());
       if (mapped.ok) payments.push(mapped.value);
-      else warnings.push(mapped.reason);
+      else {
+        console.warn(mapped.reason);
+        skippedPayments += 1;
+      }
     }
+    if (skippedPayments) warnings.push(`${skippedPayments} catatan pembayaran belum terbaca dan belum dihitung. Hubungi admin Inzta bila angka terasa kurang.`);
     return { agreement: agreement.value, payments, warnings };
   }
 

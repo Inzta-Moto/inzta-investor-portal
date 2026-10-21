@@ -26,14 +26,14 @@ function basisPointsOrNull(value: unknown): number | null | undefined {
 
 /**
  * Fields the admin filled override the contract terms; a missing field keeps the contract value, and a malformed one
- * keeps it too with a warning, so a typo in the Console never takes the portal down or invents a number.
+ * keeps it too and is listed in invalidFields, so a typo in the Console never takes the portal down or invents a number.
  */
-export function toAgreement(data: Data | undefined): { value: Agreement; warnings: string[] } {
+export function toAgreement(data: Data | undefined): { value: Agreement; invalidFields: string[] } {
   const value: Agreement = structuredClone(CONTRACT_TERMS);
-  const warnings: string[] = [];
-  if (!data) return { value, warnings };
+  const invalidFields: string[] = [];
+  if (!data) return { value, invalidFields };
   const present = (field: string) => data[field] !== undefined && data[field] !== null;
-  const reject = (field: string) => warnings.push(`investor_agreement/current: ${field} tidak valid, memakai ketentuan perjanjian.`);
+  const reject = (field: string) => invalidFields.push(field);
 
   const effectiveDate = isoOrNull(data.effectiveDate);
   if (effectiveDate === undefined) reject("effectiveDate");
@@ -76,11 +76,13 @@ export function toAgreement(data: Data | undefined): { value: Agreement; warning
       if (dueMonth === null || percentBasisPoints === undefined) break;
       repayments.push({ number: (index + 1) as 1 | 2 | 3, dueMonth, percentBasisPoints });
     }
-    if (raw?.length === 3 && repayments.length === 3) value.repayments = repayments;
-    else reject("repayments (harus tepat 3)");
+    // Rows are numbered by position, so the due months must rise; a reordered or repeated row would mislabel an installment.
+    const rising = repayments.every((item, index) => index === 0 || item.dueMonth > repayments[index - 1].dueMonth);
+    if (raw?.length === 3 && repayments.length === 3 && rising) value.repayments = repayments;
+    else reject("repayments");
   }
 
-  return { value, warnings };
+  return { value, invalidFields };
 }
 
 export function toPayment(id: string, data: Data): Mapped<Payment> {

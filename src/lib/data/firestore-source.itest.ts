@@ -89,12 +89,14 @@ test("F-006: a payment recorded by the admin appears after the 25-second cache",
 });
 
 test("F-006: without an agreement document the portal runs on the contract terms and real sales", async () => {
+  const withAgreement = await createFirestoreSource(db).getSnapshot(TODAY, 0);
   await db.doc("investor_agreement/current").delete();
   const snapshot = await createFirestoreSource(db).getSnapshot(TODAY, 0);
   const portfolio = buildPortfolio(snapshot, TODAY);
   assert.deepEqual(portfolio.phase, { kind: "unsigned" });
   assert.equal(portfolio.commission.totals.perMonth, 6_400_000);
-  // Earlier tests add sales to this month, so the check is that real sales still come through, not an exact sum.
-  assert.ok((snapshot.monthlySales.find((m) => m.month === fx.current)?.revenue ?? 0) >= 3 * 295000 + 165000);
+  // Sales do not depend on the agreement: the same months and totals as a moment earlier, with the document present.
+  assert.deepEqual(snapshot.monthlySales, withAgreement.monthlySales);
+  assert.ok((snapshot.monthlySales.find((m) => m.month === fx.current)?.revenue ?? 0) > 0);
   await db.doc("investor_agreement/current").set(fx.agreement);
 });
