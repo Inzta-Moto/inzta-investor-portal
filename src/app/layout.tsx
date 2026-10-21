@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { cookies } from "next/headers";
+
+import { THEME_COOKIE, parseTheme } from "@/lib/theme";
 
 import "./globals.css";
 
@@ -24,9 +27,11 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // A stored choice is rendered on the server so the page never flashes the other theme before hydration.
+  const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
   return (
-    <html lang="id" className={jakarta.variable}>
+    <html lang="id" className={jakarta.variable} data-theme={theme ?? undefined}>
       <body className="min-h-dvh bg-bg font-sans text-[14px] leading-normal lg:text-[15px] text-ink antialiased">{children}</body>
     </html>
   );

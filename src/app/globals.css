@@ -29,8 +29,36 @@
   --c-track: #e7e5e4;
 }
 
+/* Dark tokens apply when the investor picks "Gelap" (cookie, data-theme on <html>) or, with no choice stored, when the
+   device is dark. The two blocks must stay identical; src/lib/theme.test.ts compares them. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-bg: #0c0a09;
+  --c-surface: #1c1917;
+  --c-surface-sunk: #151311;
+  --c-line: #292524;
+  --c-line-strong: #44403c;
+  --c-ink: #f5f5f4;
+  --c-ink-2: #d6d3d1;
+  --c-ink-3: #a8a29e;
+  --c-solid: #f59e0b;
+  --c-on-solid: #1a1a1a;
+  --c-hero: #1a1a1a;
+  --c-hero-border: #44403c;
+  --c-nav-active: #f59e0b;
+  --c-nav-active-icon: #1a1a1a;
+  --c-nav-active-text: #1a1a1a;
+  --c-good: #4ade80;
+  --c-good-soft: #052e16;
+  --c-warn: #fbbf24;
+  --c-warn-soft: #422006;
+  --c-bad: #f87171;
+  --c-bad-soft: #450a0a;
+  --c-track: #292524;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
     --c-bg: #0c0a09;
     --c-surface: #1c1917;

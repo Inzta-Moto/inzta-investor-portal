@@ -1,10 +1,13 @@
+import { cookies } from "next/headers";
 import { Suspense, type ReactNode } from "react";
 
 import { signOut } from "@/app/masuk/actions";
+import { THEME_COOKIE, parseTheme } from "@/lib/theme";
 
 import { LogoutIcon } from "../icons";
 import { LogoMark } from "./logo-mark";
 import { BottomNav, SidebarNav } from "./nav-links";
+import { ThemeToggle } from "./theme-toggle";
 
 function SignOutButton({ compact }: { compact?: boolean }) {
   return (
@@ -26,7 +29,8 @@ function SignOutButton({ compact }: { compact?: boolean }) {
   );
 }
 
-export function AppShell({ children }: { children: ReactNode }) {
+export async function AppShell({ children }: { children: ReactNode }) {
+  const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
   return (
     <div className="flex min-h-dvh flex-col lg:flex-row">
       <aside className="sticky top-0 hidden h-dvh w-62 shrink-0 flex-col border-r border-line bg-surface lg:flex">
@@ -47,6 +51,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <p className="text-[13px] font-bold">Akun investor</p>
             <p className="text-xs text-ink-3">Hanya lihat</p>
           </div>
+          <ThemeToggle initial={theme} variant="segmented" />
           <SignOutButton />
         </div>
       </aside>
@@ -58,11 +63,13 @@ export function AppShell({ children }: { children: ReactNode }) {
             <p className="text-[15px] font-bold">Portal Investor</p>
           </div>
           <p className="hidden text-sm text-ink-3 lg:block">Laporan investasi PT Inzta Gear Indonesia · tas motor dan riding gear InztaMoto</p>
-          <div className="lg:hidden">
+          <div className="flex items-center gap-1 lg:hidden">
+            <ThemeToggle initial={theme} variant="icon" />
             <SignOutButton compact />
           </div>
         </header>
-        <main className="mx-auto grid w-full grid-cols-1 max-w-[1180px] flex-1 content-start gap-3 px-4 pt-4 pb-24 lg:gap-4 lg:px-8 lg:pt-7 lg:pb-12">{children}</main>
+        {/* Full width beside the sidebar at the client's request; the 12-column grids inside scale the cards with it. */}
+        <main className="grid w-full grid-cols-1 flex-1 content-start gap-3 px-4 pt-4 pb-24 lg:gap-4 lg:px-8 lg:pt-7 lg:pb-12">{children}</main>
       </div>
       <Suspense>
         <BottomNav />
