@@ -67,7 +67,7 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
               type="button"
               aria-pressed={view === mode}
               onClick={() => setView(mode)}
-              className={`min-h-10 rounded-md px-3.5 text-[13px] font-semibold ${view === mode ? "bg-surface text-ink shadow-sm" : "text-ink-2"}`}
+              className={`min-h-11 rounded-md px-3.5 text-[13px] font-semibold ${view === mode ? "bg-surface text-ink shadow-sm" : "text-ink-2"}`}
             >
               {mode === "chart" ? "Grafik" : "Tabel"}
             </button>
