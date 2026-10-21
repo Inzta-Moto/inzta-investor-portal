@@ -1,10 +1,10 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: afc464ebd34af9e0a39662b0ba5d12eb62863fce08f3ab0497269ae9b7ec5a93 -->
+source_hash: c9017110ace6120b0eb98917d7cb82d5517a2eff3d477dbb4ee782681cd11074 -->
 
 # Project State
 
-- Generated at: 2026-10-21T07:38:53.381Z
+- Generated at: 2026-10-21T08:27:38.718Z
 - Project: Inzta Investor Portal (tier `full`)
 - Active: F-006 / T-006
 - Open assumptions: 2
@@ -20,19 +20,21 @@ source_hash: afc464ebd34af9e0a39662b0ba5d12eb62863fce08f3ab0497269ae9b7ec5a93 --
 | F-004 Login mode demo | implemented | complete | 0 | 0 | 0 | 0 | 2 | 0 |
 | F-005 Rilis produksi capital.inzta.id | draft | blocked | 0 | 0 | 2 | 0 | 0 | 0 |
 | F-006 Integrasi Firestore lewat server | verification | blocked | 0 | 0 | 1 | 0 | 6 | 0 |
+| F-007 Filter bulan dan tahun di Penjualan | implemented | complete | 0 | 0 | 0 | 0 | 2 | 0 |
+| F-008 Pilihan tema dan konten desktop lebar penuh | implemented | complete | 0 | 0 | 0 | 0 | 2 | 0 |
 
 <!-- GENERATED:GIT_FACTS:START -->
 ## Git
 
 - Branch: `main`
-- HEAD: `dfd84a6`
+- HEAD: `775af38`
 - Worktree: dirty
 
 Recent commits:
 
+- `775af38 feat(F-007): month and year filter for the Penjualan chart and table`
+- `082e011 feat(F-003): light and dark theme choice, full-width desktop content`
+- `166e75e docs(F-006): record that monthly totals match the ERP dashboard`
 - `dfd84a6 docs(F-006,F-003): database-inzta, contract-terms fallback, UI audit evidence`
 - `fad9e3c fix(F-006): audit fixes for agreement warnings and the env scripts`
-- `8aa2e87 fix(F-003): pair the finished-month sales cards and align their rows`
-- `7d41a42 fix(F-003): chart view toggle at the 44px touch target`
-- `2d13a6b fix(F-003): mobile type scale and layout bugs found in a full screen audit`
 <!-- GENERATED:GIT_FACTS:END -->

@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: afc464ebd34af9e0a39662b0ba5d12eb62863fce08f3ab0497269ae9b7ec5a93 -->
+source_hash: c9017110ace6120b0eb98917d7cb82d5517a2eff3d477dbb4ee782681cd11074 -->
 
 # Project Progress
 
@@ -59,3 +59,17 @@ source_hash: afc464ebd34af9e0a39662b0ba5d12eb62863fce08f3ab0497269ae9b7ec5a93 --
 | T-005 Hapus mock dan akun demo | done | FR-005 | T-002, T-004 | EV-001, EV-004 |
 | T-006 Sambungkan ke produksi | blocked | FR-001, FR-002, FR-004 | T-001, T-002, T-003, T-004, T-005 |  |
 | T-007 Jalan tanpa dokumen perjanjian | done | FR-002 | T-002 | EV-005, EV-006 |
+
+## F-007 — Filter bulan dan tahun di Penjualan (`implemented`, complete)
+
+| Task | Status | Requirements | Depends on | Evidence |
+|---|---|---|---|---|
+| T-001 Logika filter dan data bulan apa pun | done | FR-001, FR-002, FR-003 |  | EV-001 |
+| T-002 Kontrol filter dan sorotan grafik | done | FR-001, FR-002 | T-001 | EV-002 |
+
+## F-008 — Pilihan tema dan konten desktop lebar penuh (`implemented`, complete)
+
+| Task | Status | Requirements | Depends on | Evidence |
+|---|---|---|---|---|
+| T-001 Pilihan tema | done | FR-001 |  | EV-001 |
+| T-002 Konten desktop lebar penuh | done | FR-002 |  | EV-002 |

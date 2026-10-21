@@ -319,6 +319,54 @@ features:
         evidence:
           - EV-005
           - EV-006
+  - id: F-007
+    title: Filter bulan dan tahun di Penjualan
+    status: implemented
+    phase: complete
+    spec_path: docs/specs/F-007-filter-penjualan
+    tasks:
+      - id: T-001
+        title: Logika filter dan data bulan apa pun
+        status: done
+        requirements:
+          - FR-001
+          - FR-002
+          - FR-003
+        depends_on: []
+        evidence:
+          - EV-001
+      - id: T-002
+        title: Kontrol filter dan sorotan grafik
+        status: done
+        requirements:
+          - FR-001
+          - FR-002
+        depends_on:
+          - T-001
+        evidence:
+          - EV-002
+  - id: F-008
+    title: Pilihan tema dan konten desktop lebar penuh
+    status: implemented
+    phase: complete
+    spec_path: docs/specs/F-008-tema-dan-lebar
+    tasks:
+      - id: T-001
+        title: Pilihan tema
+        status: done
+        requirements:
+          - FR-001
+        depends_on: []
+        evidence:
+          - EV-001
+      - id: T-002
+        title: Konten desktop lebar penuh
+        status: done
+        requirements:
+          - FR-002
+        depends_on: []
+        evidence:
+          - EV-002
 active:
   feature_id: F-006
   task_id: T-006
@@ -339,5 +387,5 @@ blockers:
   - feature_id: F-006
     task_id: T-006
     title: Sambungkan ke produksi
-generated_at: 2026-10-21T07:38:53.381Z
-source_hash: afc464ebd34af9e0a39662b0ba5d12eb62863fce08f3ab0497269ae9b7ec5a93
+generated_at: 2026-10-21T08:27:38.718Z
+source_hash: c9017110ace6120b0eb98917d7cb82d5517a2eff3d477dbb4ee782681cd11074

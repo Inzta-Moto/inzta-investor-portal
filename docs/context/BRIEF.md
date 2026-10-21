@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: afc464ebd34af9e0a39662b0ba5d12eb62863fce08f3ab0497269ae9b7ec5a93 -->
+source_hash: c9017110ace6120b0eb98917d7cb82d5517a2eff3d477dbb4ee782681cd11074 -->
 
 # Brief
 
@@ -63,3 +63,5 @@ None.
 | F-004 Login mode demo | implemented | complete | 2/2 |
 | F-005 Rilis produksi capital.inzta.id | draft | blocked | 0/2 |
 | F-006 Integrasi Firestore lewat server | verification | blocked | 6/7 |
+| F-007 Filter bulan dan tahun di Penjualan | implemented | complete | 2/2 |
+| F-008 Pilihan tema dan konten desktop lebar penuh | implemented | complete | 2/2 |

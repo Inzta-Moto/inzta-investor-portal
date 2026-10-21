@@ -4,7 +4,7 @@ owner: "VXerys"
 session_date: "2026-10-21"
 branch: "main"
 base_commit: "5d6ab26"
-current_commit: "fad9e3c"
+current_commit: "775af38"
 feature_id: "F-006"
 task_id: "T-006"
 expires_after: "2026-11-04"
@@ -25,6 +25,8 @@ ADR-0001, ADR-0003, ADR-0004, ADR-0006; aturan `getSaleRevenue` dan format tangg
 - F-006: server membaca Firestore `database-inzta` (dasbor ERP) dengan proyeksi empat kolom; portal jalan tanpa dokumen perjanjian memakai ketentuan draf (T-007); `npm run env:setup` mengisi `.env.local` dari berkas kunci tanpa menampilkan nilai.
 - F-003: semua garis warna dekoratif diganti; skala teks HP lebih kecil; bug sidebar terpotong (tabel sr-only), grafik melebar setelah resize, kartu Pengembalian meluber di 320 px, dan kartu Penjualan tidak sejajar diperbaiki (T-007).
 - Dua audit code-review: 10 dan 8 temuan, semuanya diperbaiki.
+- F-007: filter bulan dan tahun di Penjualan (`?tahun=&bulan=`). F-008: pilihan tema Terang/Gelap (cookie `inzta_theme`) dan konten desktop lebar penuh.
+- Repo dipindah sengaja ke `Inzta-Moto/inzta-investor-portal`; Angkasa memasang domain dan hosting dari repo itu.
 
 ## Requirement coverage
 

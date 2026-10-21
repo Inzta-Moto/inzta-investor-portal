@@ -20,6 +20,8 @@ Task status belongs in each feature's `tasks.md`; `docs/context/state.yaml` and 
 | `F-004` | login mode demo | `docs/specs/F-004-login-demo/` | P0 | implemented | M1 |
 | `F-005` | rilis produksi `capital.inzta.id` | `docs/specs/F-005-rilis-produksi/` | P1 | draft | M2 |
 | `F-006` | integrasi Firestore lewat server | `docs/specs/F-006-integrasi-firebase/` | P0 | approved | M2 |
+| `F-007` | filter bulan dan tahun di Penjualan | `docs/specs/F-007-filter-penjualan/` | P1 | implemented | M2 |
+| `F-008` | pilihan tema dan konten desktop lebar penuh | `docs/specs/F-008-tema-dan-lebar/` | P2 | implemented | M2 |
 
 ## Lifecycle gate meaning
 

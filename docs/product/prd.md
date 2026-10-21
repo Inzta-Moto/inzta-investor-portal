@@ -103,6 +103,8 @@ PT Inzta Gear Indonesia memproduksi dan menjual tas serta perlengkapan berkendar
 | F-004 | login mode demo | FR-001, sesi bertanda tangan | F-001 | implemented |
 | F-005 | rilis produksi | `capital.inzta.id` | F-003, F-004, A-011 | draft |
 | F-006 | integrasi Firestore lewat server | data nyata, proyeksi kolom `sales`, login milik portal, tanpa mock (ADR-0006) | A-016 untuk produksi | verification |
+| F-007 | filter bulan dan tahun | grafik dan tabel Penjualan per periode (permintaan klien) | F-006 | implemented |
+| F-008 | tema dan lebar penuh | pilihan terang/gelap, konten desktop memenuhi layar | F-003 | implemented |
 
 ## Approval
 
