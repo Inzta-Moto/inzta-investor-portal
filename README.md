@@ -33,12 +33,18 @@ Buka http://localhost:3300. Di `npm run dev`, bila ketiga variabel login kosong,
 
 ## Variabel lingkungan
 
-Daftar ada di `.env.example`; nilainya diisi pemilik di `.env.local` dan secret hosting.
+Cara termudah mengisi `.env.local`: simpan kunci service account (JSON dari Firebase Console, Project settings, Service accounts) **di luar folder proyek**, lalu jalankan:
+
+```bash
+npm run env:setup -- --service-account D:/keys/inzta-5244e-admin.json
+```
+
+Skrip menanyakan username dan kata sandi, menulis hash, membuat `SESSION_SECRET`, mengisi kunci service account, dan tidak pernah menampilkan nilainya. Daftar variabel ada di `.env.example`; untuk hosting, isi variabel yang sama di secret hosting.
 
 | Variabel | Isi |
 |---|---|
 | `INVESTOR_USERNAME` | username investor, misalnya `investor@inzta.id` |
-| `INVESTOR_PASSWORD_HASH` | keluaran `npm run auth:hash-password` (kata sandi diketik, tidak disimpan) |
+| `INVESTOR_PASSWORD_HASH` | dibuat `npm run env:setup` atau `npm run auth:hash-password`, format `scrypt:...` (kata sandi tidak disimpan) |
 | `SESSION_SECRET` | minimal 32 karakter acak |
 | `FIREBASE_PROJECT_ID` | `inzta-5244e` |
 | `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` | dari kunci service account yang dibuat di Firebase Console, Project settings, Service accounts |
@@ -55,6 +61,7 @@ Mengganti `INVESTOR_PASSWORD_HASH` atau `INVESTOR_USERNAME` mengeluarkan semua p
 | Test | `npm test` |
 | Test integrasi Firestore (emulator) | `npm run test:emulator` |
 | Build | `npm run build` |
+| Isi `.env.local` | `npm run env:setup` |
 | Hash kata sandi investor | `npm run auth:hash-password` |
 | Validasi konteks SDD | `npm run context:validate` |
 | Test tooling SDD | `npm run test:sdd` |
@@ -69,7 +76,7 @@ Mengganti `INVESTOR_PASSWORD_HASH` atau `INVESTOR_USERNAME` mengeluarkan semua p
 | `src/lib/investment/` | aturan komisi, pengembalian, penjualan (murni, teruji) |
 | `src/lib/data/` | adaptor Firestore (Admin SDK), validasi dokumen, cache |
 | `src/lib/auth/` | kredensial scrypt, sesi bertanda tangan, pembatas percobaan |
-| `scripts/emulator/`, `scripts/auth/` | data contoh emulator, pembuat hash kata sandi |
+| `scripts/emulator/`, `scripts/auth/`, `scripts/env/` | data contoh emulator, pembuat hash kata sandi, pengisi `.env.local` |
 | `docs/design/` | sistem desain dan prototipe HTML |
 | `docs/` | PRD, spec F-001 sampai F-006, ADR, asumsi; mulai dari `docs/context/BRIEF.md` |
 

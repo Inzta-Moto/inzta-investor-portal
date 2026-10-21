@@ -56,7 +56,7 @@ This file is the master for task status. Rencana awal (rules, Cloud Function, Fi
 - depends_on: [T-001, T-002, T-003, T-004, T-005]
 - evidence: []
 
-Menunggu A-016: Sehan membuat kunci service account dan env produksi; admin membuat `investor_agreement/current` dan `investor_payments`; hosting A-011.
+Menunggu A-016: Sehan menjalankan `npm run env:setup` dengan kunci service account; admin membuat `investor_agreement/current` dan `investor_payments`; hosting A-011.
 
 ## Deferred
 

@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 // Prints the INVESTOR_PASSWORD_HASH value for a password typed on stdin, so the password never lands in shell history.
-import { randomBytes, scryptSync } from "node:crypto";
+// For .env.local, `npm run env:setup` writes the hash for you.
 import { createInterface } from "node:readline";
 
+import { hashPassword } from "../../src/lib/auth/investor-credentials.ts";
+
 const rl = createInterface({ input: process.stdin, output: process.stderr });
-rl.question("Kata sandi investor (minimal 12 karakter): ", (password) => {
+rl.question("Kata sandi investor (minimal 8 karakter): ", (password) => {
   rl.close();
-  if (password.length < 12) {
-    console.error("Kata sandi terlalu pendek; gunakan minimal 12 karakter.");
+  if (password.length < 8) {
+    console.error("Kata sandi terlalu pendek; gunakan minimal 8 karakter.");
     process.exit(1);
   }
-  const salt = randomBytes(16);
-  const hash = scryptSync(password, salt, 32, { N: 16384, r: 8, p: 1 });
-  console.log(["scrypt", 16384, 8, 1, salt.toString("base64"), hash.toString("base64")].join("$"));
+  if (password.length < 12) console.error("Peringatan: di bawah 12 karakter mudah ditebak; ganti sebelum portal dibuka di internet.");
+  console.log(hashPassword(password));
 });

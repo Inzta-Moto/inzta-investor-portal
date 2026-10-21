@@ -39,3 +39,7 @@ npm-debug.log*
 # Firebase emulator logs
 firestore-debug.log
 firebase-debug.log
+
+# Firebase service account keys must never enter the repository (ADR-0006).
+*-firebase-adminsdk-*.json
+*service-account*.json

@@ -23,7 +23,8 @@
     "context:validate": "node scripts/context/validate-context.mjs",
     "context:archive-handoff": "node scripts/context/archive-handoff.mjs",
     "adapters:sync": "node scripts/adapters/sync.mjs",
-    "sdd:init": "node scripts/init/init.mjs"
+    "sdd:init": "node scripts/init/init.mjs",
+    "env:setup": "node scripts/env/setup-local.mjs"
   },
   "dependencies": {
     "firebase-admin": "^14.5.0",

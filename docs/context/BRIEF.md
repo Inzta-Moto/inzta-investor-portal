@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: 134ff46fe114fa60a4b638c73ff7003ca80f4732ce3f9c9d868414c7318959fc -->
+source_hash: 00e279ad7af3295adfde60267b2906ce94b130f9297e1c336ae24d1126c573a5 -->
 
 # Brief
 
@@ -12,7 +12,7 @@ Project `Inzta Investor Portal`, tier `full`. Rendered from sdd.config.json, doc
 Feature F-006 — Integrasi Firestore lewat server (`verification`, docs/specs/F-006-integrasi-firebase/)
 Task T-006 — Sambungkan ke produksi (`blocked`); requirements: FR-001, FR-002, FR-004; depends on: T-001, T-002, T-003, T-004, T-005
 
-Menunggu A-016: Sehan membuat kunci service account dan env produksi; admin membuat `investor_agreement/current` dan `investor_payments`; hosting A-011.
+Menunggu A-016: Sehan menjalankan `npm run env:setup` dengan kunci service account; admin membuat `investor_agreement/current` dan `investor_payments`; hosting A-011.
 
 Acceptance criteria:
 - AC-001: Given dokumen `sales` berisi pelanggan, kota, reseller, harga modal, when portal membaca, then hanya empat kolom itu yang diterima server dan HTML maupun payload RSC tidak memuat kolom lain.

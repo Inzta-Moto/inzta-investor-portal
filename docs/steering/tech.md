@@ -56,7 +56,7 @@ Run these before claiming any task done. Report a command that cannot run; never
 
 - Secrets come from the environment or a secret manager; `.env*`, key files, and store credentials are never read, printed, or committed by an agent.
 - `.env.example` lists `INVESTOR_USERNAME`, `INVESTOR_PASSWORD_HASH`, `SESSION_SECRET`, `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`, and `FIRESTORE_EMULATOR_HOST` without values. The owner fills `.env.local` and the hosting secrets.
-- `INVESTOR_PASSWORD_HASH` comes from `npm run auth:hash-password`; the plain password is never stored. Changing it signs out every device.
+- `npm run env:setup` writes `.env.local` (login, session secret, project id, service account from a key file kept outside the repository) without printing values; agents never run it against the owner's file. `INVESTOR_PASSWORD_HASH` uses `scrypt:N:r:p:salt:hash` because the Next.js env loader expands `$` in `.env` files. Changing it signs out every device.
 - `next dev` falls back to the development account documented in README only when the three login variables are all empty; production builds never do.
 
 ## Dependency policy

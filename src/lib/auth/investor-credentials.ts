@@ -9,17 +9,18 @@ const BLOCK = 8;
 const PARALLEL = 1;
 const MAX_MEMORY = 64 * 1024 * 1024;
 
-/** Produces `scrypt$N$r$p$salt$hash` (base64) for INVESTOR_PASSWORD_HASH; see `npm run auth:hash-password`. */
+// Colons, not "$": the Next.js env loader expands "$1"-style references in .env files and would corrupt the hash.
+/** Produces `scrypt:N:r:p:salt:hash` (base64) for INVESTOR_PASSWORD_HASH; see `npm run auth:hash-password`. */
 export function hashPassword(password: string, salt: Buffer = randomBytes(16)): string {
   const hash = scryptSync(password, salt, KEY_LENGTH, { N: COST, r: BLOCK, p: PARALLEL });
-  return ["scrypt", COST, BLOCK, PARALLEL, salt.toString("base64"), hash.toString("base64")].join("$");
+  return ["scrypt", COST, BLOCK, PARALLEL, salt.toString("base64"), hash.toString("base64")].join(":");
 }
 
 type ScryptHash = { N: number; r: number; p: number; salt: Buffer; expected: Buffer };
 
 /** Null for anything scrypt would reject at login time, so a mistyped env value is caught as a config error. */
 export function parseScryptHash(stored: string): ScryptHash | null {
-  const parts = stored.split("$");
+  const parts = stored.split(":");
   if (parts.length !== 6 || parts[0] !== "scrypt") return null;
   const [N, r, p] = parts.slice(1, 4).map(Number);
   if (![N, r, p].every((value) => Number.isSafeInteger(value) && value > 0)) return null;

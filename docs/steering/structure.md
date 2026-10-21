@@ -24,6 +24,7 @@ Where things live and which direction dependencies point. Document only what an 
 | `src/components/portal/` | shell, views, cards, chart, schedules, auto refresh | no data fetching; props in, markup out; `auto-refresh.tsx` only asks the router to re-render |
 | `scripts/emulator/` | emulator fixtures and seed script | never writes outside the emulator |
 | `scripts/auth/` | password hash generator | reads the password from stdin, prints only the hash |
+| `scripts/env/` | `.env.local` writer | prints variable names only; service account key files stay outside the repository |
 | `docs/design/` | design system and clickable prototype (HTML) | the visual source of truth for UI tasks |
 | `src/app/` | routes, layouts, route handlers | Server Components by default; `'use client'` only where state or browser APIs are needed |
 | `src/components/` | shared UI components | no data fetching; props in, markup out |

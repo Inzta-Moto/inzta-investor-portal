@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { test } from "node:test";
+
+// @next/env is CommonJS without named-export hints, so it is loaded as a default import.
+import nextEnv from "@next/env";
 
 import { DEV_CREDENTIALS, credentialsMatch, hashPassword, parseScryptHash, readCredentialConfig, sessionKey, verifyPassword } from "./investor-credentials.ts";
 import { SESSION_TTL_MS, signSession, verifySession } from "./session-token.ts";
@@ -21,19 +27,19 @@ test("a fresh token verifies; tampered, expired, or foreign tokens do not", () =
 });
 
 test("scrypt hashes verify only the original password and reject malformed hashes", async () => {
-  assert.match(HASH, /^scrypt\$16384\$8\$1\$/);
+  assert.match(HASH, /^scrypt:16384:8:1:/);
   assert.equal(await verifyPassword("kata-sandi-investor", HASH), true);
   assert.equal(await verifyPassword("kata-sandi-lain", HASH), false);
   assert.equal(await verifyPassword("kata-sandi-investor", "plain-text"), false);
-  assert.equal(await verifyPassword("kata-sandi-investor", HASH.replace(/\$[^$]+$/, "$AAAA")), false);
+  assert.equal(await verifyPassword("kata-sandi-investor", HASH.replace(/:[^:]+$/, ":AAAA")), false);
 });
 
 test("hash parameters scrypt would refuse are rejected up front instead of crashing the login", () => {
   assert.notEqual(parseScryptHash(HASH), null);
-  assert.equal(parseScryptHash(HASH.replace("$16384$", "$100000$")), null);
-  assert.equal(parseScryptHash(HASH.replace("$16384$", "$1048576$")), null);
-  assert.equal(parseScryptHash(HASH.split("$").slice(0, 5).join("$")), null);
-  const bad = readCredentialConfig({ INVESTOR_USERNAME: "inv", INVESTOR_PASSWORD_HASH: HASH.replace("$16384$", "$100000$"), SESSION_SECRET: SECRET }, "production");
+  assert.equal(parseScryptHash(HASH.replace(":16384:", ":100000:")), null);
+  assert.equal(parseScryptHash(HASH.replace(":16384:", ":1048576:")), null);
+  assert.equal(parseScryptHash(HASH.split(":").slice(0, 5).join(":")), null);
+  const bad = readCredentialConfig({ INVESTOR_USERNAME: "inv", INVESTOR_PASSWORD_HASH: HASH.replace(":16384:", ":100000:"), SESSION_SECRET: SECRET }, "production");
   assert.equal(bad.ok, false);
 });
 
@@ -73,4 +79,18 @@ test("development falls back to the documented account only when nothing is set"
     assert.equal(await credentialsMatch(dev, DEV_CREDENTIALS.username, DEV_CREDENTIALS.password), true);
   }
   assert.equal(readCredentialConfig({ INVESTOR_USERNAME: "inv" }, "development").ok, false);
+});
+
+test("a hash written plainly in .env.local survives the Next.js env loader unchanged", () => {
+  const dir = mkdtempSync(join(tmpdir(), "inzta-env-"));
+  try {
+    writeFileSync(join(dir, ".env.local"), `INZTA_TEST_PASSWORD_HASH=${HASH}
+`);
+    nextEnv.loadEnvConfig(dir, true, { info() {}, error() {} }, true);
+    assert.equal(process.env.INZTA_TEST_PASSWORD_HASH, HASH);
+    assert.notEqual(parseScryptHash(process.env.INZTA_TEST_PASSWORD_HASH ?? ""), null);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+    delete process.env.INZTA_TEST_PASSWORD_HASH;
+  }
 });

@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run adapters:sync`.
 Source: docs/steering/, sdd.config.json.
-source_hash: 26d487935ebcd271cf218b54803a849ba514f854fe52d2bd0e66797b17fa969c -->
+source_hash: d460bebf23bad1ea2a1160966e25303b83b3e853c8eb5c9e254f3da3224ed2cc -->
 
 # Repository contract: Inzta Investor Portal
 
@@ -149,7 +149,7 @@ Run these before claiming any task done. Report a command that cannot run; never
 
 - Secrets come from the environment or a secret manager; `.env*`, key files, and store credentials are never read, printed, or committed by an agent.
 - `.env.example` lists `INVESTOR_USERNAME`, `INVESTOR_PASSWORD_HASH`, `SESSION_SECRET`, `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`, and `FIRESTORE_EMULATOR_HOST` without values. The owner fills `.env.local` and the hosting secrets.
-- `INVESTOR_PASSWORD_HASH` comes from `npm run auth:hash-password`; the plain password is never stored. Changing it signs out every device.
+- `npm run env:setup` writes `.env.local` (login, session secret, project id, service account from a key file kept outside the repository) without printing values; agents never run it against the owner's file. `INVESTOR_PASSWORD_HASH` uses `scrypt:N:r:p:salt:hash` because the Next.js env loader expands `$` in `.env` files. Changing it signs out every device.
 - `next dev` falls back to the development account documented in README only when the three login variables are all empty; production builds never do.
 
 ### Dependency policy
@@ -182,6 +182,7 @@ Where things live and which direction dependencies point. Document only what an 
 | `src/components/portal/` | shell, views, cards, chart, schedules, auto refresh | no data fetching; props in, markup out; `auto-refresh.tsx` only asks the router to re-render |
 | `scripts/emulator/` | emulator fixtures and seed script | never writes outside the emulator |
 | `scripts/auth/` | password hash generator | reads the password from stdin, prints only the hash |
+| `scripts/env/` | `.env.local` writer | prints variable names only; service account key files stay outside the repository |
 | `docs/design/` | design system and clickable prototype (HTML) | the visual source of truth for UI tasks |
 | `src/app/` | routes, layouts, route handlers | Server Components by default; `'use client'` only where state or browser APIs are needed |
 | `src/components/` | shared UI components | no data fetching; props in, markup out |
