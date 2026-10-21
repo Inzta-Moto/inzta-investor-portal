@@ -51,12 +51,13 @@ Field yang relevan untuk ringkasan, sesuai `saleDoc` dan helper `getSaleRevenue`
 |---|---|---|---|---|
 | `effectiveDate` | Tanggal Efektif (Tahap I diterima penuh) | no | internal | `null` sampai diisi admin (A-009) |
 | `termMonths` | 24 | yes | no | Pasal 3 |
-| `commissionRateBasisPoints` | 320 (3,2%) | yes | no | Pasal 4 ayat 1 |
-| `tranches` | `[{ number, amount, receivedDate }]`: Tahap I 150.000.000, Tahap II 50.000.000 | yes | internal | `receivedDate` `null` sampai diterima |
-| `repayments` | `[{ number, dueMonth, amount }]`: bulan 16, 20, 24 | yes | internal | ke-1 50.000.000; ke-2 dan ke-3 `null` sampai disepakati |
+| `totalInvestment` | 200.000.000 | yes | internal | dasar Komisi dan pengembalian |
+| `commissionRateBasisPoints` | 320 (3,2%) | yes | no | Komisi = 6.400.000 per bulan |
+| `tranches` | `[{ number, amount, receivedDate }]`: Tahap I 150.000.000, Tahap II 50.000.000 | yes | internal | catatan penerimaan saja; tidak memengaruhi Komisi |
+| `repayments` | `[{ number, dueMonth, percentBasisPoints, amount }]`: bulan 16, 20, 24 | yes | internal | diinput admin dari perjanjian tulisan tangan; `null` sampai diisi; tidak ada nilai bawaan |
 
-- INV-002: jumlah `repayments.amount` sama dengan jumlah `tranches.amount` yang diterima, setelah semua nilai ditetapkan (Pasal 5 ayat 3).
-- INV-003: Komisi bulan ke-n = `commissionRateBasisPoints / 10000 *` dana diterima sebelum pembayaran bulan itu; tidak berkurang oleh pengembalian (Pasal 4 ayat 2).
+- INV-002: setelah ketiga nilai diisi, jumlah `percentBasisPoints` = 10000 dan jumlah `amount` = `totalInvestment`; `amount` = `totalInvestment * percentBasisPoints / 10000`.
+- INV-003: Komisi setiap bulan 1 sampai 24 = `totalInvestment * commissionRateBasisPoints / 10000` = 6.400.000 (total 153.600.000); tidak bergantung pada `tranches` dan tidak berkurang oleh pengembalian.
 
 ### investor_payments/{autoId} (usulan, dicatat admin)
 
@@ -88,7 +89,7 @@ Field yang relevan untuk ringkasan, sesuai `saleDoc` dan helper `getSaleRevenue`
 
 ## Lifecycle and retention
 
-Data `investor_*` disimpan sampai perjanjian berakhir dan seluruh kewajiban lunas (Pasal 3 ayat 2); penghapusan akun investor setelahnya menunggu keputusan Inzta.
+Data `investor_*` disimpan sampai perjanjian berakhir dan seluruh kewajiban lunas; penghapusan akun investor setelahnya menunggu keputusan Inzta.
 
 ## Query and index expectations
 

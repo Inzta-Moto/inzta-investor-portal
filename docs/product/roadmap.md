@@ -26,16 +26,16 @@ Strategic capability order, release intent, and dependency rationale. Not the ex
 - Capabilities: F-004 komisi dan pengembalian dana; F-005 rilis produksi.
 - Dependencies: A-008, A-009, A-011.
 - Excluded: ekspor, notifikasi, akun investor kedua.
-- Exit criteria: jadwal sesuai Pasal 4 dan 5 teruji; deploy disetujui pemilik.
+- Exit criteria: Komisi 24 x Rp6.400.000 dan pengembalian dari input admin teruji; deploy disetujui pemilik.
 
 ## Capability ordering
 
 | Capability | Why now | Depends on | Intended milestone |
 |---|---|---|---|
 | F-001 fondasi proyek | prasyarat semua fitur | none | M1 |
-| F-002 akun investor | Pasal 7 ayat 3: akun khusus | F-001, A-003, A-004, A-005 | M1 |
-| F-003 laporan penjualan | inti kewajiban Pasal 7 | F-002, A-002, A-006, A-007 | M1 |
-| F-004 komisi dan pengembalian | rekap Pasal 4 dan 5; Komisi pertama jatuh tempo sebulan setelah Tanggal Efektif | F-002, A-008, A-009 | M2 |
+| F-002 akun investor | akun khusus investor (VN Raja) | F-001, A-003, A-004, A-005 | M1 |
+| F-003 laporan penjualan | kebutuhan utama investor (VN Raja) | F-002, A-002, A-006, A-007 | M1 |
+| F-004 komisi dan pengembalian | rekap Komisi flat dan pengembalian yang diinput admin; Komisi bulan pertama jatuh tempo tanggal 25 sampai 26 | F-002, A-008, A-009 | M2 |
 | F-005 rilis produksi | investor butuh URL tetap | F-003, F-004, A-011 | M2 |
 
 ## Roadmap changes
@@ -45,3 +45,4 @@ Material priority or scope changes with date and rationale. Task progress is nev
 | Date | Change | Rationale | Approved by |
 |---|---|---|---|
 | 2026-10-21 | roadmap awal | VN Raja 2026-10-20 dan draf perjanjian | belum disetujui |
+| 2026-10-21 | Komisi flat Rp6.400.000 sejak bulan 1; nominal pengembalian diinput admin; dasbor bukan kewajiban kontrak | revisi aturan dari Sehan | Sehan |

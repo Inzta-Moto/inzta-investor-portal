@@ -15,7 +15,7 @@ supersedes: null
 
 ## Context
 
-PT Inzta Gear Indonesia mencatat penjualan di dasbor internal `inztamoto-erp-dashboard` (Next.js 14, Firebase 10 compat, Firestore). Pasal 7 draf Perjanjian Kerja Sama Investasi mewajibkan laporan hasil penjualan bulanan lewat dasbor daring dengan akun khusus investor. VN Raja Purnama 2026-10-20 meminta aplikasi terpisah dari dasbor internal yang "ambil database penjualan dari dashboard Inzta".
+PT Inzta Gear Indonesia mencatat penjualan di dasbor internal `inztamoto-erp-dashboard` (Next.js 14, Firebase 10 compat, Firestore). Inzta menyediakan dasbor investor sebagai akses tambahan di luar kewajiban kontrak (perjanjian tidak lagi menyebut dasbor, revisi 2026-10-21). VN Raja Purnama 2026-10-20 meminta aplikasi terpisah dari dasbor internal yang "ambil database penjualan dari dashboard Inzta".
 
 ## Decision drivers
 

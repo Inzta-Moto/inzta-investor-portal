@@ -17,7 +17,7 @@ Status `review`: usulan, belum diputuskan. Menunggu A-002, A-003, A-004, A-008.
 
 ## Context
 
-ADR-0001 menetapkan portal membaca Firestore yang sama dengan dasbor internal. Dokumen `sales` memuat field yang bukan untuk investor: `customer`, `city`, `district`, `resellerName`, `costPrice`, `modal`, `notes`. Security Rules Firestore mengizinkan atau menolak satu dokumen utuh; rules tidak bisa menyembunyikan sebagian field. Perjanjian Pasal 7 ayat 3 dan VN Raja meminta investor hanya melihat, tanpa data mentah.
+ADR-0001 menetapkan portal membaca Firestore yang sama dengan dasbor internal. Dokumen `sales` memuat field yang bukan untuk investor: `customer`, `city`, `district`, `resellerName`, `costPrice`, `modal`, `notes`. Security Rules Firestore mengizinkan atau menolak satu dokumen utuh; rules tidak bisa menyembunyikan sebagian field. VN Raja meminta investor hanya melihat, tanpa data mentah; investor juga terikat kewajiban kerahasiaan di perjanjian.
 
 ## Decision drivers
 

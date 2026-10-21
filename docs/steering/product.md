@@ -10,7 +10,7 @@ Short, always-loaded product context. The full product requirements live in `doc
 
 Inzta Investor Portal adalah portal daring hanya-baca untuk investor PT Inzta Gear Indonesia yang menampilkan laporan penjualan bulanan, rekap komisi, dan progres pengembalian dana investasi selama 24 bulan masa perjanjian.
 
-Dasbor ini memenuhi Pasal 7 ayat 3 draf Perjanjian Kerja Sama Investasi: laporan hasil penjualan bulanan serta rekap Komisi dan pengembalian Dana Investasi, diakses investor dengan akun khusus, hanya untuk melihat. "Berhasil" berarti investor melihat angka yang sama dengan catatan Inzta, realtime, tanpa bisa membuka dasbor internal atau data per transaksi. Project content (specs, product docs, UI copy) is written in Indonesian; the framework text stays English.
+Portal memberi investor akses tambahan ke hasil penjualan bulanan serta rekap Komisi dan pengembalian Dana Investasi, dengan akun khusus, hanya untuk melihat. Perjanjian tidak lagi mewajibkan dasbor (keputusan Sehan 2026-10-21); portal adalah akses tambahan bagi investor di luar kewajiban kontrak. "Berhasil" berarti investor melihat angka yang sama dengan catatan Inzta, realtime, tanpa bisa membuka dasbor internal atau data per transaksi. Project content (specs, product docs, UI copy) is written in Indonesian; the framework text stays English.
 
 ## Personas
 
@@ -20,8 +20,8 @@ Dasbor ini memenuhi Pasal 7 ayat 3 draf Perjanjian Kerja Sama Investasi: laporan
 ## Core use cases
 
 - UC-001: Investor login, melihat hasil penjualan bulan berjalan dan riwayat per bulan selama 24 bulan.
-- UC-002: Investor melihat Komisi per bulan (Rp4.800.000, lalu Rp6.400.000 setelah Tahap II) dan status bayar tanggal 25 sampai 26.
-- UC-003: Investor melihat jadwal pengembalian bulan ke-16, 20, 24, total dana yang sudah kembali, dan sisanya.
+- UC-002: Investor melihat Komisi Rp6.400.000 per bulan (flat, 24 bulan) dan status bayar tanggal 25 sampai 26.
+- UC-003: Investor melihat jadwal pengembalian bulan ke-16, 20, 24 dengan nominal yang diinput admin, total dana yang sudah kembali, dan sisanya.
 
 ## Non-goals
 
@@ -33,7 +33,7 @@ Dasbor ini memenuhi Pasal 7 ayat 3 draf Perjanjian Kerja Sama Investasi: laporan
 
 | Signal | What it tells us | Source |
 |---|---|---|
-| Laporan manual (Pasal 7 ayat 4) berhenti setelah rilis | portal cukup sebagai laporan resmi | konfirmasi Inzta |
+| Investor membuka portal minimal sebulan sekali | portal berguna sebagai akses tambahan | konfirmasi Inzta |
 | Angka bulanan portal sama dengan dasbor internal | agregasi benar | uji agregasi, pengecekan admin |
 
 ## Constraints that shape product decisions

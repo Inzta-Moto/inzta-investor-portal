@@ -26,7 +26,7 @@ What was assumed, why it could not be verified, and what changes if it is wrong.
 
 ## Entries
 
-Sumber: VN Raja Purnama 2026-10-20 dan draf Perjanjian Kerja Sama Investasi (Pasal 2 sampai 7, 9). Pertanyaan untuk Raja atau PT Inzta Gear Indonesia ditandai "Tanya:".
+Sumber: VN Raja Purnama 2026-10-20, draf Perjanjian Kerja Sama Investasi, dan revisi Sehan 2026-10-21 (komisi flat Rp6.400.000, nominal pengembalian diinput admin, dasbor bukan kewajiban kontrak). Pertanyaan untuk Raja atau PT Inzta Gear Indonesia ditandai "Tanya:".
 
 ### A-001 — Satu database Firestore dengan dasbor internal, data realtime
 - status: confirmed
@@ -74,7 +74,7 @@ VN menyebut username dan password; Firebase Auth email/password memakai email. U
 - raised: 2026-10-21
 - resolution:
 
-Pasal 7 hanya mewajibkan hasil penjualan bulanan; VN meminta margin juga. Dasbor internal punya dua angka: margin kotor (jumlah `sales.profit` dibagi omzet) dan laba bersih (dikurangi belanja produksi dan gaji). Tanya: tampilkan margin atau tidak, dan bila ya, margin kotor dalam persen saja atau nominal juga? Menampilkan nominal laba membuka struktur biaya Inzta.
+VN meminta penjualan dan margin; perjanjian tidak mengatur isi dasbor. Dasbor internal punya dua angka: margin kotor (jumlah `sales.profit` dibagi omzet) dan laba bersih (dikurangi belanja produksi dan gaji). Tanya: tampilkan margin atau tidak, dan bila ya, margin kotor dalam persen saja atau nominal juga? Menampilkan nominal laba membuka struktur biaya Inzta.
 
 ### A-007 — Definisi "hasil penjualan" bulanan
 - status: open
@@ -92,13 +92,13 @@ Usulan: jumlah `revenue` (fallback `sellingPrice * quantity`, sama seperti `getS
 
 Data ini belum ada di Firestore. Usulan desain koleksi di `docs/architecture/data-model.md`. Tanya: admin Inzta mencatat lewat halaman baru di dasbor internal (perubahan di repo lain), lewat halaman admin di portal ini, atau sementara lewat Firebase Console?
 
-### A-009 — Tanggal Efektif, tanggal Tahap II, dan nilai pengembalian ke-2 dan ke-3
+### A-009 — Tanggal Efektif dan nilai ketiga pengembalian
 - status: open
 - feature: F-004
 - raised: 2026-10-21
 - resolution:
 
-Draf perjanjian belum mengisi tanggal Tahap I (Tanggal Efektif), tanggal Tahap II, dan nilai pengembalian ke-2 serta ke-3 (Pasal 2, 5). Portal menampilkan "belum ditetapkan" sampai admin mencatatnya; nilai tidak boleh diasumsikan. Tidak memblokir pembangunan, memblokir data produksi.
+Tanggal Efektif dan persentase atau nominal ketiga pengembalian (bulan ke-16, 20, 24) ditulis tangan di perjanjian, totalnya 100% dari Rp200.000.000. Admin menginputnya; portal menampilkan "belum ditetapkan" sampai diisi. Tidak ada nilai bawaan, termasuk pengembalian ke-1. Tidak memblokir pembangunan, memblokir data produksi.
 
 ### A-010 — Arti "tidak dapat diunduh"
 - status: open
@@ -122,4 +122,4 @@ Rencana domain `capital.inzta.id`. Tanya: hosting di Vercel atau lainnya, akun m
 - raised: 2026-10-21
 - resolution:
 
-Selama masa pemulihan kewajiban ditangguhkan. Tanya: perlu status "ditangguhkan" pada jadwal komisi dan pengembalian, atau cukup dicatat admin sebagai catatan? Tidak memblokir.
+Draf perjanjian mengatur penangguhan kewajiban selama masa pemulihan. Tanya: perlu status "ditangguhkan" pada jadwal komisi dan pengembalian, atau cukup dicatat admin sebagai catatan? Tidak memblokir.

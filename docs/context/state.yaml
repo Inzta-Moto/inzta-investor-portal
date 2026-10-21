@@ -75,7 +75,7 @@ assumptions_open:
     title: Siapa dan di mana pembayaran komisi dan pengembalian dicatat
   - id: A-009
     feature: F-004
-    title: Tanggal Efektif, tanggal Tahap II, dan nilai pengembalian ke-2 dan ke-3
+    title: Tanggal Efektif dan nilai ketiga pengembalian
   - id: A-010
     feature: F-003
     title: Arti "tidak dapat diunduh"
@@ -86,5 +86,5 @@ assumptions_open:
     feature: F-004
     title: Tampilan saat Keadaan Memaksa (Pasal 9)
 blockers: []
-generated_at: 2026-10-21T01:50:14.689Z
-source_hash: 82715917d28eeb26f20df5ea26d506dc75c23d9a5ea2bc2e5748c8244107d436
+generated_at: 2026-10-21T01:53:36.925Z
+source_hash: cf09c5f80f3a56337dd01f274da984fd4a13e60f343775acb03fb54613cb6e32

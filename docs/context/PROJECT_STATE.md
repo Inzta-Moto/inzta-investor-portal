@@ -1,10 +1,10 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: 82715917d28eeb26f20df5ea26d506dc75c23d9a5ea2bc2e5748c8244107d436 -->
+source_hash: cf09c5f80f3a56337dd01f274da984fd4a13e60f343775acb03fb54613cb6e32 -->
 
 # Project State
 
-- Generated at: 2026-10-21T01:50:14.689Z
+- Generated at: 2026-10-21T01:53:36.925Z
 - Project: Inzta Investor Portal (tier `full`)
 - Active: F-001 / T-003
 - Open assumptions: 11
@@ -20,11 +20,12 @@ source_hash: 82715917d28eeb26f20df5ea26d506dc75c23d9a5ea2bc2e5748c8244107d436 --
 ## Git
 
 - Branch: `main`
-- HEAD: `73f4f09`
+- HEAD: `96dcb6e`
 - Worktree: dirty
 
 Recent commits:
 
+- `96dcb6e docs(F-001): record evidence, task status, and handoff`
 - `73f4f09 feat(F-001): scaffold Next.js foundation, lazy Firebase client, and SDD product docs`
 - `f67075e docs: initialize Inzta Investor Portal from SDD template v2.0.0`
 <!-- GENERATED:GIT_FACTS:END -->
