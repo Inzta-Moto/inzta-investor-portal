@@ -102,7 +102,7 @@ Repo `inztamoto-erp-dashboard` tidak menyimpan `firestore.rules`. Aturan aktif h
 - raised: 2026-10-21
 - resolution:
 
-Rencana domain `capital.inzta.id`. Tanya Raja: hosting di mana, akun milik siapa, siapa yang mengatur DNS `inzta.id`. Memblokir deploy saja.
+Rencana domain `capital.inzta.id`. Tanya Raja: hosting di mana, akun milik siapa, siapa yang mengatur DNS `inzta.id`. Memblokir deploy saja. Pembaruan 2026-10-21: hosting dikerjakan Angkasa, rekan Sehan; DNS `inzta.id` belum diketahui.
 
 ### A-012 — Tampilan saat Keadaan Memaksa (Pasal 9)
 - status: confirmed
@@ -137,3 +137,11 @@ Pasal 4 ayat 3 tidak menjelaskan apakah Tanggal Efektif sebelum tanggal 25 membu
 - resolution:
 
 Belum dikerjakan agen karena butuh kredensial dan aksi produksi: (1) Sehan membuat kunci service account untuk `inzta-5244e` di Firebase Console (sudah diunduh 2026-10-21), menyimpannya di luar repo, lalu menjalankan `npm run env:setup -- --service-account <berkas>` yang mengisi login, `SESSION_SECRET`, dan kunci di `.env.local`; secret hosting diisi terpisah; (2) username `investor@inzta.id`; (3) admin membuat `investor_agreement/current` dan `investor_payments` di Console sesuai kontrak di F-006 design; (4) hosting A-011. Kata sandi awal pilihan Sehan (11 karakter, pola kata umum ditambah angka) di bawah 12 karakter yang disarankan dan ada di daftar tebakan umum; ganti sebelum portal dibuka di internet. Volume penjualan per hari belum diketahui, jadi beban kuota baca Spark dicek setelah tersambung. Memblokir F-006 T-006 saja.
+
+### A-017 — Project Firebase `inzta-5244e` bukan database dasbor internal
+- status: open
+- feature: F-006
+- raised: 2026-10-21
+- resolution:
+
+Pembacaan produksi hanya-baca (izin Sehan 2026-10-21, "boleh baca produksi") ke `inzta-5244e` lewat kunci service account: koleksi `sales` kosong (0 dokumen). Koleksi yang ada: `affiliates` 26, `articles` 3, `commissions` 19, `orders` 55, `products` 32, `settings` 1, `vouchers` 24, pola website toko. Kode `inztamoto-erp-dashboard` memakai `sales`, `stock_movements`, `resellers`, `production`, `payrolls`; project-nya diambil dari env dasbor yang tidak dibaca agen. Perlu dari Sehan: project Firebase dasbor ERP (kunci service account harus dari project itu), dan apakah `orders` website ikut dihitung sebagai hasil penjualan (A-007). Memblokir F-006 T-006; ADR-0001 berasumsi satu database dengan dasbor ERP.

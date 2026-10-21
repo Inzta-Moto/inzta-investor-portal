@@ -309,6 +309,9 @@ assumptions_open:
   - id: A-016
     feature: F-006
     title: Penyambungan ke Firestore produksi
+  - id: A-017
+    feature: F-006
+    title: Project Firebase `inzta-5244e` bukan database dasbor internal
 blockers:
   - feature_id: F-005
     task_id: T-001
@@ -319,5 +322,5 @@ blockers:
   - feature_id: F-006
     task_id: T-006
     title: Sambungkan ke produksi
-generated_at: 2026-10-21T06:03:17.891Z
-source_hash: 00e279ad7af3295adfde60267b2906ce94b130f9297e1c336ae24d1126c573a5
+generated_at: 2026-10-21T06:13:31.292Z
+source_hash: b532ee4f54987af89fcbd0493972dc6db2bd7b39d8ceea13afa3f1d324f424da
