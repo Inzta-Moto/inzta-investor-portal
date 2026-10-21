@@ -4,6 +4,6 @@ import { PortfolioPage } from "../portfolio";
 
 export const metadata: Metadata = { title: "Penjualan" };
 
-export default function PenjualanPage() {
-  return <PortfolioPage view="penjualan" />;
+export default async function PenjualanPage({ searchParams }: PageProps<"/penjualan">) {
+  return <PortfolioPage view="penjualan" searchParams={await searchParams} />;
 }

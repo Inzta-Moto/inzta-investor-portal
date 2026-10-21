@@ -1,7 +1,9 @@
 import Link from "next/link";
 
 import { agreementMonthKey, formatMonth } from "@/lib/format/dates";
-import { chartPoints, phaseSubtitle } from "@/lib/format/portfolio-view";
+import { chartPoints, phaseSubtitle, toChartPoints } from "@/lib/format/portfolio-view";
+import type { SalesView } from "@/lib/data/load";
+import type { MonthFocus } from "@/lib/investment/sales";
 import type { CommissionItem } from "@/lib/investment/commission";
 import type { Portfolio } from "@/lib/investment/portfolio";
 import { formatPercent } from "@/lib/investment/repayment";
@@ -15,6 +17,7 @@ import { Paginated } from "./paginated";
 import { CommissionReceivedCard, RepaymentReceivedCard } from "./received-cards";
 import { RepaymentTable } from "./repayment-table";
 import { SalesChart } from "./sales-chart";
+import { SalesFilter } from "./sales-filter";
 import { CommissionList, CommissionTable, RepaymentCards } from "./schedules";
 
 // Presentational only: props in, markup out. Data is read on the server (ADR-0006).
@@ -59,7 +62,7 @@ export function RingkasanView({ portfolio }: { portfolio: Portfolio }) {
         <Card className="lg:col-span-7">
           <div className="mb-3.5 flex items-center justify-between gap-3">
             <h2 className="text-[15px] font-bold lg:text-base">Perjalanan {portfolio.termMonths} bulan</h2>
-            <Link href="/pengembalian" className="inline-flex min-h-10 items-center gap-1 text-[13px] font-semibold text-ink-2 hover:text-ink hover:underline">
+            <Link href="/pengembalian" className="inline-flex min-h-11 items-center gap-1 text-[13px] font-semibold text-ink-2 hover:text-ink hover:underline">
               Pengembalian
               <RightIcon className="size-4" />
             </Link>
@@ -78,7 +81,7 @@ export function RingkasanView({ portfolio }: { portfolio: Portfolio }) {
         <Card flush className="lg:col-span-4">
           <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3.5 lg:px-5">
             <h2 className="text-[15px] font-bold lg:text-base">Komisi terdekat</h2>
-            <Link href="/komisi" className="inline-flex min-h-10 items-center gap-1 text-[13px] font-semibold text-ink-2 hover:text-ink hover:underline">
+            <Link href="/komisi" className="inline-flex min-h-11 items-center gap-1 text-[13px] font-semibold text-ink-2 hover:text-ink hover:underline">
               Semua
               <RightIcon className="size-4" />
             </Link>
@@ -97,7 +100,30 @@ export function RingkasanView({ portfolio }: { portfolio: Portfolio }) {
 // Three subgrid rows per stat card, with the card's own tighter gap inside them.
 const ALIGNED = "row-span-3 grid-rows-subgrid gap-y-1.5";
 
-export function PenjualanView({ portfolio }: { portfolio: Portfolio }) {
+function FocusSummary({ focus }: { focus: MonthFocus }) {
+  const up = (focus.changeBasisPoints ?? 0) >= 0;
+  return (
+    <div className="grid gap-1 rounded-[10px] border border-line bg-surface-sunk px-3.5 py-3">
+      <p className="text-[13px] text-ink-3">
+        {formatMonth(focus.month, "long")}
+        {focus.running ? " · berjalan" : ""}
+      </p>
+      <p className="tabular text-xl font-bold">{formatRupiah(focus.revenue)}</p>
+      {focus.changeBasisPoints !== null ? (
+        <p className={`inline-flex items-start gap-1 text-[13px] font-semibold ${up ? "text-good" : "text-bad"}`}>
+          {up ? <UpIcon className="mt-px size-4" /> : <DownIcon className="mt-px size-4" />}
+          <span>
+            {formatPercent(Math.abs(focus.changeBasisPoints))} dibanding {formatMonth(focus.previous, "long")} ({formatRupiah(focus.previousRevenue)})
+          </span>
+        </p>
+      ) : (
+        <p className="text-[13px] text-ink-3">Belum ada penjualan di {formatMonth(focus.previous, "long")} untuk dibandingkan.</p>
+      )}
+    </div>
+  );
+}
+
+export function PenjualanView({ portfolio, sales }: { portfolio: Portfolio; sales: SalesView }) {
   const { points, change } = portfolio.sales;
   const running = points[points.length - 1];
   const complete = points.filter((point) => !point.running && point.revenue > 0);
@@ -120,7 +146,22 @@ export function PenjualanView({ portfolio }: { portfolio: Portfolio }) {
         </StatCard>
       </div>
       <Card>
-        <SalesChart title="Penjualan per bulan, 12 bulan terakhir" points={chartPoints(portfolio)} tall />
+        <SalesChart
+          title={sales.filter ? `Penjualan per bulan, ${sales.filter.year}` : "Penjualan per bulan, 12 bulan terakhir"}
+          points={toChartPoints(sales.points)}
+          tall
+          highlight={sales.focus?.month}
+          controls={
+            <SalesFilter
+              years={sales.years}
+              year={sales.filter?.year ?? null}
+              month={sales.filter?.month ?? null}
+              currentYear={Number(sales.today.slice(0, 4))}
+              currentMonth={Number(sales.today.slice(5, 7))}
+            />
+          }
+          summary={sales.focus ? <FocusSummary focus={sales.focus} /> : null}
+        />
       </Card>
       <Notice>
         <InfoIcon className="size-5 text-brand-amber" />
@@ -230,8 +271,8 @@ export function PengembalianView({ portfolio }: { portfolio: Portfolio }) {
   );
 }
 
-export function PortfolioView({ view, portfolio }: { view: PortalView; portfolio: Portfolio }) {
-  if (view === "penjualan") return <PenjualanView portfolio={portfolio} />;
+export function PortfolioView({ view, portfolio, sales }: { view: PortalView; portfolio: Portfolio; sales?: SalesView }) {
+  if (view === "penjualan" && sales) return <PenjualanView portfolio={portfolio} sales={sales} />;
   if (view === "komisi") return <KomisiView portfolio={portfolio} />;
   if (view === "pengembalian") return <PengembalianView portfolio={portfolio} />;
   return <RingkasanView portfolio={portfolio} />;

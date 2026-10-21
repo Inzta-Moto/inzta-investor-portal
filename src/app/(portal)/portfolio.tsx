@@ -2,13 +2,13 @@ import { AlertIcon } from "@/components/icons";
 import { AutoRefresh } from "@/components/portal/auto-refresh";
 import { PortfolioView, type PortalView } from "@/components/portal/views";
 import { requireSession } from "@/lib/auth/session";
-import { loadPortfolio } from "@/lib/data/load";
+import { loadPortfolio, loadSalesView } from "@/lib/data/load";
 
 /**
  * Checks the session at the data access point, because layouts are not re-rendered on client navigation, then
  * renders Firestore data read on the server (ADR-0006).
  */
-export async function PortfolioPage({ view }: { view: PortalView }) {
+export async function PortfolioPage({ view, searchParams = {} }: { view: PortalView; searchParams?: Record<string, string | string[] | undefined> }) {
   await requireSession();
   const result = await loadPortfolio();
   if (!result.ok) {
@@ -25,7 +25,7 @@ export async function PortfolioPage({ view }: { view: PortalView }) {
   return (
     <>
       <AutoRefresh updatedAt={result.updatedAt} />
-      <PortfolioView view={view} portfolio={result.portfolio} />
+      <PortfolioView view={view} portfolio={result.portfolio} sales={view === "penjualan" ? await loadSalesView(searchParams) : undefined} />
     </>
   );
 }

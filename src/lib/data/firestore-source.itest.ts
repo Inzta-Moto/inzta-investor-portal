@@ -100,3 +100,16 @@ test("F-006: without an agreement document the portal runs on the contract terms
   assert.ok((snapshot.monthlySales.find((m) => m.month === fx.current)?.revenue ?? 0) > 0);
   await db.doc("investor_agreement/current").set(fx.agreement);
 });
+
+test("F-007: the year filter gets the first sale month and totals for any months", async () => {
+  const source = createFirestoreSource(db);
+  assert.equal(await source.getFirstSaleMonth(0), fx.previous);
+  const snapshot = await source.getSnapshot(TODAY, 0);
+  const months = await source.getMonths([fx.previous, fx.current], TODAY, 0);
+  assert.deepEqual(months.map((m) => m.month), [fx.previous, fx.current]);
+  // Same numbers as the twelve-month view, so the filter never disagrees with the default chart.
+  for (const month of months) assert.equal(month.revenue, snapshot.monthlySales.find((m) => m.month === month.month)?.revenue);
+  const empty = await source.getMonths(["2020-01"], TODAY, 0);
+  assert.deepEqual(empty, [{ month: "2020-01", revenue: 0 }]);
+});
+

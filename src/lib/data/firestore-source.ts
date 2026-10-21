@@ -53,6 +53,7 @@ export function createFirestoreSource(db: Firestore) {
   const settled = new TtlCache<Map<MonthKey, number>>();
   const recent = new TtlCache<Map<MonthKey, number>>();
   const meta = new TtlCache<{ agreement: Agreement; payments: Payment[]; warnings: string[] }>();
+  const first = new TtlCache<MonthKey | null>();
 
   /** Revenue per month for sales dated in [from, to), or from `from` onwards when `to` is null. */
   async function rangeTotals(from: IsoDate, to: IsoDate | null): Promise<Map<MonthKey, number>> {
@@ -94,25 +95,44 @@ export function createFirestoreSource(db: Firestore) {
     return { agreement: agreement.value, payments, warnings };
   }
 
+  /** Totals for any months: each is split at the live window, and the cache key carries the range, so a new day starts a new range. */
+  async function monthTotals(keys: MonthKey[], today: IsoDate, nowMs: number): Promise<MonthlySales[]> {
+    const recentFrom = previousDay(today);
+    const settledRanges = keys.map((key) => {
+      const from = `${key}-01`;
+      const end = nextMonthStart(key);
+      return { from, to: end < recentFrom ? end : recentFrom };
+    });
+    const [live, ...older] = await Promise.all([
+      recent.get(recentFrom, RECENT_TTL, nowMs, () => rangeTotals(recentFrom, null)),
+      ...settledRanges.map(({ from, to }) =>
+        to <= from ? Promise.resolve(new Map<MonthKey, number>()) : settled.get(`${from}|${to}`, SETTLED_TTL, nowMs, () => rangeTotals(from, to)),
+      ),
+    ]);
+    return keys.map((month, i) => ({ month, revenue: (older[i].get(month) ?? 0) + (live.get(month) ?? 0) }));
+  }
+
+  async function loadFirstSaleMonth(): Promise<MonthKey | null> {
+    // The string range keeps documents whose date is not text out of the ordering, as the month queries do.
+    const snap = await db.collection("sales").where("date", ">=", "").orderBy("date").limit(1).select("date").get();
+    const date = snap.docs[0]?.get("date");
+    return typeof date === "string" && /^\d{4}-\d{2}/.test(date) ? date.slice(0, 7) : null;
+  }
+
   return {
     async getSnapshot(today: IsoDate, nowMs = Date.now()): Promise<InvestorSnapshot> {
-      const recentFrom = previousDay(today);
       const keys = Array.from({ length: 12 }, (_, i) => monthKey(addMonths(toYearMonth(today), i - 11)));
-      // Each month is split at the live window; the cache key carries the range, so a new day starts a new range.
-      const settledRanges = keys.map((key) => {
-        const from = `${key}-01`;
-        const end = nextMonthStart(key);
-        return { key, from, to: end < recentFrom ? end : recentFrom };
-      });
-      const [{ agreement, payments, warnings }, live, ...older] = await Promise.all([
+      const [{ agreement, payments, warnings }, monthlySales] = await Promise.all([
         meta.get("current", AGREEMENT_TTL, nowMs, loadMeta),
-        recent.get(recentFrom, RECENT_TTL, nowMs, () => rangeTotals(recentFrom, null)),
-        ...settledRanges.map(({ from, to }) =>
-          to <= from ? Promise.resolve(new Map<MonthKey, number>()) : settled.get(`${from}|${to}`, SETTLED_TTL, nowMs, () => rangeTotals(from, to)),
-        ),
+        monthTotals(keys, today, nowMs),
       ]);
-      const monthlySales: MonthlySales[] = keys.map((month, i) => ({ month, revenue: (older[i].get(month) ?? 0) + (live.get(month) ?? 0) }));
       return { source: "firestore", agreement, payments, monthlySales, asOf: today, warnings };
+    },
+    getMonths(keys: MonthKey[], today: IsoDate, nowMs = Date.now()): Promise<MonthlySales[]> {
+      return monthTotals(keys, today, nowMs);
+    },
+    async getFirstSaleMonth(nowMs = Date.now()): Promise<MonthKey | null> {
+      return first.get("first", SETTLED_TTL, nowMs, loadFirstSaleMonth);
     },
   };
 }

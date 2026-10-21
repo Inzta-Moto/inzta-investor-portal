@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 export type { ChartPoint } from "@/lib/format/portfolio-view";
 import type { ChartPoint } from "@/lib/format/portfolio-view";
@@ -23,7 +23,22 @@ function tick(value: number): string {
  * One series in Inzta orange; the running month is muted grey because it is incomplete, a fill rather than stripes.
  * Drawn in pixels from the measured width so axis text stays 11px on a 360px phone.
  */
-export function SalesChart({ points, tall = false, title }: { points: ChartPoint[]; tall?: boolean; title: string }) {
+export function SalesChart({
+  points,
+  tall = false,
+  title,
+  highlight,
+  controls,
+  summary,
+}: {
+  points: ChartPoint[];
+  tall?: boolean;
+  title: string;
+  /** A month picked in the filter: its bar stays full colour and the others fade, so it reads first. */
+  highlight?: string;
+  controls?: ReactNode;
+  summary?: ReactNode;
+}) {
   const host = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
   const [active, setActive] = useState<number | null>(null);
@@ -75,6 +90,9 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
         </div>
       </div>
 
+      {controls}
+      {summary}
+
       <div ref={host} className={`relative min-w-0 ${view === "chart" ? "" : "hidden"}`} style={{ minHeight: height }}>
         {width > 0 ? (
           <svg width={width} height={height} role="group" aria-label={`${title}. Bulan berjalan berwarna abu-abu karena belum lengkap.`} className="block overflow-visible">
@@ -95,10 +113,12 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
               const top = base - barHeight;
               const r = Math.min(radius, barHeight);
               const path = `M${x},${base} V${top + r} a${r},${r} 0 0 1 ${r},${-r} h${barWidth - 2 * r} a${r},${r} 0 0 1 ${r},${r} V${base} Z`;
-              const showLabel = i % labelEvery === labelEvery - 1 || point.running;
+              const showLabel = i % labelEvery === labelEvery - 1 || point.running || point.month === highlight;
               return (
                 <g key={point.month}>
-                  {barHeight > 0 ? <path d={path} fill={point.running ? "var(--c-ink-3)" : ORANGE} /> : null}
+                  {barHeight > 0 ? (
+                    <path d={path} fill={point.running ? "var(--c-ink-3)" : ORANGE} fillOpacity={highlight && point.month !== highlight ? 0.35 : 1} />
+                  ) : null}
                   {showLabel ? (
                     <text x={padLeft + band * i + band / 2} y={height - 6} textAnchor="middle" className="fill-ink-3 text-[11px]">
                       {point.short}
@@ -153,7 +173,7 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
           </thead>
           <tbody>
             {[...points].reverse().map((point) => (
-              <tr key={point.month} className={point.running ? "font-bold" : ""}>
+              <tr key={point.month} className={point.month === highlight ? "bg-surface-sunk font-bold" : point.running ? "font-bold" : ""}>
                 <td className="border-b border-line py-2.5">
                   {point.label}
                   {point.running ? " (berjalan)" : ""}

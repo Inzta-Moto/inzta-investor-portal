@@ -1,4 +1,5 @@
 import type { Portfolio } from "../investment/portfolio.ts";
+import type { SalesPoint } from "../investment/sales.ts";
 import { formatRupiah } from "../money/rupiah.ts";
 import { formatMonth, monthName } from "./dates.ts";
 
@@ -6,7 +7,11 @@ export type ChartPoint = { month: string; short: string; label: string; revenue:
 
 /** Display-ready chart points for the sales chart. */
 export function chartPoints(portfolio: Portfolio): ChartPoint[] {
-  return portfolio.sales.points.map((point) => ({
+  return toChartPoints(portfolio.sales.points);
+}
+
+export function toChartPoints(points: SalesPoint[]): ChartPoint[] {
+  return points.map((point) => ({
     month: point.month,
     short: monthName(point.month),
     label: formatMonth(point.month, "long"),

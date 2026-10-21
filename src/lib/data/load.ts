@@ -1,7 +1,9 @@
 import { cache } from "react";
 
-import { todayInJakarta } from "../investment/calendar.ts";
+import { addMonths, monthKey, toYearMonth, todayInJakarta } from "../investment/calendar.ts";
 import { buildPortfolio, type Portfolio } from "../investment/portfolio.ts";
+import { availableYears, filterMonths, monthFocus, parseSalesFilter, salesPoints, type MonthFocus, type SalesFilter, type SalesPoint } from "../investment/sales.ts";
+import type { IsoDate } from "../investment/types.ts";
 import { InvestorDataError } from "./firestore-source.ts";
 import { getDataSource } from "./source.ts";
 
@@ -26,3 +28,23 @@ export const loadPortfolio = cache(async (): Promise<PortfolioResult> => {
     throw error;
   }
 });
+
+export type SalesView = { filter: SalesFilter; years: number[]; today: IsoDate; points: SalesPoint[]; focus: MonthFocus | null };
+
+/**
+ * The Penjualan chart and table for ?tahun=&bulan=. A chosen month also loads the month before it, which can sit in the
+ * previous year, so the comparison line always has both numbers.
+ */
+export async function loadSalesView(params: Record<string, string | string[] | undefined>): Promise<SalesView> {
+  const now = new Date();
+  const today = todayInJakarta(now);
+  const source = getDataSource();
+  const years = availableYears(await source.getFirstSaleMonth(now.getTime()), today);
+  const filter = parseSalesFilter(params, years, today);
+  const months = filterMonths(filter, today);
+  const focusMonth = filter?.month ? monthKey({ year: filter.year, month: filter.month }) : null;
+  const previous = focusMonth ? monthKey(addMonths(toYearMonth(focusMonth), -1)) : null;
+  const fetch = previous && !months.includes(previous) ? [previous, ...months] : months;
+  const monthly = await source.getMonths(fetch, today, now.getTime());
+  return { filter, years, today, points: salesPoints(months, monthly, today), focus: focusMonth ? monthFocus(focusMonth, monthly, today) : null };
+}
