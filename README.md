@@ -1,0 +1,134 @@
+# AI-Assisted SDD Project Template
+
+A repository template for spec-driven development with AI coding agents. Stack-agnostic: web, mobile (Flutter, Kotlin, React Native), and server projects with any data store use the same documents.
+
+## Spec-driven development, in short
+
+1. A feature starts as a specification: observable requirements with `FR` and `AC` ids, a design that maps them onto the repository, and tasks with ids.
+2. An agent implements one task at a time and records command output as evidence against the acceptance criteria.
+3. A task is `done` only with evidence; a feature is `implemented` only when every task is done or deferred and no assumption is open.
+4. Project rules live in five steering files. Every tool adapter and every context view is rendered from them, never written by hand.
+5. Unknowns are logged as assumptions instead of guessed.
+6. Each session starts from one rendered brief and loads only what the task references.
+7. Decisions that are expensive to reverse get an ADR.
+8. The validator fails on a stale render, a missing evidence id, an unresolved placeholder, or a path that does not exist.
+9. Chat history and provider memory are never a source of truth; the repository is.
+10. Depth scales with a tier: `lite` by default, `full` when the feature has system concerns.
+
+## The model
+
+```text
+hand-edited sources                                rendered (never hand-edited)
+docs/steering/{product,tech,structure,rules,        docs/context/state.yaml    machine-readable, source_hash
+               workflow}.md                         docs/context/BRIEF.md      single session entry point
+docs/specs/F-XXX/{requirements,design,tasks,        docs/context/PROJECT_STATE.md
+                  verification}.md                  docs/context/PROGRESS.md
+docs/context/ASSUMPTIONS.md                  context:render
+docs/handoff/current.md               ------------------------->
+
+docs/steering/*.md + sdd.config.json         adapters:sync        AGENTS.md            Codex, Antigravity
+                                      ------------------------->  CLAUDE.md + hooks    Claude Code
+                                                                  .cursor/rules/*.mdc  Cursor
+                                                                  .github/copilot-instructions.md  Copilot
+                                                                  GEMINI.md            Gemini CLI
+                                                                  .kiro/steering/*.md  Kiro
+```
+
+`tasks.md` is the master for task status. `state.yaml`, `BRIEF.md`, `PROJECT_STATE.md`, and `PROGRESS.md` are rendered from it, the steering files, the assumptions log, and the handoff. `AGENTS.md` and the tool adapters are rendered from the steering files and `sdd.config.json`. The validator fails when any rendered file differs from a clean render.
+
+## Quick start
+
+1. Click "Use this template" on GitHub and clone the new repository.
+2. `npm install`
+3. `npm run init`, answer the prompts (or pass flags), and read the plan it prints.
+
+`init` writes `sdd.config.json`, fills the steering and project documents from your answers and the presets, prunes the documents your tier does not use, removes template-only files, then renders the context views, syncs the tool adapters, and validates. `--dry-run` prints the plan and changes nothing; `--yes` takes every default; `--force` re-runs on an initialized project.
+
+| Flag | Values | Default |
+|---|---|---|
+| `--name <text>` | project name | the directory name |
+| `--description <text>` | one sentence: what it is, for whom, the outcome | `<name> is a <app> project.` |
+| `--tier lite\|full` | documentation tier | `lite` |
+| `--app <preset>` | `nextjs`, `react-native`, `flutter`, `kotlin-android`, `node-api`, `python-api`, `generic` | `generic` |
+| `--db <preset>` | `supabase`, `firebase`, `postgres`, `mysql`, `sqlite-drift`, `mongodb`, `none` | `none` |
+| `--tools <list>` | comma-separated: `claude`, `codex`, `cursor`, `copilot`, `gemini`, `kiro`, `antigravity` | `claude` |
+| `--owner <name>` | owner written into frontmatter | `git config user.name` |
+| `--lang <language>` | language of the project content; the framework text stays English | `English` |
+
+Example: `npm run init -- --yes --name "Habit Tracker" --tier lite --app flutter --db supabase --tools claude,kiro`.
+
+After init: review `docs/steering/tech.md` and `structure.md` against the real repository (every command listed must run), write `docs/product/prd.md`, record expensive-to-reverse choices as ADRs, create the first feature from `docs/specs/_templates/`, and implement one task at a time. Do not write every document before the first useful slice.
+
+## Daily workflow
+
+1. Start from `docs/context/BRIEF.md`: active feature and task, open assumptions, blockers, next step. The Claude Code SessionStart hook injects it; other tools read it through `AGENTS.md`. When the brief is absent, `docs/context/NEW_CHAT_PROTOCOL.md` gives the fallback read order.
+2. Take the task the brief names. In Claude Code, `/sdd:task T-XXX` builds the task prompt from the brief and the spec, sets the task `in_progress`, and implements it. Elsewhere, fill `docs/_templates/task-prompt.md` by hand.
+3. Run the commands in `docs/steering/tech.md` and record each result as an EV block in the feature's `verification.md`; add the id to the task's `evidence`.
+4. Update `tasks.md`, then `npm run context:render` and `npm run context:validate`. The Claude Code PostToolUse hook re-renders after spec edits; the PreToolUse hook denies edits to generated and frozen paths.
+5. Close the session with `docs/handoff/current.md`: changed files, commands, uncommitted work, one exact next step. In Claude Code, `/sdd:handoff` writes it; `/sdd:review` fills the code-review template, `/sdd:bug` opens a bug investigation, `/sdd:render` runs the three context commands.
+
+## Commands
+
+| Command | Does |
+|---|---|
+| `npm run init` | turns the template into a project; flags above, `--dry-run`, `--yes`, `--force` |
+| `npm run context:render` | writes `state.yaml`, `BRIEF.md`, `PROJECT_STATE.md`, `PROGRESS.md`; `--check` exits 1 when a view would change |
+| `npm run context:validate` | structure, ids, traceability, evidence, staleness, rendered-view freshness, adapter freshness; `--strict` turns warnings into errors |
+| `npm run context:archive-handoff` | archives an active handoff under `docs/handoff/archive/` and resets `current.md` |
+| `npm run adapters:sync` | writes `AGENTS.md` and the adapters for the tools in `sdd.config.json`; `--check`, `--all` |
+| `npm test` | `node --test scripts/**/*.test.mjs` |
+
+Details, hooks, and slash commands: `docs/automation/README.md`. The validator checks and the context model: `docs/context/CONTEXT_SYSTEM.md`.
+
+## Tiers
+
+| Tier | When | Documents |
+|---|---|---|
+| `lite` (default) | isolated, low-risk, reversible work | `requirements`, `design`, `tasks`, `verification`, each within 80 lines. `init` removes `system-architecture.md`, `architecture-baseline.md`, `docs/runbooks/`, `test-strategy.md`, and the two modularization guides |
+| `full` | shared state, realtime or async communication, external integration, security boundary, scale or cost | adds `system-architecture.md` (within 300 lines) and the sections marked `<!-- full-tier -->` (within 200 lines); keeps every document |
+
+## Tool support
+
+| Tool | What it gets | Rendered from |
+|---|---|---|
+| Claude Code | `CLAUDE.md` (imports `AGENTS.md`), four hooks in `.claude/settings.json` (SessionStart injects the brief, PreToolUse guards generated, frozen, and secret paths, PostToolUse re-renders, Stop warns when the handoff is stale), `/sdd:task`, `/sdd:bug`, `/sdd:review`, `/sdd:handoff`, `/sdd:render` | steering, `.claude/` |
+| Codex, Antigravity | `AGENTS.md` | steering, `sdd.config.json` |
+| Cursor | `.cursor/rules/<name>.mdc`, one per steering file, with `globs` for `fileMatch` files | steering |
+| GitHub Copilot | `.github/copilot-instructions.md` and `.github/instructions/<name>.instructions.md` with `applyTo` | steering |
+| Gemini CLI | `GEMINI.md` (imports `AGENTS.md`) | steering |
+| Kiro | `.kiro/steering/<name>.md`, the steering files verbatim | steering |
+
+Steering files carry `inclusion: always | fileMatch | manual` frontmatter; a database preset adds a `database.md` steering file with `fileMatch`, which Claude Code surfaces once per session when a matching file is edited.
+
+## Repository layout
+
+```text
+.
+├── AGENTS.md, CLAUDE.md        # rendered by adapters:sync
+├── .claude/                    # settings.json (hooks), commands/sdd/ (slash commands)
+├── sdd.config.json             # project, stack, tools, paths, generated and frozen lists, limits
+├── docs/
+│   ├── steering/               # canonical: product, tech, structure, rules, workflow (+ database)
+│   ├── _templates/             # prd, constitution, architecture-baseline, adr, task-prompt, bug-investigation, code-review
+│   ├── specs/_templates/       # requirements, system-architecture, design, tasks, verification
+│   ├── specs/F-XXX-name/       # one feature package
+│   ├── adr/, architecture/, product/, quality/, runbooks/, documentation/
+│   ├── context/                # BRIEF, ASSUMPTIONS, rendered state and views, protocols
+│   └── handoff/                # current.md and archive/
+├── examples/todo-api/          # filled lite project; reference and test fixture (removed by init)
+└── scripts/                    # context/, adapters/, hooks/, init/ (presets/), migrate/, lib/
+```
+
+Every template carries frontmatter (`id`, `title`, `type`, `status`, `tier`, `owner`, dates, `supersedes`). `init` fills the placeholders it can (project name, owner, dates, preset values); the remaining prose is guidance to replace with verified facts.
+
+## Example
+
+Open the same file there when a template leaves you unsure how filled a section should be. `npm test` validates it; `init` removes it from a new project.
+
+## Migrating from v1
+
+v2 is a fresh design.
+
+## AI collaboration
+
+A conversational AI drafts requirements, architecture alternatives, design, tasks, and ADR proposals; its output is a proposal until committed. A repository-integrated coding agent inspects real code, implements approved tasks, runs verification, and updates evidence and handoff. Neither invents paths, APIs, schema fields, or commands. See `docs/documentation/AI_COLLABORATION_MODEL.md`.

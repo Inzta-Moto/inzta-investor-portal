@@ -1,0 +1,14 @@
+# GENERATED FILE. Rendered by `npm run context:render`. Do not edit by hand.
+# Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
+
+schema_version: 2
+project: Inzta Investor Portal
+tier: full
+features: []
+active:
+  feature_id: null
+  task_id: null
+assumptions_open: []
+blockers: []
+generated_at: 2026-10-21T01:23:55.465Z
+source_hash: 154f3551a0931361173914ea74bc8e4e521ab5d786c1b87675252983f8890514

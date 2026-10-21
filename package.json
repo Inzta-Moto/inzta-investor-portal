@@ -1,0 +1,22 @@
+{
+  "name": "ai-assisted-sdd-project-template",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Stack-agnostic spec-driven development and context-engineering repository template.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"scripts/**/*.test.mjs\"",
+    "init": "node scripts/init/init.mjs",
+    "example:validate": "cd examples/todo-api && node ../../scripts/context/validate-context.mjs",
+    "context:render": "node scripts/context/render.mjs",
+    "context:validate": "node scripts/context/validate-context.mjs",
+    "context:archive-handoff": "node scripts/context/archive-handoff.mjs",
+    "adapters:sync": "node scripts/adapters/sync.mjs"
+  },
+  "dependencies": {
+    "yaml": "^2.9.1"
+  }
+}
