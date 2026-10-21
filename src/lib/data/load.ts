@@ -4,7 +4,7 @@ import { addMonths, monthKey, toYearMonth, todayInJakarta } from "../investment/
 import { buildPortfolio, type Portfolio } from "../investment/portfolio.ts";
 import { availableYears, filterMonths, monthFocus, parseSalesFilter, salesPoints, type MonthFocus, type SalesFilter, type SalesPoint } from "../investment/sales.ts";
 import type { IsoDate } from "../investment/types.ts";
-import { InvestorDataError } from "./firestore-source.ts";
+import { InvestorDataError, QUOTA_MESSAGE, isQuotaError } from "./firestore-source.ts";
 import { getDataSource } from "./source.ts";
 
 export type PortfolioResult = { ok: true; portfolio: Portfolio; updatedAt: string } | { ok: false; reason: string };
@@ -25,6 +25,7 @@ export const loadPortfolio = cache(async (): Promise<PortfolioResult> => {
     return { ok: true, portfolio: buildPortfolio(snapshot, today), updatedAt: clockInJakarta(now) };
   } catch (error) {
     if (error instanceof InvestorDataError) return { ok: false, reason: error.message };
+    if (isQuotaError(error)) return { ok: false, reason: QUOTA_MESSAGE };
     throw error;
   }
 });

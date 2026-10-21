@@ -34,7 +34,7 @@ test("F-006: the sales query returns only date, revenue, sellingPrice, quantity"
   }
 });
 
-test("F-006: monthly totals match the dashboard rule, legacy documents included", async () => {
+test("F-006: monthly totals are Firestore sums of revenue per calendar month", async () => {
   const source = createFirestoreSource(db);
   const snapshot = await source.getSnapshot(TODAY, 0);
   const byMonth = new Map(snapshot.monthlySales.map((m) => [m.month, m.revenue]));

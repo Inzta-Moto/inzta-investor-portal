@@ -1,8 +1,7 @@
 import { cert, getApps, initializeApp } from "firebase-admin/app";
-import { getFirestore, type Firestore } from "firebase-admin/firestore";
+import { AggregateField, getFirestore, type Firestore } from "firebase-admin/firestore";
 
 import { addMonths, monthKey, parseIsoDate, toYearMonth } from "../investment/calendar.ts";
-import { saleRevenue } from "../investment/sales.ts";
 import type { Agreement, InvestorSnapshot, IsoDate, MonthKey, MonthlySales, Payment } from "../investment/types.ts";
 import { readAdminConfig } from "./admin-config.ts";
 import { toAgreement, toPayment } from "./firestore-mapping.ts";
@@ -10,6 +9,15 @@ import { TtlCache } from "./ttl-cache.ts";
 
 // Only these sales fields are ever fetched (ADR-0006): customer, city, reseller, and cost price stay in Firestore.
 export const SALES_FIELDS = ["date", "revenue", "sellingPrice", "quantity"] as const;
+
+// Firestore code 8: the Spark plan's daily read quota, shared with the ERP dashboard, is used up.
+export const QUOTA_MESSAGE =
+  "Kuota baca harian database Inzta sudah habis, jadi data belum bisa ditampilkan. Data muncul lagi setelah kuota direset, sekitar pukul 14.00 sampai 15.00 WIB.";
+
+export function isQuotaError(error: unknown): boolean {
+  const code = (error as { code?: unknown } | null)?.code;
+  return code === 8 || code === "resource-exhausted" || /RESOURCE_EXHAUSTED/.test(String((error as Error | null)?.message ?? ""));
+}
 
 // The Spark plan's daily read quota is shared with the internal dashboard, so only sales dated yesterday or later are
 // re-read on every 30-second refresh; older days seldom change and are re-read once an hour.
@@ -50,25 +58,21 @@ function previousDay(date: IsoDate): IsoDate {
 }
 
 export function createFirestoreSource(db: Firestore) {
-  const settled = new TtlCache<Map<MonthKey, number>>();
-  const recent = new TtlCache<Map<MonthKey, number>>();
+  const settled = new TtlCache<number>();
+  const recent = new TtlCache<number>();
   const meta = new TtlCache<{ agreement: Agreement; payments: Payment[]; warnings: string[] }>();
   const first = new TtlCache<MonthKey | null>();
 
-  /** Revenue per month for sales dated in [from, to), or from `from` onwards when `to` is null. */
-  async function rangeTotals(from: IsoDate, to: IsoDate | null): Promise<Map<MonthKey, number>> {
+  /**
+   * Revenue of sales dated in [from, to), summed by Firestore. An aggregation costs one read per 1,000 matching sales,
+   * where reading the documents cost one read each and used up the Spark quota shared with the ERP dashboard.
+   * Every production sale carries a numeric `revenue` (checked 2026-10-21), so the sellingPrice * quantity fallback
+   * for legacy documents no longer applies here.
+   */
+  async function rangeSum(from: IsoDate, to: IsoDate): Promise<number> {
     // `date` is a "YYYY-MM-DD" string in the internal dashboard, so a string range selects whole days.
-    let query = db.collection("sales").where("date", ">=", from);
-    if (to) query = query.where("date", "<", to);
-    const snap = await query.select(...SALES_FIELDS).get();
-    const totals = new Map<MonthKey, number>();
-    for (const doc of snap.docs) {
-      const data = doc.data();
-      if (typeof data.date !== "string") continue;
-      const month = data.date.slice(0, 7);
-      totals.set(month, (totals.get(month) ?? 0) + saleRevenue(data));
-    }
-    return totals;
+    const snap = await db.collection("sales").where("date", ">=", from).where("date", "<", to).aggregate({ revenue: AggregateField.sum("revenue") }).get();
+    return Math.round(snap.data().revenue ?? 0);
   }
 
   async function loadMeta() {
@@ -98,18 +102,19 @@ export function createFirestoreSource(db: Firestore) {
   /** Totals for any months: each is split at the live window, and the cache key carries the range, so a new day starts a new range. */
   async function monthTotals(keys: MonthKey[], today: IsoDate, nowMs: number): Promise<MonthlySales[]> {
     const recentFrom = previousDay(today);
-    const settledRanges = keys.map((key) => {
-      const from = `${key}-01`;
-      const end = nextMonthStart(key);
-      return { from, to: end < recentFrom ? end : recentFrom };
-    });
-    const [live, ...older] = await Promise.all([
-      recent.get(recentFrom, RECENT_TTL, nowMs, () => rangeTotals(recentFrom, null)),
-      ...settledRanges.map(({ from, to }) =>
-        to <= from ? Promise.resolve(new Map<MonthKey, number>()) : settled.get(`${from}|${to}`, SETTLED_TTL, nowMs, () => rangeTotals(from, to)),
-      ),
-    ]);
-    return keys.map((month, i) => ({ month, revenue: (older[i].get(month) ?? 0) + (live.get(month) ?? 0) }));
+    return Promise.all(
+      keys.map(async (month) => {
+        const start = `${month}-01`;
+        const end = nextMonthStart(month);
+        const settledTo = end < recentFrom ? end : recentFrom;
+        const liveFrom = start > recentFrom ? start : recentFrom;
+        const [older, live] = await Promise.all([
+          settledTo > start ? settled.get(`${start}|${settledTo}`, SETTLED_TTL, nowMs, () => rangeSum(start, settledTo)) : 0,
+          end > liveFrom ? recent.get(`${liveFrom}|${end}`, RECENT_TTL, nowMs, () => rangeSum(liveFrom, end)) : 0,
+        ]);
+        return { month, revenue: older + live };
+      }),
+    );
   }
 
   async function loadFirstSaleMonth(): Promise<MonthKey | null> {

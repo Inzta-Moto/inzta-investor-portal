@@ -49,8 +49,8 @@ export function buildFixtures(today) {
   const sales = {
     "sale-a": { date: `${previous}-03`, revenue: 165000, quantity: 1, sellingPrice: 165000, costPrice: 85000, customer: "Pelanggan A", city: "Bandung", resellerName: "Reseller X" },
     "sale-b": { date: `${previous}-17`, revenue: 390000, quantity: 2, sellingPrice: 195000, costPrice: 95000, customer: "Pelanggan B", city: "Jakarta" },
-    // A legacy document without `revenue`: the dashboard falls back to sellingPrice * quantity.
-    "sale-c": { date: `${current}-02`, quantity: 3, sellingPrice: 295000, costPrice: 150000, customer: "Pelanggan C", city: "Surabaya" },
+    // Every production sale stores `revenue` (checked 2026-10-21); the portal sums that field with a Firestore aggregation.
+    "sale-c": { date: `${current}-02`, revenue: 885000, quantity: 3, sellingPrice: 295000, costPrice: 150000, customer: "Pelanggan C", city: "Surabaya" },
     "sale-d": { date: `${current}-05`, revenue: 165000, quantity: 1, sellingPrice: 165000, costPrice: 85000, customer: "Pelanggan D", district: "Coblong" },
   };
 
