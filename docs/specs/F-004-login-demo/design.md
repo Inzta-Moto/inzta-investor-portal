@@ -2,7 +2,7 @@
 id: F-004
 title: "Login mode demo"
 type: design
-status: implementing
+status: implemented
 tier: lite
 owner: "VXerys"
 created: 2026-10-21

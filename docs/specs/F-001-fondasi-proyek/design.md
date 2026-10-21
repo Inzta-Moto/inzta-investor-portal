@@ -2,7 +2,7 @@
 id: F-001
 title: "Fondasi proyek"
 type: design
-status: verification
+status: implemented
 tier: lite
 owner: "VXerys"
 created: 2026-10-21

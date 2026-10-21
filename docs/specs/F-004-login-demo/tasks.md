@@ -2,7 +2,7 @@
 id: F-004
 title: "Login mode demo"
 type: tasks
-status: implementing
+status: implemented
 tier: lite
 owner: "VXerys"
 created: 2026-10-21
@@ -19,18 +19,18 @@ This file is the master for task status.
 ## Tasks
 
 ### T-001 — Token sesi dan konfigurasi demo
-- status: planned
+- status: done
 - requirements: [FR-002, FR-005]
 - depends_on: []
-- evidence: []
+- evidence: [EV-001]
 
 AC-003, AC-004, AC-008, AC-009.
 
 ### T-002 — Layar masuk, gerbang, keluar
-- status: planned
+- status: done
 - requirements: [FR-001, FR-003, FR-004]
 - depends_on: [T-001]
-- evidence: []
+- evidence: [EV-002, EV-003]
 
 AC-001, AC-002, AC-005 sampai AC-007.
 

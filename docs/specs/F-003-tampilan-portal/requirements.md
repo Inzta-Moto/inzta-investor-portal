@@ -2,7 +2,7 @@
 id: F-003
 title: "Tampilan portal investor"
 type: requirements
-status: implementing
+status: implemented
 tier: lite
 owner: "VXerys"
 created: 2026-10-21

@@ -7,13 +7,13 @@ tier: full
 features:
   - id: F-001
     title: Fondasi proyek
-    status: verification
-    phase: in_progress
+    status: implemented
+    phase: complete
     spec_path: docs/specs/F-001-fondasi-proyek
     tasks:
       - id: T-001
         title: Kerangka Next.js, Tailwind, ESLint, halaman placeholder
-        status: review
+        status: done
         requirements:
           - FR-001
           - FR-004
@@ -21,10 +21,9 @@ features:
         evidence:
           - EV-001
           - EV-003
-          - EV-004
       - id: T-002
         title: Konfigurasi Firebase lazy dan format Rupiah
-        status: review
+        status: done
         requirements:
           - FR-002
           - FR-003
@@ -32,9 +31,10 @@ features:
           - T-001
         evidence:
           - EV-002
+          - EV-005
       - id: T-003
         title: Verifikasi fondasi dan konteks SDD
-        status: review
+        status: done
         requirements:
           - FR-001
           - FR-002
@@ -47,40 +47,44 @@ features:
           - EV-001
           - EV-002
           - EV-003
-          - EV-004
+          - EV-005
   - id: F-002
     title: Domain investasi dan data mock
-    status: implementing
-    phase: in_progress
+    status: implemented
+    phase: complete
     spec_path: docs/specs/F-002-domain-data-mock
     tasks:
       - id: T-001
         title: Kalender perjanjian dan jadwal komisi
-        status: in_progress
+        status: done
         requirements:
           - FR-001
           - FR-003
         depends_on: []
-        evidence: []
+        evidence:
+          - EV-001
       - id: T-002
         title: Jadwal pengembalian
-        status: planned
+        status: done
         requirements:
           - FR-002
         depends_on:
           - T-001
-        evidence: []
+        evidence:
+          - EV-001
+          - EV-003
       - id: T-003
         title: Penjualan bulanan dan format ringkas
-        status: planned
+        status: done
         requirements:
           - FR-004
           - FR-006
         depends_on: []
-        evidence: []
+        evidence:
+          - EV-001
       - id: T-004
         title: Kontrak sumber data, adaptor mock, portfolio
-        status: planned
+        status: done
         requirements:
           - FR-005
           - FR-001
@@ -90,10 +94,12 @@ features:
           - T-001
           - T-002
           - T-003
-        evidence: []
+        evidence:
+          - EV-001
+          - EV-002
       - id: T-005
         title: Verifikasi
-        status: planned
+        status: done
         requirements:
           - FR-001
           - FR-002
@@ -103,50 +109,59 @@ features:
           - FR-006
         depends_on:
           - T-004
-        evidence: []
+        evidence:
+          - EV-001
+          - EV-002
+          - EV-003
   - id: F-003
     title: Tampilan portal investor
-    status: implementing
-    phase: not_started
+    status: implemented
+    phase: complete
     spec_path: docs/specs/F-003-tampilan-portal
     tasks:
       - id: T-001
         title: Token desain, font, logo, kerangka aplikasi
-        status: planned
+        status: done
         requirements:
           - FR-001
           - FR-006
         depends_on: []
-        evidence: []
+        evidence:
+          - EV-001
+          - EV-002
       - id: T-002
         title: Halaman Ringkasan
-        status: planned
+        status: done
         requirements:
           - FR-002
         depends_on:
           - T-001
-        evidence: []
+        evidence:
+          - EV-002
       - id: T-003
         title: Halaman Penjualan dan grafik
-        status: planned
+        status: done
         requirements:
           - FR-003
         depends_on:
           - T-001
-        evidence: []
+        evidence:
+          - EV-003
       - id: T-004
         title: Halaman Komisi dan Pengembalian, kartu sudah masuk
-        status: planned
+        status: done
         requirements:
           - FR-004
           - FR-005
           - FR-007
         depends_on:
           - T-001
-        evidence: []
+        evidence:
+          - EV-002
+          - EV-003
       - id: T-005
         title: Kondisi memuat dan gagal, verifikasi responsif
-        status: planned
+        status: done
         requirements:
           - FR-006
           - FR-001
@@ -154,31 +169,35 @@ features:
           - T-002
           - T-003
           - T-004
-        evidence: []
+        evidence:
+          - EV-003
   - id: F-004
     title: Login mode demo
-    status: implementing
-    phase: not_started
+    status: implemented
+    phase: complete
     spec_path: docs/specs/F-004-login-demo
     tasks:
       - id: T-001
         title: Token sesi dan konfigurasi demo
-        status: planned
+        status: done
         requirements:
           - FR-002
           - FR-005
         depends_on: []
-        evidence: []
+        evidence:
+          - EV-001
       - id: T-002
         title: Layar masuk, gerbang, keluar
-        status: planned
+        status: done
         requirements:
           - FR-001
           - FR-003
           - FR-004
         depends_on:
           - T-001
-        evidence: []
+        evidence:
+          - EV-002
+          - EV-003
   - id: F-005
     title: Rilis produksi capital.inzta.id
     status: draft
@@ -247,7 +266,7 @@ features:
         depends_on: []
         evidence: []
 active:
-  feature_id: F-002
+  feature_id: F-006
   task_id: T-001
 assumptions_open:
   - id: A-003
@@ -281,5 +300,5 @@ blockers:
   - feature_id: F-006
     task_id: T-005
     title: Gerbang role di dasbor internal
-generated_at: 2026-10-21T03:19:46.879Z
-source_hash: d86ee4c91ab8cf7913dce478defcba5b8560cbef509664c1cec44dd3b54fe6d4
+generated_at: 2026-10-21T03:23:33.093Z
+source_hash: 53365353f9f3bff0643f497f536d2696b9959bf24e1c1df0b1ecfaf4204566eb

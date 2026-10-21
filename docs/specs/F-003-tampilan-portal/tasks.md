@@ -2,7 +2,7 @@
 id: F-003
 title: "Tampilan portal investor"
 type: tasks
-status: implementing
+status: implemented
 tier: lite
 owner: "VXerys"
 created: 2026-10-21
@@ -19,42 +19,42 @@ This file is the master for task status.
 ## Tasks
 
 ### T-001 — Token desain, font, logo, kerangka aplikasi
-- status: planned
+- status: done
 - requirements: [FR-001, FR-006]
 - depends_on: []
-- evidence: []
+- evidence: [EV-001, EV-002]
 
 `globals.css`, `layout.tsx`, `public/brand/`, `app-shell.tsx`, `nav-links.tsx`. AC-001 sampai AC-003, AC-011.
 
 ### T-002 — Halaman Ringkasan
-- status: planned
+- status: done
 - requirements: [FR-002]
 - depends_on: [T-001]
-- evidence: []
+- evidence: [EV-002]
 
 AC-004, AC-005.
 
 ### T-003 — Halaman Penjualan dan grafik
-- status: planned
+- status: done
 - requirements: [FR-003]
 - depends_on: [T-001]
-- evidence: []
+- evidence: [EV-003]
 
 AC-006, AC-007.
 
 ### T-004 — Halaman Komisi dan Pengembalian, kartu sudah masuk
-- status: planned
+- status: done
 - requirements: [FR-004, FR-005, FR-007]
 - depends_on: [T-001]
-- evidence: []
+- evidence: [EV-002, EV-003]
 
 AC-008 sampai AC-010, AC-013, AC-014.
 
 ### T-005 — Kondisi memuat dan gagal, verifikasi responsif
-- status: planned
+- status: done
 - requirements: [FR-006, FR-001]
 - depends_on: [T-002, T-003, T-004]
-- evidence: []
+- evidence: [EV-003]
 
 AC-012 dan pemeriksaan 360 px, 1366 px, tema gelap.
 

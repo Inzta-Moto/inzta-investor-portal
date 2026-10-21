@@ -2,7 +2,7 @@
 id: F-002
 title: "Domain investasi dan data mock"
 type: design
-status: implementing
+status: implemented
 tier: lite
 owner: "VXerys"
 created: 2026-10-21

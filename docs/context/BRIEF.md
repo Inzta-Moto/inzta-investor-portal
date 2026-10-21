@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: d86ee4c91ab8cf7913dce478defcba5b8560cbef509664c1cec44dd3b54fe6d4 -->
+source_hash: 53365353f9f3bff0643f497f536d2696b9959bf24e1c1df0b1ecfaf4204566eb -->
 
 # Brief
 
@@ -9,15 +9,13 @@ Inzta Investor Portal adalah portal daring hanya-baca untuk investor PT Inzta Ge
 Project `Inzta Investor Portal`, tier `full`. Rendered from sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
 
 ## Active
-Feature F-002 — Domain investasi dan data mock (`implementing`, docs/specs/F-002-domain-data-mock/)
-Task T-001 — Kalender perjanjian dan jadwal komisi (`in_progress`); requirements: FR-001, FR-003; depends on: none
+Feature F-006 — Integrasi Firebase (ditahan) (`draft`, docs/specs/F-006-integrasi-firebase/)
+Task T-001 — Ekspor rules aktif dan siapkan emulator (`blocked`); requirements: FR-003; depends on: none
 
-`calendar.ts`, `commission.ts` dan test. AC-001 sampai AC-004, AC-009.
+Menunggu A-003. Tanpa akses ke project produksi oleh agen.
 
 Acceptance criteria:
-- AC-001: Given Dana Investasi Rp200.000.000 dan tarif 320 basis poin, then komisi per bulan Rp6.400.000 dan total Rp153.600.000.
-- AC-004: Given Tanggal Efektif kosong, then jadwal tetap 24 baris tanpa tanggal dan semua berstatus Akan datang.
-- AC-009: Given Tanggal Efektif 2026-11-10 dan hari ini 2027-01-14, then bulan berjalan = 2; sebelum Desember 2026 = 0; setelah November 2028 = selesai.
+- AC-003: Given akun role `investor`, then baca `investor_*` diizinkan; baca `sales`, `users`, `products` dan semua tulis ditolak, diuji di emulator.
 
 ## Rules
 Stop conditions:
@@ -41,25 +39,26 @@ Generated: `docs/context/state.yaml`, `docs/context/PROJECT_STATE.md`, `docs/con
 Frozen: none
 
 ## Open assumptions
-None.
+- A-003 — Security Rules Firestore yang berlaku sekarang tidak diketahui (F-006)
+- A-004 — Akun investor bisa masuk ke dasbor internal (F-006)
 
 ## Handoff
 Next step:
 
-Kirim pertanyaan A-002 sampai A-012 ke Raja; setelah dijawab, putuskan ADR-0002 dan tulis spec F-002 (akun investor) dari `docs/specs/_templates/`. Verifikasi: `npm run context:validate`.
+Sehan meninjau keputusan [delegasi] di `docs/context/ASSUMPTIONS.md`, lalu menanyakan A-003, A-004, A-011 ke Raja. Saat klien membuka integrasi, mulai F-006 T-001. Verifikasi: `npm run context:validate`.
 
 ## Other open tasks
-- T-002 — Jadwal pengembalian (`planned`)
-- T-003 — Penjualan bulanan dan format ringkas (`planned`)
-- T-004 — Kontrak sumber data, adaptor mock, portfolio (`planned`)
-- T-005 — Verifikasi (`planned`)
+- T-002 — Adaptor Firestore untuk InvestorDataSource (`blocked`)
+- T-003 — Cloud Function ringkasan penjualan dan backfill (`blocked`)
+- T-004 — Firebase Auth dan role investor (`blocked`)
+- T-005 — Gerbang role di dasbor internal (`blocked`)
 
 ## Features
 | Feature | Status | Phase | Done/Total |
 |---|---|---|---|
-| F-001 Fondasi proyek | verification | in_progress | 0/3 |
-| F-002 Domain investasi dan data mock | implementing | in_progress | 0/5 |
-| F-003 Tampilan portal investor | implementing | not_started | 0/5 |
-| F-004 Login mode demo | implementing | not_started | 0/2 |
+| F-001 Fondasi proyek | implemented | complete | 3/3 |
+| F-002 Domain investasi dan data mock | implemented | complete | 5/5 |
+| F-003 Tampilan portal investor | implemented | complete | 5/5 |
+| F-004 Login mode demo | implemented | complete | 2/2 |
 | F-005 Rilis produksi capital.inzta.id | draft | blocked | 0/2 |
 | F-006 Integrasi Firebase (ditahan) | draft | blocked | 0/5 |
