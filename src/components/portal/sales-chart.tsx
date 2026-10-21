@@ -20,7 +20,7 @@ function tick(value: number): string {
 }
 
 /**
- * One series in Inzta orange; the running month is solid ink because it is incomplete, a fill rather than stripes.
+ * One series in Inzta orange; the running month is muted grey because it is incomplete, a fill rather than stripes.
  * Drawn in pixels from the measured width so axis text stays 11px on a 360px phone.
  */
 export function SalesChart({ points, tall = false, title }: { points: ChartPoint[]; tall?: boolean; title: string }) {
@@ -57,9 +57,9 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
   const shown = active === null ? null : points[active];
 
   return (
-    <div className="grid gap-3">
+    <div className="grid grid-cols-1 gap-3">
       <div className="flex items-start justify-between gap-3">
-        <h2 className="text-base font-bold">{title}</h2>
+        <h2 className="text-[15px] font-bold lg:text-base">{title}</h2>
         <div role="group" aria-label="Tampilan" className="inline-flex rounded-lg border border-line bg-surface-sunk p-[3px]">
           {(["chart", "table"] as const).map((mode) => (
             <button
@@ -67,7 +67,7 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
               type="button"
               aria-pressed={view === mode}
               onClick={() => setView(mode)}
-              className={`min-h-8 rounded-md px-3 text-xs font-semibold ${view === mode ? "bg-surface text-ink shadow-sm" : "text-ink-2"}`}
+              className={`min-h-10 rounded-md px-3.5 text-[13px] font-semibold ${view === mode ? "bg-surface text-ink shadow-sm" : "text-ink-2"}`}
             >
               {mode === "chart" ? "Grafik" : "Tabel"}
             </button>
@@ -75,9 +75,9 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
         </div>
       </div>
 
-      <div ref={host} className={`relative ${view === "chart" ? "" : "hidden"}`} style={{ minHeight: height }}>
+      <div ref={host} className={`relative min-w-0 ${view === "chart" ? "" : "hidden"}`} style={{ minHeight: height }}>
         {width > 0 ? (
-          <svg width={width} height={height} role="group" aria-label={`${title}. Bulan berjalan berwarna gelap karena belum lengkap.`} className="block overflow-visible">
+          <svg width={width} height={height} role="group" aria-label={`${title}. Bulan berjalan berwarna abu-abu karena belum lengkap.`} className="block overflow-visible">
             {ticks.map((value) => {
               const y = base - (value / max) * plotHeight;
               return (
@@ -98,7 +98,7 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
               const showLabel = i % labelEvery === labelEvery - 1 || point.running;
               return (
                 <g key={point.month}>
-                  {barHeight > 0 ? <path d={path} fill={point.running ? "var(--c-ink)" : ORANGE} /> : null}
+                  {barHeight > 0 ? <path d={path} fill={point.running ? "var(--c-ink-3)" : ORANGE} /> : null}
                   {showLabel ? (
                     <text x={padLeft + band * i + band / 2} y={height - 6} textAnchor="middle" className="fill-ink-3 text-[11px]">
                       {point.short}
@@ -128,7 +128,7 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
         {shown && active !== null ? (
           <div
             role="status"
-            className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-[calc(100%+10px)] rounded-lg bg-brand-charcoal px-2.5 py-2 text-xs whitespace-nowrap text-white shadow-lg"
+            className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-[calc(100%+10px)] rounded-lg border border-white/15 bg-brand-charcoal px-2.5 py-2 text-xs whitespace-nowrap text-white shadow-lg"
             style={{
               left: Math.max(70, Math.min(width - 70, padLeft + band * active + band / 2)),
               top: base - (shown.revenue / max) * plotHeight,
@@ -141,9 +141,10 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
         ) : null}
       </div>
 
-      {/* The table is always in the DOM: visible on demand, otherwise read by screen readers in place of the chart. */}
-      {(
-        <table className={view === "table" ? "w-full border-collapse text-sm" : "sr-only"}>
+      {/* The table is always in the DOM: visible on demand, otherwise read by screen readers in place of the chart.
+          sr-only sits on a wrapper because a table treats height as a minimum and would stretch the page. */}
+      <div className={view === "table" ? "" : "sr-only"}>
+        <table className="w-full border-collapse text-sm">
           <thead>
             <tr className="text-xs font-semibold text-ink-3">
               <th scope="col" className="border-b border-line py-2.5 text-left">Bulan</th>
@@ -162,11 +163,11 @@ export function SalesChart({ points, tall = false, title }: { points: ChartPoint
             ))}
           </tbody>
         </table>
-      )}
+      </div>
 
       <ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-ink-2">
         <li className="inline-flex items-center gap-1.5"><i className="size-3 rounded-[3px] bg-brand-amber" />Bulan selesai</li>
-        <li className="inline-flex items-center gap-1.5"><i className="size-3 rounded-[3px] bg-ink" />Bulan berjalan, belum lengkap</li>
+        <li className="inline-flex items-center gap-1.5"><i className="size-3 rounded-[3px] bg-ink-3" />Bulan berjalan, belum lengkap</li>
       </ul>
     </div>
   );

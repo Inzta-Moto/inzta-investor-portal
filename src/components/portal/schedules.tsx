@@ -100,11 +100,10 @@ export function RepaymentCards({ items, effectiveDate, layout = "stack" }: { ite
         return (
           <article
             key={item.number}
-            className={`grid items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3.5 ${
-              layout === "row" ? "grid-cols-[40px_minmax(0,1fr)_auto] lg:grid-cols-[40px_minmax(0,1fr)] lg:items-start" : "grid-cols-[40px_minmax(0,1fr)_auto]"
-            }`}
+            // Amount and status sit under the title, so a long chip such as "Belum ditetapkan" never runs past a narrow phone.
+            className="grid grid-cols-[40px_minmax(0,1fr)] items-start gap-x-3 gap-y-2 rounded-xl border border-line bg-surface px-4 py-3.5"
           >
-            <span className="grid size-10 place-items-center rounded-[10px] bg-brand-charcoal font-bold text-brand-orange">{item.number}</span>
+            <span className="grid size-10 place-items-center rounded-[10px] border border-line-strong bg-surface-sunk font-bold text-ink">{item.number}</span>
             <div className="min-w-0">
               <h3 className="font-bold">Pengembalian ke-{item.number}</h3>
               <p className="text-[13px] text-ink-3">
@@ -112,17 +111,11 @@ export function RepaymentCards({ items, effectiveDate, layout = "stack" }: { ite
                 {month ? ` · ${formatMonth(month, "long")}` : ""}
               </p>
             </div>
-            <div
-              className={`grid justify-items-end gap-1 text-right ${
-                layout === "row" ? "lg:col-span-2 lg:justify-items-start lg:border-t lg:border-line lg:pt-2.5 lg:text-left" : ""
-              }`}
-            >
+            <div className={`col-start-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 ${layout === "row" ? "lg:col-span-2 lg:col-start-1 lg:border-t lg:border-line lg:pt-2.5" : ""}`}>
               {item.amount !== null ? (
                 <>
                   <b className="tabular">{formatRupiah(item.amount)}</b>
-                  <span className="text-xs text-ink-3">
-                    {item.percentBasisPoints !== null ? `${formatPercent(item.percentBasisPoints)} dari dana` : ""}
-                  </span>
+                  {item.percentBasisPoints !== null ? <span className="text-xs text-ink-3">{formatPercent(item.percentBasisPoints)} dari dana</span> : null}
                 </>
               ) : null}
               <StatusChip status={item.status} detail={item.status === "paid" && item.paidDate ? formatDate(item.paidDate) : undefined} />

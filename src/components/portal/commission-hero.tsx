@@ -46,22 +46,22 @@ export function CommissionHero({ portfolio, className = "" }: { portfolio: Portf
       ) : (
         <div className="relative grid gap-2">
           <p className="text-[13px] font-semibold text-brand-orange">Komisi</p>
-          <p className="text-2xl font-bold">{message?.title}</p>
+          <p className="text-[20px] font-bold lg:text-2xl">{message?.title}</p>
           <p className="text-sm text-[#d6d3d1]">{message?.body}</p>
         </div>
       )}
-      <dl className="relative grid grid-cols-3 gap-3 border-t border-white/10 pt-3.5 text-xs text-[#d6d3d1]">
+      <dl className="relative grid grid-cols-2 gap-3 border-t border-white/10 pt-3.5 text-xs text-[#d6d3d1] @xs:grid-cols-3">
         <div>
           <dt>Dana investasi</dt>
-          <dd className="tabular text-[15px] font-bold text-white">{formatRupiahCompact(portfolio.totalInvestment)}</dd>
+          <dd className="tabular text-sm font-bold text-white lg:text-[15px]">{formatRupiahCompact(portfolio.totalInvestment)}</dd>
         </div>
         <div>
           <dt>Total komisi</dt>
-          <dd className="tabular text-[15px] font-bold text-white">{formatRupiahCompact(portfolio.commission.totals.total)}</dd>
+          <dd className="tabular text-sm font-bold text-white lg:text-[15px]">{formatRupiahCompact(portfolio.commission.totals.total)}</dd>
         </div>
         <div>
           <dt>Berakhir</dt>
-          <dd className="text-[15px] font-bold text-white">{lastMonth ? formatMonth(lastMonth) : "Belum ditetapkan"}</dd>
+          <dd className="text-sm font-bold text-white lg:text-[15px]">{lastMonth ? formatMonth(lastMonth) : "Belum ditetapkan"}</dd>
         </div>
       </dl>
     </section>

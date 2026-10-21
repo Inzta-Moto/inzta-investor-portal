@@ -27,7 +27,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="id" className={jakarta.variable}>
-      <body className="min-h-dvh bg-bg font-sans text-[15px] leading-normal text-ink antialiased">{children}</body>
+      <body className="min-h-dvh bg-bg font-sans text-[14px] leading-normal lg:text-[15px] text-ink antialiased">{children}</body>
     </html>
   );
 }

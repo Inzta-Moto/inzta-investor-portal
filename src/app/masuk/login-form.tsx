@@ -51,7 +51,7 @@ export function LoginForm({ configError }: { configError: string | null }) {
             type="button"
             onClick={() => setShowPassword((value) => !value)}
             aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
-            className="absolute top-1/2 right-1 grid size-10 -translate-y-1/2 place-items-center rounded-lg text-ink-3 hover:text-ink"
+            className="absolute top-1/2 right-0.5 grid size-11 -translate-y-1/2 place-items-center rounded-lg text-ink-3 hover:text-ink"
           >
             {showPassword ? <EyeOffIcon className="size-5" /> : <EyeIcon className="size-5" />}
           </button>

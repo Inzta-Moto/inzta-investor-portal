@@ -19,7 +19,7 @@ export function ContractTimeline({ portfolio }: { portfolio: Portfolio }) {
       <div role="img" aria-label={description} className="grid grid-cols-24 gap-0.5 lg:gap-1">
         {months.map((n) => {
           const key = agreementMonthKey(effectiveDate, n);
-          const state = n < current ? "bg-brand-amber" : n === current ? "bg-ink" : "bg-track";
+          const state = n < current ? "bg-brand-amber" : n === current ? "bg-ink-3" : "bg-track";
           return (
             <div
               key={n}
@@ -42,7 +42,7 @@ export function ContractTimeline({ portfolio }: { portfolio: Portfolio }) {
       </div>
       <ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-ink-2">
         <li className="inline-flex items-center gap-1.5"><i className="size-3 rounded-[3px] bg-brand-amber" />Sudah lewat</li>
-        <li className="inline-flex items-center gap-1.5"><i className="size-3 rounded-[3px] bg-ink" />Bulan ini</li>
+        <li className="inline-flex items-center gap-1.5"><i className="size-3 rounded-[3px] bg-ink-3" />Bulan ini</li>
         <li className="inline-flex items-center gap-1.5"><i className="size-3 rounded-[3px] bg-track" />Akan datang</li>
         <li className="inline-flex items-center gap-1.5"><span aria-hidden="true">▲</span>Jadwal pengembalian</li>
       </ul>

@@ -43,14 +43,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Suspense>
         </div>
         <div className="grid gap-2.5 border-t border-line px-3 pt-3.5 pb-5">
-          <div className="flex items-center gap-2.5 p-2">
-            <span className="grid size-9 place-items-center rounded-[10px] bg-brand-charcoal text-sm font-bold text-brand-orange" aria-hidden="true">
-              IN
-            </span>
-            <div className="leading-tight">
-              <p className="text-[13px] font-bold">Akun investor</p>
-              <p className="text-xs text-ink-3">Hanya lihat</p>
-            </div>
+          <div className="px-2 py-1.5 leading-tight">
+            <p className="text-[13px] font-bold">Akun investor</p>
+            <p className="text-xs text-ink-3">Hanya lihat</p>
           </div>
           <SignOutButton />
         </div>
@@ -67,7 +62,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <SignOutButton compact />
           </div>
         </header>
-        <main className="mx-auto grid w-full max-w-[1180px] flex-1 content-start gap-3 px-4 pt-4 pb-24 lg:gap-4 lg:px-8 lg:pt-7 lg:pb-12">{children}</main>
+        <main className="mx-auto grid w-full grid-cols-1 max-w-[1180px] flex-1 content-start gap-3 px-4 pt-4 pb-24 lg:gap-4 lg:px-8 lg:pt-7 lg:pb-12">{children}</main>
       </div>
       <Suspense>
         <BottomNav />

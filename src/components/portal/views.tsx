@@ -50,13 +50,13 @@ export function RingkasanView({ portfolio }: { portfolio: Portfolio }) {
     <>
       <PageHeader title="Ringkasan" subtitle={phaseSubtitle(portfolio)} />
       <Warnings portfolio={portfolio} />
-      <div className="grid gap-3 lg:grid-cols-12 lg:gap-4">
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:gap-4">
         <CommissionHero portfolio={portfolio} className="lg:col-span-7" />
         <CommissionReceivedCard portfolio={portfolio} className="lg:col-span-5" />
         <RepaymentReceivedCard portfolio={portfolio} className="lg:col-span-5" />
         <Card className="lg:col-span-7">
           <div className="mb-3.5 flex items-center justify-between gap-3">
-            <h2 className="text-base font-bold">Perjalanan {portfolio.termMonths} bulan</h2>
+            <h2 className="text-[15px] font-bold lg:text-base">Perjalanan {portfolio.termMonths} bulan</h2>
             <Link href="/pengembalian" className="inline-flex min-h-10 items-center gap-1 text-[13px] font-semibold text-ink-2 hover:text-ink hover:underline">
               Pengembalian
               <RightIcon className="size-4" />
@@ -75,14 +75,14 @@ export function RingkasanView({ portfolio }: { portfolio: Portfolio }) {
         </Card>
         <Card flush className="lg:col-span-4">
           <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3.5 lg:px-5">
-            <h2 className="text-base font-bold">Komisi terdekat</h2>
+            <h2 className="text-[15px] font-bold lg:text-base">Komisi terdekat</h2>
             <Link href="/komisi" className="inline-flex min-h-10 items-center gap-1 text-[13px] font-semibold text-ink-2 hover:text-ink hover:underline">
               Semua
               <RightIcon className="size-4" />
             </Link>
           </div>
           {upcoming.length ? (
-            <CommissionList items={upcoming} currentMonth={currentMonth} title={(item) => `Komisi bulan ke-${item.month}`} />
+            <CommissionList items={upcoming} currentMonth={currentMonth} />
           ) : (
             <p className="px-4 py-5 text-sm text-ink-2">Seluruh komisi {portfolio.termMonths} bulan sudah dibayar.</p>
           )}
@@ -149,7 +149,7 @@ export function KomisiView({ portfolio }: { portfolio: Portfolio }) {
     <>
       <PageHeader title="Komisi" subtitle={`${formatRupiah(totals.perMonth)} per bulan selama ${portfolio.termMonths} bulan, dibayar tanggal 25–26`} />
       <Warnings portfolio={portfolio} />
-      <div className="grid gap-3 lg:grid-cols-12 lg:gap-4">
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:gap-4">
         <CommissionReceivedCard portfolio={portfolio} className="lg:col-span-7" />
         <div className="grid content-start gap-3 lg:col-span-5 lg:gap-4">
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-1 lg:gap-4">
@@ -162,7 +162,7 @@ export function KomisiView({ portfolio }: { portfolio: Portfolio }) {
         </div>
       </div>
       <Card flush>
-        <h2 className="border-b border-line px-4 py-3.5 text-base font-bold lg:px-5">Jadwal komisi</h2>
+        <h2 className="border-b border-line px-4 py-3.5 text-[15px] font-bold lg:text-base lg:px-5">Jadwal komisi</h2>
         <div className="lg:hidden">
           <Paginated
             navLabel="Halaman jadwal komisi"
@@ -193,7 +193,7 @@ export function PengembalianView({ portfolio }: { portfolio: Portfolio }) {
     <>
       <PageHeader title="Pengembalian dana" subtitle="Tiga kali di tahun kedua: bulan ke-16, 20, dan 24 (Pasal 5)" />
       <Warnings portfolio={portfolio} />
-      <div className="grid gap-3 lg:grid-cols-12 lg:gap-4">
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:gap-4">
         <RepaymentReceivedCard portfolio={portfolio} className="lg:col-span-7" />
         <StatCard className="lg:col-span-5" label="Pengembalian berikutnya" value={next ? `Ke-${next.number} · bulan ke-${next.dueMonth}` : "Selesai"}>
           <p className="text-[13px] text-ink-3">
@@ -204,7 +204,7 @@ export function PengembalianView({ portfolio }: { portfolio: Portfolio }) {
         </StatCard>
       </div>
       <Card flush>
-        <h2 className="border-b border-line px-4 py-3.5 text-base font-bold lg:px-5">Jadwal pengembalian</h2>
+        <h2 className="border-b border-line px-4 py-3.5 text-[15px] font-bold lg:text-base lg:px-5">Jadwal pengembalian</h2>
         <div className="p-3 lg:hidden">
           <RepaymentCards items={portfolio.repayment.items} effectiveDate={portfolio.effectiveDate} />
         </div>

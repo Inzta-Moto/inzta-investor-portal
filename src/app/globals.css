@@ -130,9 +130,9 @@
   }
 }
 
-/* Hero numbers scale with their card so "Rp6.400.000" never overflows a 360px phone or a desktop column. */
+/* Hero numbers scale with their card so "Rp6.400.000" fits a 320px phone and stays the largest figure on screen. */
 @utility hero-value {
-  font-size: clamp(32px, 14.5cqi, 56px);
+  font-size: clamp(28px, 11cqi, 52px);
   line-height: 1.05;
   letter-spacing: -0.025em;
 }

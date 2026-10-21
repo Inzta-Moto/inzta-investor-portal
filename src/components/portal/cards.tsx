@@ -31,7 +31,7 @@ export function StatCard({
   return (
     <Card className={`grid content-start gap-1.5 ${pending ? "border-dashed" : ""} ${className}`}>
       <CardLabel>{label}</CardLabel>
-      <p className={`leading-tight font-bold tracking-[-0.015em] ${compact ? "tabular text-[17px] sm:text-xl lg:text-[28px]" : "text-2xl lg:text-[28px]"}`}>{value}</p>
+      <p className={`leading-tight font-bold tracking-[-0.015em] ${compact ? "tabular text-base sm:text-xl lg:text-[28px]" : "text-[22px] lg:text-[28px]"}`}>{value}</p>
       {children}
     </Card>
   );
@@ -63,7 +63,7 @@ export function Meter({ ratio, left, right, label }: { ratio: number; left: Reac
 export function PageHeader({ title, subtitle }: { title: string; subtitle: ReactNode }) {
   return (
     <header className="mb-1 grid gap-1">
-      <h1 className="text-2xl font-bold tracking-[-0.015em] lg:text-[28px]">{title}</h1>
+      <h1 className="text-[22px] font-bold tracking-[-0.015em] lg:text-[28px]">{title}</h1>
       <p className="text-sm text-ink-3">{subtitle}</p>
     </header>
   );

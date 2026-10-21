@@ -13,7 +13,7 @@ export function CommissionReceivedCard({ portfolio, className = "" }: { portfoli
   return (
     <Card className={`grid content-start gap-3 ${className}`}>
       <CardLabel>Komisi sudah masuk</CardLabel>
-      <p className="tabular text-2xl leading-tight font-bold tracking-[-0.015em] lg:text-[28px]">{formatRupiah(totals.received)}</p>
+      <p className="tabular text-[22px] leading-tight font-bold tracking-[-0.015em] lg:text-[28px]">{formatRupiah(totals.received)}</p>
       <Meter
         ratio={totals.total > 0 ? totals.received / totals.total : 0}
         label="Komisi sudah masuk dari total"
@@ -47,7 +47,7 @@ export function RepaymentReceivedCard({ portfolio, className = "" }: { portfolio
   return (
     <Card className={`grid content-start gap-3 ${className}`}>
       <CardLabel>Pengembalian dana sudah masuk</CardLabel>
-      <p className="tabular text-2xl leading-tight font-bold tracking-[-0.015em] lg:text-[28px]">{formatRupiah(totals.returned)}</p>
+      <p className="tabular text-[22px] leading-tight font-bold tracking-[-0.015em] lg:text-[28px]">{formatRupiah(totals.returned)}</p>
       <Meter
         ratio={totals.total > 0 ? totals.returned / totals.total : 0}
         label="Pengembalian dana sudah masuk dari total"
