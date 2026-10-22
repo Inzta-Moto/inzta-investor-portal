@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: c9017110ace6120b0eb98917d7cb82d5517a2eff3d477dbb4ee782681cd11074 -->
+source_hash: 93e65f14ddfd037f9430342b5e02727c5fe727b19f28ee606f596d0a7926d365 -->
 
 # Brief
 
@@ -9,18 +9,14 @@ Inzta Investor Portal adalah portal daring hanya-baca untuk investor PT Inzta Ge
 Project `Inzta Investor Portal`, tier `full`. Rendered from sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
 
 ## Active
-Feature F-006 — Integrasi Firestore lewat server (`verification`, docs/specs/F-006-integrasi-firebase/)
-Task T-006 — Sambungkan ke produksi (`blocked`); requirements: FR-001, FR-002, FR-004; depends on: T-001, T-002, T-003, T-004, T-005
-
-Sudah: `.env.local` lewat `npm run env:setup` dengan kunci `database-inzta` (A-017). Menunggu A-016: admin membuat `investor_agreement/current` dan `investor_payments`; hosting A-011.
+Feature F-009 — Penggunaan dana investasi (`verification`, docs/specs/F-009-penggunaan-dana/)
+Task T-003 — Penanda di ERP (`done`); requirements: FR-001; depends on: none
 
 Acceptance criteria:
-- AC-001: Given dokumen `sales` berisi pelanggan, kota, reseller, harga modal, when portal membaca, then hanya empat kolom itu yang diterima server dan HTML maupun payload RSC tidak memuat kolom lain.
-- AC-002: Given dokumen lama tanpa `revenue`, then dihitung `sellingPrice * quantity`.
-- AC-003: Given `investor_agreement/current` dan `investor_payments`, then Ringkasan, Komisi, dan Pengembalian memakai nilainya. Tanpa dokumen perjanjian, portal memakai ketentuan draf (Pasal 2 sampai 5) dengan status "Perjanjian belum aktif"; field yang rusak memakai nilai kontrak, pembayaran yang rusak dilewati, dan investor melihat kalimat biasa, bukan nama field (keputusan Sehan 2026-10-21: "jangan di hold belum ada perjanjian").
-- AC-007: Given `INVESTOR_USERNAME` dan `INVESTOR_PASSWORD_HASH` (scrypt), then hanya pasangan yang cocok yang masuk; hash rusak ditolak sebagai kesalahan konfigurasi; investor tidak punya akun Firebase.
-- AC-008: Given kata sandi diganti di env, then cookie lama tidak berlaku.
-- AC-009: Given banyak percobaan gagal, then dibatasi 5 per klien dan 50 total per 15 menit.
+- AC-001: Given owner atau admin, then form Tambah dan Edit Belanja Produksi punya centang "Dibayar dari dana investasi"; role lain tidak melihat centang itu (Q9).
+- AC-002: Given halaman Investor ERP, then owner atau admin melihat Belanja Produksi per bulan dan bisa menandai atau membatalkan tanda per barang, termasuk belanja yang sudah closed; hanya tandanya yang berubah (Q9, Q10).
+- AC-003: Given belanja bertanggal sebelum Tanggal Efektif, then ERP tetap menandai dan menampilkan peringatan (Q5).
+- AC-004: Given belanja bertanda dihapus, then ERP memperingatkan bahwa belanja itu tampil di portal investor (Q10).
 
 ## Rules
 Stop conditions:
@@ -44,12 +40,12 @@ Generated: `docs/context/state.yaml`, `docs/context/PROJECT_STATE.md`, `docs/con
 Frozen: none
 
 ## Open assumptions
-- A-016 — Data perjanjian dan rilis di produksi (F-006)
+None.
 
 ## Handoff
 Next step:
 
-Total bulanan sudah cocok dengan dasbor ERP (Sehan, EV-007). Setelah Tahap I diterima, admin mengisi Tanggal Efektif dan persentase pengembalian di `investor_agreement/current`. Angkasa menyiapkan hosting dengan env yang sama. Verifikasi: `npm run context:validate`.
+Setelah deploy portal dan ERP, owner menandai satu belanja di dasbor asli lalu membuka `capital.inzta.id/penggunaan-dana`; catat hasilnya sebagai bukti produksi F-009.
 
 ## Other open tasks
 None.
@@ -65,3 +61,6 @@ None.
 | F-006 Integrasi Firestore lewat server | verification | blocked | 6/7 |
 | F-007 Filter bulan dan tahun di Penjualan | implemented | complete | 2/2 |
 | F-008 Pilihan tema dan konten desktop lebar penuh | implemented | complete | 2/2 |
+| F-009 Penggunaan dana investasi | verification | complete | 3/3 |
+| F-010 Form isi perjanjian di ERP | draft | blocked | 0/1 |
+| F-011 Banyak investor | draft | blocked | 0/4 |

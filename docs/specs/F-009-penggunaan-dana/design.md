@@ -2,7 +2,7 @@
 id: F-009
 title: "Penggunaan dana investasi"
 type: design
-status: implementing
+status: verification
 tier: lite
 owner: "VXerys"
 created: 2026-10-22

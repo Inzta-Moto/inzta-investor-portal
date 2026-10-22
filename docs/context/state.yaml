@@ -367,9 +367,94 @@ features:
         depends_on: []
         evidence:
           - EV-002
+  - id: F-009
+    title: Penggunaan dana investasi
+    status: verification
+    phase: complete
+    spec_path: docs/specs/F-009-penggunaan-dana
+    tasks:
+      - id: T-001
+        title: Data penggunaan dana di portal
+        status: done
+        requirements:
+          - FR-002
+          - FR-003
+        depends_on: []
+        evidence:
+          - EV-001
+      - id: T-002
+        title: Halaman Penggunaan Dana di portal
+        status: done
+        requirements:
+          - FR-002
+        depends_on:
+          - T-001
+        evidence:
+          - EV-002
+      - id: T-003
+        title: Penanda di ERP
+        status: done
+        requirements:
+          - FR-001
+        depends_on: []
+        evidence:
+          - EV-003
+  - id: F-010
+    title: Form isi perjanjian di ERP
+    status: draft
+    phase: blocked
+    spec_path: docs/specs/F-010-form-perjanjian
+    tasks:
+      - id: T-001
+        title: Modal isi perjanjian di ERP
+        status: blocked
+        requirements:
+          - FR-001
+        depends_on: []
+        evidence: []
+  - id: F-011
+    title: Banyak investor
+    status: draft
+    phase: blocked
+    spec_path: docs/specs/F-011-multi-investor
+    tasks:
+      - id: T-001
+        title: ADR login dan data per investor
+        status: blocked
+        requirements:
+          - FR-001
+          - FR-002
+        depends_on: []
+        evidence: []
+      - id: T-002
+        title: Akun dan data per investor di portal
+        status: blocked
+        requirements:
+          - FR-001
+          - FR-002
+        depends_on:
+          - T-001
+        evidence: []
+      - id: T-003
+        title: Daftar dan detail investor di ERP
+        status: blocked
+        requirements:
+          - FR-003
+        depends_on:
+          - T-001
+        evidence: []
+      - id: T-004
+        title: Migrasi data satu investor
+        status: blocked
+        requirements:
+          - FR-002
+        depends_on:
+          - T-002
+          - T-003
+        evidence: []
 active:
-  feature_id: F-006
-  task_id: T-006
+  feature_id: F-009
+  task_id: T-003
 assumptions_open:
   - id: A-011
     feature: F-005
@@ -387,5 +472,20 @@ blockers:
   - feature_id: F-006
     task_id: T-006
     title: Sambungkan ke produksi
-generated_at: 2026-10-21T08:27:38.718Z
-source_hash: c9017110ace6120b0eb98917d7cb82d5517a2eff3d477dbb4ee782681cd11074
+  - feature_id: F-010
+    task_id: T-001
+    title: Modal isi perjanjian di ERP
+  - feature_id: F-011
+    task_id: T-001
+    title: ADR login dan data per investor
+  - feature_id: F-011
+    task_id: T-002
+    title: Akun dan data per investor di portal
+  - feature_id: F-011
+    task_id: T-003
+    title: Daftar dan detail investor di ERP
+  - feature_id: F-011
+    task_id: T-004
+    title: Migrasi data satu investor
+generated_at: 2026-10-22T13:34:21.989Z
+source_hash: 93e65f14ddfd037f9430342b5e02727c5fe727b19f28ee606f596d0a7926d365

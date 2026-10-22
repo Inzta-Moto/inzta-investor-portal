@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: c9017110ace6120b0eb98917d7cb82d5517a2eff3d477dbb4ee782681cd11074 -->
+source_hash: 93e65f14ddfd037f9430342b5e02727c5fe727b19f28ee606f596d0a7926d365 -->
 
 # Project Progress
 
@@ -73,3 +73,26 @@ source_hash: c9017110ace6120b0eb98917d7cb82d5517a2eff3d477dbb4ee782681cd11074 --
 |---|---|---|---|---|
 | T-001 Pilihan tema | done | FR-001 |  | EV-001 |
 | T-002 Konten desktop lebar penuh | done | FR-002 |  | EV-002 |
+
+## F-009 — Penggunaan dana investasi (`verification`, complete)
+
+| Task | Status | Requirements | Depends on | Evidence |
+|---|---|---|---|---|
+| T-001 Data penggunaan dana di portal | done | FR-002, FR-003 |  | EV-001 |
+| T-002 Halaman Penggunaan Dana di portal | done | FR-002 | T-001 | EV-002 |
+| T-003 Penanda di ERP | done | FR-001 |  | EV-003 |
+
+## F-010 — Form isi perjanjian di ERP (`draft`, blocked)
+
+| Task | Status | Requirements | Depends on | Evidence |
+|---|---|---|---|---|
+| T-001 Modal isi perjanjian di ERP | blocked | FR-001 |  |  |
+
+## F-011 — Banyak investor (`draft`, blocked)
+
+| Task | Status | Requirements | Depends on | Evidence |
+|---|---|---|---|---|
+| T-001 ADR login dan data per investor | blocked | FR-001, FR-002 |  |  |
+| T-002 Akun dan data per investor di portal | blocked | FR-001, FR-002 | T-001 |  |
+| T-003 Daftar dan detail investor di ERP | blocked | FR-003 | T-001 |  |
+| T-004 Migrasi data satu investor | blocked | FR-002 | T-002, T-003 |  |

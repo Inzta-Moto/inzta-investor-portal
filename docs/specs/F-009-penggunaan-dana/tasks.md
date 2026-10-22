@@ -2,7 +2,7 @@
 id: F-009
 title: "Penggunaan dana investasi"
 type: tasks
-status: implementing
+status: verification
 tier: lite
 owner: "VXerys"
 created: 2026-10-22
@@ -19,22 +19,22 @@ This file is the master for task status.
 ## Tasks
 
 ### T-001 — Data penggunaan dana di portal
-- status: in_progress
+- status: done
 - requirements: [FR-002, FR-003]
 - depends_on: []
-- evidence: []
+- evidence: [EV-001]
 
 ### T-002 — Halaman Penggunaan Dana di portal
-- status: planned
+- status: done
 - requirements: [FR-002]
 - depends_on: [T-001]
-- evidence: []
+- evidence: [EV-002]
 
 ### T-003 — Penanda di ERP
-- status: planned
+- status: done
 - requirements: [FR-001]
 - depends_on: []
-- evidence: []
+- evidence: [EV-003]
 
 ## Deferred
 

@@ -1,48 +1,46 @@
 ---
 status: active
 owner: "VXerys"
-session_date: "2026-10-21"
+session_date: "2026-10-22"
 branch: "main"
-base_commit: "5d6ab26"
-current_commit: "775af38"
-feature_id: "F-006"
-task_id: "T-006"
-expires_after: "2026-11-04"
+base_commit: "0bb1609"
+current_commit: "215394e"
+feature_id: "F-009"
+task_id: "T-003"
+expires_after: "2026-11-05"
 ---
 
 # Session Handoff
 
 ## Session objective
 
-Mengganti data mock dengan Firestore asli dan membuatnya terasa langsung, lalu mengaudit kode dan memvalidasi tampilan HP. Sehan memilih "jalan tengah" (ADR-0006): server membaca `sales` empat kolom, investor tanpa akun Firebase.
+Menampilkan ke mana dana investasi dipakai, sesuai permintaan klien ("cukup list pemakaian uangnya, tanpa total"). Keputusan dari sesi grilling Q1 sampai Q14 dicatat di F-009 dan ADR-0007.
 
 ## Context used
 
-ADR-0001, ADR-0003, ADR-0004, ADR-0006; aturan `getSaleRevenue` dan format tanggal `sales` di `inztamoto-erp-dashboard/public/legacy/app-runtime.js`; emulator Firestore project `demo-inzta`.
+ADR-0006, ADR-0007; Belanja Produksi di `inztamoto-erp-dashboard/public/legacy/app-runtime.js` (`production_purchases`, status open/closed, tim tidak pernah menutup minggu); emulator Firestore `demo-inzta`.
 
 ## Completed
 
-- F-006: server membaca Firestore `database-inzta` (dasbor ERP) dengan proyeksi empat kolom; portal jalan tanpa dokumen perjanjian memakai ketentuan draf (T-007); `npm run env:setup` mengisi `.env.local` dari berkas kunci tanpa menampilkan nilai.
-- F-003: semua garis warna dekoratif diganti; skala teks HP lebih kecil; bug sidebar terpotong (tabel sr-only), grafik melebar setelah resize, kartu Pengembalian meluber di 320 px, dan kartu Penjualan tidak sejajar diperbaiki (T-007).
-- Dua audit code-review: 10 dan 8 temuan, semuanya diperbaiki.
-- F-007: filter bulan dan tahun di Penjualan (`?tahun=&bulan=`). F-008: pilihan tema Terang/Gelap (cookie `inzta_theme`) dan konten desktop lebar penuh.
-- Repo dipindah sengaja ke `Inzta-Moto/inzta-investor-portal`; Angkasa memasang domain dan hosting dari repo itu.
+- F-009: ERP menandai belanja (`investorAgreementId: "current"`) lewat centang di form Belanja Produksi dan kartu di halaman Investor (owner dan admin); portal membaca belanja bertanda dengan enam kolom dan menampilkannya per bulan di halaman Penggunaan Dana, tanpa total.
+- Spec ditahan: F-010 form isi perjanjian (Q8), F-011 banyak investor (Q7).
+- Fallback salinan data 21 Okt dicabut (0bb1609); total bulanan memakai agregasi `sum()` (019abb1).
 
 ## Requirement coverage
 
-F-006 AC-001 sampai AC-004, AC-006 sampai AC-010 pass; AC-005 (jeda 15 menit) not_run. F-003 AC-008 diperbarui (EV-004).
+F-009 AC-001 sampai AC-010 pass di emulator dan halaman uji (EV-001 sampai EV-003); alur produksi belum diuji.
 
 ## Changed files
 
-`src/lib/data/`, `src/lib/auth/`, `src/app/(portal)/`, `src/app/masuk/`, `src/components/portal/`, `scripts/emulator/`, `scripts/auth/`, `firebase.json`, `package.json`, `docs/adr/`, `docs/specs/F-00{2,3,4,6}/`, `docs/steering/`, `docs/product/`, `docs/context/ASSUMPTIONS.md`, `README.md`, `.env.example`.
+`src/lib/data/`, `src/lib/investment/fund-usage*.ts`, `src/app/(portal)/penggunaan-dana/`, `src/components/portal/{views,nav-links}.tsx`, `src/components/icons.tsx`, `scripts/emulator/`, `docs/adr/ADR-0007-*`, `docs/specs/F-009..F-011/`.
 
 ## Commands executed
 
-`npm run lint` (bersih), `npm run typecheck` (0 error), `npm test` (44 pass), `npm run build` (sukses), tes emulator (7 pass), `npm run test:sdd` (34 pass), `npm run context:validate`. Validasi runtime di browser pane 360 px dan 1280 px.
+`npm test` (58 pass), tes emulator (10 pass), `npm run typecheck` (0 error), `npm run lint` (bersih), `npm run build` (sukses), `npm run context:validate` (lolos, 1 warning lama F-003). ERP: `npm run build` sukses.
 
 ## Current implementation state
 
-Lokal: `npm run emulator:start`, lalu `FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 npm run emulator:seed` dan `npm run dev`. Emulator butuh Java 21 (`JAVA_HOME`).
+Lokal: `npm run emulator:start`, lalu `FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 npm run emulator:seed`; seed kini berisi 3 belanja (2 bertanda).
 
 ## Uncommitted work
 
@@ -50,24 +48,24 @@ None.
 
 ## Blockers
 
-A-016: dokumen `investor_agreement/current` dan `investor_payments` setelah Tahap I, env hosting (Angkasa, A-011), kata sandi kuat, cabut kunci `inzta-5244e` dan `inzta-dev`. Pertanyaan terbuka: apakah pesanan website (`orders`) ikut dihitung (A-017).
+Deploy ERP Vercel tidak otomatis dari `feat/nextjs-migration`; terakhir dipicu dengan commit kosong. A-016 tetap terbuka.
 
 ## Decisions made during session
 
-ADR-0006 (Sehan: "pakai jalan tengah"). Username investor `investor@inzta.id` (Sehan). Cache dan jeda refresh dipilih agen untuk menjaga kuota Spark bersama.
+Q1 sampai Q14 di F-009 `requirements.md`; ADR-0007. Sehan: tanpa Blaze, F-010 dan F-011 hanya spec.
 
 ## Context updates
 
-`docs/context/ASSUMPTIONS.md`, `docs/adr/ADR-0006-server-read-field-projection.md`, `docs/specs/_index.md`, `docs/steering/{tech,structure,product}.md`.
+`docs/adr/README.md`, `docs/specs/_index.md`.
 
 ## Exact next step
 
-Total bulanan sudah cocok dengan dasbor ERP (Sehan, EV-007). Setelah Tahap I diterima, admin mengisi Tanggal Efektif dan persentase pengembalian di `investor_agreement/current`. Angkasa menyiapkan hosting dengan env yang sama. Verifikasi: `npm run context:validate`.
+Setelah deploy portal dan ERP, owner menandai satu belanja di dasbor asli lalu membuka `capital.inzta.id/penggunaan-dana`; catat hasilnya sebagai bukti produksi F-009.
 
 ## Do not do next
 
-Jangan menulis ke Firestore produksi, mengubah Security Rules, atau deploy tanpa persetujuan Sehan. Jangan menjalankan `emulator:seed` atau tes emulator tanpa `FIRESTORE_EMULATOR_HOST`.
+Jangan mengerjakan F-010 atau F-011 tanpa persetujuan Sehan. Jangan menulis ke Firestore produksi, mengubah Security Rules, atau menyarankan Blaze.
 
 ## Validity
 
-Berlaku sampai 2026-11-04 atau sampai T-006 dimulai.
+Berlaku sampai 2026-11-05 atau sampai F-010 atau F-011 dimulai.
