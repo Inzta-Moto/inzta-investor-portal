@@ -2,6 +2,7 @@ import { cache } from "react";
 
 import { addMonths, monthKey, toYearMonth, todayInJakarta } from "../investment/calendar.ts";
 import { buildPortfolio, type Portfolio } from "../investment/portfolio.ts";
+import { groupFundUsage, type FundUsageMonth } from "../investment/fund-usage.ts";
 import { availableYears, filterMonths, monthFocus, parseSalesFilter, salesPoints, type MonthFocus, type SalesFilter, type SalesPoint } from "../investment/sales.ts";
 import type { IsoDate } from "../investment/types.ts";
 import { InvestorDataError, QUOTA_MESSAGE, isQuotaError } from "./firestore-source.ts";
@@ -48,4 +49,12 @@ export async function loadSalesView(params: Record<string, string | string[] | u
   const fetch = previous && !months.includes(previous) ? [previous, ...months] : months;
   const monthly = await source.getMonths(fetch, today, now.getTime());
   return { filter, years, today, points: salesPoints(months, monthly, today), focus: focusMonth ? monthFocus(focusMonth, monthly, today) : null };
+}
+
+export type FundUsageView = { months: FundUsageMonth[]; skipped: number };
+
+/** The Penggunaan Dana list: marked Belanja Produksi items, newest month first, without any total. */
+export async function loadFundUsage(): Promise<FundUsageView> {
+  const { items, skipped } = await getDataSource().getFundUsage(Date.now());
+  return { months: groupFundUsage(items), skipped };
 }

@@ -56,5 +56,7 @@ Status vocabulary matches the template frontmatter. A proposal that is not taken
 | [ADR-0002](ADR-0002-investor-data-isolation.md) | approved | isolasi data investor: koleksi ringkasan investor_* lewat Cloud Function | |
 | [ADR-0003](ADR-0003-investor-data-source.md) | approved | lapisan data lewat InvestorSnapshot, adaptor mock dulu | |
 | [ADR-0004](ADR-0004-demo-session.md) | approved | login mode demo dengan cookie bertanda tangan | |
+| [ADR-0006](ADR-0006-server-read-field-projection.md) | approved | baca di server dengan proyeksi kolom, login milik portal | |
+| [ADR-0007](ADR-0007-fund-usage-from-purchases.md) | approved | penggunaan dana dari production_purchases yang ditandai, enam kolom | |
 
 Use `docs/_templates/adr.md` for new records.

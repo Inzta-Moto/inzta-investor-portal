@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 import { CONTRACT_TERMS } from "../investment/contract-terms.ts";
-import { toAgreement, toPayment } from "./firestore-mapping.ts";
+import { toAgreement, toFundUsageItem, toPayment } from "./firestore-mapping.ts";
 
 const agreementDoc = {
   effectiveDate: "2026-11-10",
@@ -69,4 +69,20 @@ test("payments need kind, period, whole amount, and date; repayments need a numb
   assert.equal(toPayment("b", { kind: "repayment", periodMonth: 16, amount: 50_000_000, paidDate: "2028-03-25" }).ok, false);
   assert.equal(toPayment("c", { kind: "commission", periodMonth: 1, amount: "6400000", paidDate: "2026-12-25" }).ok, false);
   assert.equal(toPayment("d", { kind: "bonus", periodMonth: 1, amount: 1, paidDate: "2026-12-25" }).ok, false);
+});
+
+test("F-009 AC-005: a marked purchase keeps the category as typed and the item total as the amount", () => {
+  const mapped = toFundUsageItem("p1", { date: "2026-10-17", itemName: " terpal uno ", category: "bahan", quantity: 5, unit: "meter", totalCost: 600_000 });
+  assert.deepEqual(mapped, { ok: true, value: { date: "2026-10-17", itemName: "terpal uno", category: "bahan", quantity: 5, unit: "meter", amount: 600_000 } });
+});
+
+test("F-009 AC-010: a marked purchase without a date, name, quantity, or total is skipped", () => {
+  for (const broken of [
+    { itemName: "kain", quantity: 1, totalCost: 1 },
+    { date: "2026-10-17", itemName: "  ", quantity: 1, totalCost: 1 },
+    { date: "2026-10-17", itemName: "kain", quantity: 0, totalCost: 1 },
+    { date: "2026-10-17", itemName: "kain", quantity: 1, totalCost: "1" },
+  ]) {
+    assert.equal(toFundUsageItem("p", broken).ok, false);
+  }
 });

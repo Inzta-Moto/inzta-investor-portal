@@ -2,13 +2,20 @@ import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { AggregateField, getFirestore, type Firestore } from "firebase-admin/firestore";
 
 import { addMonths, monthKey, parseIsoDate, toYearMonth } from "../investment/calendar.ts";
-import type { Agreement, InvestorSnapshot, IsoDate, MonthKey, MonthlySales, Payment } from "../investment/types.ts";
+import type { Agreement, FundUsageItem, InvestorSnapshot, IsoDate, MonthKey, MonthlySales, Payment } from "../investment/types.ts";
 import { readAdminConfig } from "./admin-config.ts";
-import { toAgreement, toPayment } from "./firestore-mapping.ts";
+import { toAgreement, toFundUsageItem, toPayment } from "./firestore-mapping.ts";
 import { TtlCache } from "./ttl-cache.ts";
 
 // Only these sales fields are ever fetched (ADR-0006): customer, city, reseller, and cost price stay in Firestore.
 export const SALES_FIELDS = ["date", "revenue", "sellingPrice", "quantity"] as const;
+
+// Belanja Produksi marked by the ERP as paid from the investment (ADR-0007): unit price, notes, and week status stay in
+// Firestore. The marker holds the agreement id so a second investor (F-011) only changes its value.
+export const FUND_USAGE_FIELDS = ["date", "itemName", "category", "quantity", "unit", "totalCost"] as const;
+export const INVESTOR_AGREEMENT_ID = "current";
+
+export type FundUsage = { items: FundUsageItem[]; skipped: number };
 
 // Firestore code 8: the Spark plan's daily read quota, shared with the ERP dashboard, is used up.
 export const QUOTA_MESSAGE =
@@ -62,6 +69,7 @@ export function createFirestoreSource(db: Firestore) {
   const recent = new TtlCache<number>();
   const meta = new TtlCache<{ agreement: Agreement; payments: Payment[]; warnings: string[] }>();
   const first = new TtlCache<MonthKey | null>();
+  const usage = new TtlCache<FundUsage>();
 
   /**
    * Revenue of sales dated in [from, to), summed by Firestore. An aggregation costs one read per 1,000 matching sales,
@@ -117,6 +125,21 @@ export function createFirestoreSource(db: Firestore) {
     );
   }
 
+  async function loadFundUsage(): Promise<FundUsage> {
+    const snap = await db.collection("production_purchases").where("investorAgreementId", "==", INVESTOR_AGREEMENT_ID).select(...FUND_USAGE_FIELDS).get();
+    const items: FundUsageItem[] = [];
+    let skipped = 0;
+    for (const doc of snap.docs) {
+      const mapped = toFundUsageItem(doc.id, doc.data());
+      if (mapped.ok) items.push(mapped.value);
+      else {
+        console.warn(mapped.reason);
+        skipped += 1;
+      }
+    }
+    return { items, skipped };
+  }
+
   async function loadFirstSaleMonth(): Promise<MonthKey | null> {
     // The string range keeps documents whose date is not text out of the ordering, as the month queries do.
     const snap = await db.collection("sales").where("date", ">=", "").orderBy("date").limit(1).select("date").get();
@@ -138,6 +161,9 @@ export function createFirestoreSource(db: Firestore) {
     },
     async getFirstSaleMonth(nowMs = Date.now()): Promise<MonthKey | null> {
       return first.get("first", SETTLED_TTL, nowMs, loadFirstSaleMonth);
+    },
+    getFundUsage(nowMs = Date.now()): Promise<FundUsage> {
+      return usage.get(INVESTOR_AGREEMENT_ID, AGREEMENT_TTL, nowMs, loadFundUsage);
     },
   };
 }

@@ -3,7 +3,7 @@ import { AutoRefresh } from "@/components/portal/auto-refresh";
 import { PortfolioView, type PortalView } from "@/components/portal/views";
 import { requireSession } from "@/lib/auth/session";
 import { QUOTA_MESSAGE, isQuotaError } from "@/lib/data/firestore-source";
-import { loadPortfolio, loadSalesView, type SalesView } from "@/lib/data/load";
+import { loadFundUsage, loadPortfolio, loadSalesView, type FundUsageView, type SalesView } from "@/lib/data/load";
 
 /**
  * Checks the session at the data access point, because layouts are not re-rendered on client navigation, then
@@ -13,10 +13,12 @@ export async function PortfolioPage({ view, searchParams = {} }: { view: PortalV
   await requireSession();
   const result = await loadPortfolio();
   let sales: SalesView | undefined;
+  let fundUsage: FundUsageView | undefined;
   let reason = result.ok ? null : result.reason;
-  if (result.ok && view === "penjualan") {
+  if (result.ok && (view === "penjualan" || view === "penggunaan-dana")) {
     try {
-      sales = await loadSalesView(searchParams);
+      if (view === "penjualan") sales = await loadSalesView(searchParams);
+      else fundUsage = await loadFundUsage();
     } catch (error) {
       if (!isQuotaError(error)) throw error;
       reason = QUOTA_MESSAGE;
@@ -36,7 +38,7 @@ export async function PortfolioPage({ view, searchParams = {} }: { view: PortalV
   return (
     <>
       <AutoRefresh updatedAt={result.updatedAt} />
-      <PortfolioView view={view} portfolio={result.portfolio} sales={sales} />
+      <PortfolioView view={view} portfolio={result.portfolio} sales={sales} fundUsage={fundUsage} />
     </>
   );
 }

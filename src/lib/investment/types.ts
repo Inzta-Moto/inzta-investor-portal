@@ -40,6 +40,16 @@ export type Payment = {
   note?: string;
 };
 
+/** A Belanja Produksi item the admin marked as paid from the investment (ADR-0007); amount is the item total. */
+export type FundUsageItem = {
+  date: IsoDate;
+  itemName: string;
+  category: string;
+  quantity: number;
+  unit: string;
+  amount: number;
+};
+
 export type MonthlySales = {
   month: MonthKey;
   revenue: number;

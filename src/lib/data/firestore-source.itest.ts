@@ -3,7 +3,7 @@ import { after, before, test } from "node:test";
 
 import { buildFixtures } from "../../../scripts/emulator/fixtures.mjs";
 import { buildPortfolio } from "../investment/portfolio.ts";
-import { SALES_FIELDS, adminDb, createFirestoreSource } from "./firestore-source.ts";
+import { FUND_USAGE_FIELDS, SALES_FIELDS, adminDb, createFirestoreSource } from "./firestore-source.ts";
 
 // Runs only inside `npm run test:emulator`, which starts the Firestore emulator for project "demo-inzta".
 const host = process.env.FIRESTORE_EMULATOR_HOST;
@@ -22,6 +22,7 @@ before(async () => {
   await db.doc("investor_agreement/current").set(fx.agreement);
   for (const [id, data] of Object.entries(fx.payments)) await db.doc(`investor_payments/${id}`).set(data);
   for (const [id, data] of Object.entries(fx.sales)) await db.doc(`sales/${id}`).set(data);
+  for (const [id, data] of Object.entries(fx.purchases)) await db.doc(`production_purchases/${id}`).set(data);
 });
 
 after(clear);
@@ -113,3 +114,27 @@ test("F-007: the year filter gets the first sale month and totals for any months
   assert.deepEqual(empty, [{ month: "2020-01", revenue: 0 }]);
 });
 
+
+test("F-009 AC-009: only marked purchases arrive, with only the six fund usage fields", async () => {
+  const snap = await db.collection("production_purchases").where("investorAgreementId", "==", "current").select(...FUND_USAGE_FIELDS).get();
+  assert.equal(snap.size, 2);
+  for (const doc of snap.docs) {
+    for (const key of Object.keys(doc.data())) assert.ok((FUND_USAGE_FIELDS as readonly string[]).includes(key), `unexpected field ${key}`);
+  }
+  const { items, skipped } = await createFirestoreSource(db).getFundUsage(0);
+  assert.equal(skipped, 0);
+  assert.deepEqual(items.map((i) => i.itemName).sort(), ["Kain canvas", "Listrik"]);
+  assert.equal(JSON.stringify(items).includes("transfer"), false);
+});
+
+test("F-009 AC-007: unmarking a purchase removes it once the 25-second cache expires", async () => {
+  const source = createFirestoreSource(db);
+  assert.equal((await source.getFundUsage(0)).items.length, 2);
+  // Rewriting the document without the marker is what the ERP's unmark does to the portal; firebase-admin stays in firestore-source.ts.
+  const unmarked: Record<string, unknown> = { ...fx.purchases["purchase-b"] };
+  delete unmarked.investorAgreementId;
+  await db.doc("production_purchases/purchase-b").set(unmarked);
+  assert.equal((await source.getFundUsage(10_000)).items.length, 2);
+  assert.equal((await source.getFundUsage(26_000)).items.length, 1);
+  await db.doc("production_purchases/purchase-b").set(fx.purchases["purchase-b"]);
+});

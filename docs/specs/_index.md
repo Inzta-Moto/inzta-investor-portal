@@ -22,6 +22,9 @@ Task status belongs in each feature's `tasks.md`; `docs/context/state.yaml` and 
 | `F-006` | integrasi Firestore lewat server | `docs/specs/F-006-integrasi-firebase/` | P0 | approved | M2 |
 | `F-007` | filter bulan dan tahun di Penjualan | `docs/specs/F-007-filter-penjualan/` | P1 | implemented | M2 |
 | `F-008` | pilihan tema dan konten desktop lebar penuh | `docs/specs/F-008-tema-dan-lebar/` | P2 | implemented | M2 |
+| `F-009` | penggunaan dana investasi | `docs/specs/F-009-penggunaan-dana/` | P1 | approved | M2 |
+| `F-010` | form isi perjanjian di ERP (ditahan) | `docs/specs/F-010-form-perjanjian/` | P2 | draft | M3 |
+| `F-011` | banyak investor (ditahan) | `docs/specs/F-011-multi-investor/` | P2 | draft | M3 |
 
 ## Lifecycle gate meaning
 

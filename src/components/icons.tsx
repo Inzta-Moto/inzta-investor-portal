@@ -24,6 +24,7 @@ function Icon({ children, className = "size-[22px]", ...props }: IconProps) {
 export const HomeIcon = (p: IconProps) => <Icon {...p}><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z" /></Icon>;
 export const SalesIcon = (p: IconProps) => <Icon {...p}><path d="M4 20h16" /><path d="M7 16v-5" /><path d="M12 16V7" /><path d="M17 16v-8" /></Icon>;
 export const CommissionIcon = (p: IconProps) => <Icon {...p}><rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="2.5" /><path d="M6.5 9.5h.01M17.5 14.5h.01" /></Icon>;
+export const FundsIcon = (p: IconProps) => <Icon {...p}><path d="M6 3.5h12v17l-2.5-1.5-2 1.5-2-1.5-2 1.5-2-1.5L6 20.5z" /><path d="M9 8h6M9 11.5h6M9 15h3.5" /></Icon>;
 export const ReturnIcon = (p: IconProps) => <Icon {...p}><path d="M9 7H5V3" /><path d="M5.3 7.2A8 8 0 1 1 4 12" /><path d="M12 8v4l2.5 2" /></Icon>;
 export const ChevronLeftIcon = (p: IconProps) => <Icon {...p}><path d="m14.5 6-6 6 6 6" /></Icon>;
 export const ChevronRightIcon = (p: IconProps) => <Icon {...p}><path d="m9.5 6 6 6-6 6" /></Icon>;

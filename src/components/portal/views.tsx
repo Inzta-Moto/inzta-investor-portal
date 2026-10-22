@@ -1,8 +1,10 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
-import { agreementMonthKey, formatMonth } from "@/lib/format/dates";
+import { agreementMonthKey, formatDate, formatMonth } from "@/lib/format/dates";
 import { chartPoints, phaseSubtitle, toChartPoints } from "@/lib/format/portfolio-view";
-import type { SalesView } from "@/lib/data/load";
+import type { FundUsageView, SalesView } from "@/lib/data/load";
+import type { FundUsageMonth } from "@/lib/investment/fund-usage";
 import type { MonthFocus } from "@/lib/investment/sales";
 import type { CommissionItem } from "@/lib/investment/commission";
 import type { Portfolio } from "@/lib/investment/portfolio";
@@ -22,7 +24,7 @@ import { CommissionList, CommissionTable, RepaymentCards } from "./schedules";
 
 // Presentational only: props in, markup out. Data is read on the server (ADR-0006).
 
-export type PortalView = "ringkasan" | "penjualan" | "komisi" | "pengembalian";
+export type PortalView = "ringkasan" | "penjualan" | "komisi" | "pengembalian" | "penggunaan-dana";
 
 function Warnings({ portfolio }: { portfolio: Portfolio }) {
   return portfolio.warnings.map((warning) => (
@@ -271,8 +273,111 @@ export function PengembalianView({ portfolio }: { portfolio: Portfolio }) {
   );
 }
 
-export function PortfolioView({ view, portfolio, sales }: { view: PortalView; portfolio: Portfolio; sales?: SalesView }) {
+const quantityFormat = new Intl.NumberFormat("id-ID", { maximumFractionDigits: 2 });
+
+function quantityText(quantity: number, unit: string): string {
+  return unit ? `${quantityFormat.format(quantity)} ${unit}` : quantityFormat.format(quantity);
+}
+
+function FundUsageList({ month }: { month: FundUsageMonth }) {
+  return (
+    <ul>
+      {month.items.map((item, index) => (
+        <li key={`${item.date}-${item.itemName}-${index}`} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-0.5 border-b border-line px-4 py-3.5 last:border-b-0">
+          <p className="min-w-0 font-bold break-words">{item.itemName}</p>
+          <p className="tabular text-right font-semibold">{formatRupiah(item.amount)}</p>
+          <p className="col-span-2 text-[13px] text-ink-3">
+            {[formatDate(item.date), item.category, quantityText(item.quantity, item.unit)].filter(Boolean).join(" · ")}
+          </p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function FundUsageTable({ month }: { month: FundUsageMonth }) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-sm">
+        <caption className="sr-only">Belanja yang dibayar dari dana investasi, {formatMonth(month.month, "long")}</caption>
+        <thead>
+          <tr className="bg-surface-sunk text-left text-xs font-semibold text-ink-3">
+            <th scope="col" className="px-5 py-3">Tanggal</th>
+            <th scope="col" className="px-5 py-3">Barang</th>
+            <th scope="col" className="px-5 py-3">Kategori</th>
+            <th scope="col" className="px-5 py-3 text-right">Jumlah</th>
+            <th scope="col" className="px-5 py-3 text-right">Nominal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {month.items.map((item, index) => (
+            <tr key={`${item.date}-${item.itemName}-${index}`} className="border-t border-line">
+              <td className="px-5 py-3 whitespace-nowrap">{formatDate(item.date)}</td>
+              <th scope="row" className="px-5 py-3 text-left font-bold">{item.itemName}</th>
+              <td className="px-5 py-3 text-ink-2">{item.category || "–"}</td>
+              <td className="tabular px-5 py-3 text-right whitespace-nowrap">{quantityText(item.quantity, item.unit)}</td>
+              <td className="tabular px-5 py-3 text-right whitespace-nowrap">{formatRupiah(item.amount)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function FundUsagePage({ month, children }: { month: FundUsageMonth; children: ReactNode }) {
+  return (
+    <div>
+      <h2 className="border-b border-line px-4 py-3.5 text-[15px] font-bold lg:px-5 lg:text-base">{formatMonth(month.month, "long")}</h2>
+      {children}
+    </div>
+  );
+}
+
+// One calendar month per page, newest first. The client asked for the list only: no total, remaining fund, or chart.
+export function PenggunaanDanaView({ fundUsage }: { fundUsage: FundUsageView }) {
+  const { months, skipped } = fundUsage;
+  const labels = months.map((m) => formatMonth(m.month, "long"));
+  return (
+    <>
+      <PageHeader title="Penggunaan Dana Investasi" subtitle="Daftar belanja PT Inzta Gear Indonesia yang dibayar dari dana investasi Anda, dicatat oleh tim Inzta." />
+      {skipped ? (
+        <Notice tone="warn">
+          <AlertIcon className="size-5 text-warn" />
+          <span>{skipped} catatan belanja belum terbaca dan belum ditampilkan. Hubungi admin Inzta untuk memperbaiki data.</span>
+        </Notice>
+      ) : null}
+      {months.length === 0 ? (
+        <Card>
+          <p className="text-sm text-ink-2">Belum ada belanja yang dibayar dari dana investasi.</p>
+        </Card>
+      ) : (
+        <Card flush>
+          <div className="lg:hidden">
+            <Paginated
+              navLabel="Halaman penggunaan dana"
+              initialPage={0}
+              labels={labels}
+              pages={months.map((m) => <FundUsagePage key={m.month} month={m}><FundUsageList month={m} /></FundUsagePage>)}
+            />
+          </div>
+          <div className="hidden lg:block">
+            <Paginated
+              navLabel="Halaman penggunaan dana"
+              initialPage={0}
+              labels={labels}
+              pages={months.map((m) => <FundUsagePage key={m.month} month={m}><FundUsageTable month={m} /></FundUsagePage>)}
+            />
+          </div>
+        </Card>
+      )}
+    </>
+  );
+}
+
+export function PortfolioView({ view, portfolio, sales, fundUsage }: { view: PortalView; portfolio: Portfolio; sales?: SalesView; fundUsage?: FundUsageView }) {
   if (view === "penjualan" && sales) return <PenjualanView portfolio={portfolio} sales={sales} />;
+  if (view === "penggunaan-dana" && fundUsage) return <PenggunaanDanaView fundUsage={fundUsage} />;
   if (view === "komisi") return <KomisiView portfolio={portfolio} />;
   if (view === "pengembalian") return <PengembalianView portfolio={portfolio} />;
   return <RingkasanView portfolio={portfolio} />;

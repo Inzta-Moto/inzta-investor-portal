@@ -1,5 +1,5 @@
 import { CONTRACT_TERMS } from "../investment/contract-terms.ts";
-import type { Agreement, IsoDate, Payment, RepaymentTerm, Tranche } from "../investment/types.ts";
+import type { Agreement, FundUsageItem, IsoDate, Payment, RepaymentTerm, Tranche } from "../investment/types.ts";
 
 // Firestore documents are written by hand in the Console (A-008), so every field is checked before it reaches the
 // money rules; a malformed field becomes a warning instead of a wrong number.
@@ -99,4 +99,25 @@ export function toPayment(id: string, data: Data): Mapped<Payment> {
   }
   if (typeof data.note === "string" && data.note.trim()) payment.note = data.note.trim();
   return { ok: true, value: payment };
+}
+
+/** Belanja Produksi documents are typed by hand in the ERP, so a marked item with a broken field is skipped, not guessed. */
+export function toFundUsageItem(id: string, data: Data): Mapped<FundUsageItem> {
+  const date = isoOrNull(data.date);
+  const itemName = typeof data.itemName === "string" ? data.itemName.trim() : "";
+  const quantity = typeof data.quantity === "number" && Number.isFinite(data.quantity) && data.quantity > 0 ? data.quantity : null;
+  // The ERP stores Math.round(quantity * unitPrice); rounding again keeps an older fractional total readable.
+  const amount = typeof data.totalCost === "number" && Number.isFinite(data.totalCost) && data.totalCost >= 0 ? Math.round(data.totalCost) : null;
+  if (!date || !itemName || quantity === null || amount === null) return { ok: false, reason: `production_purchases/${id} bertanda dana investasi tetapi tidak valid dan diabaikan.` };
+  return {
+    ok: true,
+    value: {
+      date,
+      itemName,
+      category: typeof data.category === "string" ? data.category.trim() : "",
+      quantity,
+      unit: typeof data.unit === "string" ? data.unit.trim() : "",
+      amount,
+    },
+  };
 }
