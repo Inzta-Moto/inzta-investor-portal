@@ -32,7 +32,7 @@ F-009 AC-001 sampai AC-010 pass di emulator dan halaman uji (EV-001 sampai EV-00
 
 ## Changed files
 
-`src/lib/data/`, `src/lib/investment/fund-usage*.ts`, `src/app/(portal)/penggunaan-dana/`, `src/components/portal/{views,nav-links}.tsx`, `src/components/icons.tsx`, `scripts/emulator/`, `docs/adr/ADR-0007-*`, `docs/specs/F-009..F-011/`.
+`src/lib/data/`, `src/lib/investment/fund-usage*.ts`, `src/app/(portal)/penggunaan-dana/`, `src/components/portal/{views,nav-links}.tsx`, `src/components/icons.tsx`, `scripts/emulator/`, `docs/adr/ADR-0007-fund-usage-from-purchases.md`, `docs/specs/F-009-penggunaan-dana/`, `docs/specs/F-010-form-perjanjian/`, `docs/specs/F-011-multi-investor/`.
 
 ## Commands executed
 

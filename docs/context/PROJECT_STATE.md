@@ -1,10 +1,10 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: 93e65f14ddfd037f9430342b5e02727c5fe727b19f28ee606f596d0a7926d365 -->
+source_hash: d39ad229903881b748ca57d959adb4c7149462ec93bb138e99be89dcb12680a2 -->
 
 # Project State
 
-- Generated at: 2026-10-22T13:34:21.989Z
+- Generated at: 2026-10-22T13:35:24.116Z
 - Project: Inzta Investor Portal (tier `full`)
 - Active: F-009 / T-003
 - Open assumptions: 2
@@ -30,14 +30,14 @@ source_hash: 93e65f14ddfd037f9430342b5e02727c5fe727b19f28ee606f596d0a7926d365 --
 ## Git
 
 - Branch: `main`
-- HEAD: `215394e`
+- HEAD: `2ec7fb9`
 - Worktree: dirty
 
 Recent commits:
 
+- `2ec7fb9 docs(F-009): evidence and handoff for penggunaan dana`
 - `215394e feat(F-009): penggunaan dana investasi dari Belanja Produksi yang ditandai`
 - `0bb1609 revert(F-006): drop the saved 2026-10-21 copy fallback`
 - `6cb953c feat(F-006): serve the saved 2026-10-21 copy while the Firestore quota is exhausted`
 - `019abb1 fix(F-006): sum monthly sales with Firestore aggregation to stay within quota`
-- `629926a docs(F-007,F-008): specs and evidence for the sales filter, theme choice, and full width`
 <!-- GENERATED:GIT_FACTS:END -->
