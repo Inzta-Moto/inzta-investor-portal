@@ -35,7 +35,7 @@ export async function PortfolioPage({ view, searchParams = {} }: { view: PortalV
   }
   return (
     <>
-      <AutoRefresh updatedAt={result.updatedAt} savedCopy={result.portfolio.source === "snapshot"} />
+      <AutoRefresh updatedAt={result.updatedAt} />
       <PortfolioView view={view} portfolio={result.portfolio} sales={sales} />
     </>
   );

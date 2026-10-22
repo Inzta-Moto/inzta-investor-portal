@@ -29,7 +29,7 @@ function useOnline(): boolean {
  * the last 15 minutes, and right away when they come back to the tab, touch an idle page, or the connection returns
  * (ADR-0006). Hidden or idle tabs do not poll, which keeps Firestore reads low.
  */
-export function AutoRefresh({ updatedAt, savedCopy = false }: { updatedAt: string; savedCopy?: boolean }) {
+export function AutoRefresh({ updatedAt }: { updatedAt: string }) {
   const router = useRouter();
   const online = useOnline();
   const [idle, setIdle] = useState(false);
@@ -67,13 +67,11 @@ export function AutoRefresh({ updatedAt, savedCopy = false }: { updatedAt: strin
     };
   }, [router]);
 
-  const live = online && !idle && !savedCopy;
+  const live = online && !idle;
   return (
     <p role="status" className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink-3">
       <span className={`size-2 rounded-full ${live ? "bg-good" : "bg-warn"}`} aria-hidden="true" />
-      {savedCopy
-        ? "Data per 21 Okt 2026"
-        : !online
+      {!online
         ? `Terputus · data per ${updatedAt} WIB`
         : idle
           ? `Data per ${updatedAt} WIB · sentuh layar untuk memperbarui`
