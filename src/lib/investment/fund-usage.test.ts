@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { groupFundUsage } from "./fund-usage.ts";
+import { groupFundUsage, pageFundUsage } from "./fund-usage.ts";
 import type { FundUsageItem } from "./types.ts";
 
 const item = (date: string, itemName: string): FundUsageItem => ({ date, itemName, category: "bahan", quantity: 1, unit: "pcs", amount: 100_000 });
@@ -14,4 +14,10 @@ test("F-009 AC-005: newest month first, newest day first, same-day items in name
 
 test("F-009 AC-008: no marked purchase gives no month", () => {
   assert.deepEqual(groupFundUsage([]), []);
+});
+
+test("F-009: a month with more items than one page is split, and pages never mix months", () => {
+  const october = Array.from({ length: 23 }, (_, i) => item(`2026-10-${String(1 + (i % 28)).padStart(2, "0")}`, `barang ${i}`));
+  const pages = pageFundUsage(groupFundUsage([...october, item("2026-09-30", "kain")]), 10);
+  assert.deepEqual(pages.map((p) => [p.month, p.items.length]), [["2026-10", 10], ["2026-10", 10], ["2026-10", 3], ["2026-09", 1]]);
 });

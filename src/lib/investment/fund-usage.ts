@@ -14,3 +14,8 @@ export function groupFundUsage(items: FundUsageItem[]): FundUsageMonth[] {
   }
   return months;
 }
+
+/** Splits each month into pages of at most `size` items, so a busy month never becomes one long scroll. */
+export function pageFundUsage(months: FundUsageMonth[], size: number): FundUsageMonth[] {
+  return months.flatMap((m) => Array.from({ length: Math.ceil(m.items.length / size) }, (_, i) => ({ month: m.month, items: m.items.slice(i * size, (i + 1) * size) })));
+}

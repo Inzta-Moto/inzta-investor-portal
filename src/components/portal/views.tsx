@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { agreementMonthKey, formatDate, formatMonth } from "@/lib/format/dates";
 import { chartPoints, phaseSubtitle, toChartPoints } from "@/lib/format/portfolio-view";
 import type { FundUsageView, SalesView } from "@/lib/data/load";
-import type { FundUsageMonth } from "@/lib/investment/fund-usage";
+import { pageFundUsage, type FundUsageMonth } from "@/lib/investment/fund-usage";
 import type { MonthFocus } from "@/lib/investment/sales";
 import type { CommissionItem } from "@/lib/investment/commission";
 import type { Portfolio } from "@/lib/investment/portfolio";
@@ -334,10 +334,13 @@ function FundUsagePage({ month, children }: { month: FundUsageMonth; children: R
   );
 }
 
-// One calendar month per page, newest first. The client asked for the list only: no total, remaining fund, or chart.
+const FUND_USAGE_PAGE = 10;
+
+// Ten items per page and never two months on one page, newest first. The client asked for the list only: no total, remaining fund, or chart.
 export function PenggunaanDanaView({ fundUsage }: { fundUsage: FundUsageView }) {
   const { months, skipped } = fundUsage;
-  const labels = months.map((m) => formatMonth(m.month, "long"));
+  const pages = pageFundUsage(months, FUND_USAGE_PAGE);
+  const labels = pages.map((m) => formatMonth(m.month, "long"));
   return (
     <>
       <PageHeader title="Penggunaan Dana Investasi" subtitle="Daftar belanja PT Inzta Gear Indonesia yang dibayar dari dana investasi Anda, dicatat oleh tim Inzta." />
@@ -358,7 +361,7 @@ export function PenggunaanDanaView({ fundUsage }: { fundUsage: FundUsageView }) 
               navLabel="Halaman penggunaan dana"
               initialPage={0}
               labels={labels}
-              pages={months.map((m) => <FundUsagePage key={m.month} month={m}><FundUsageList month={m} /></FundUsagePage>)}
+              pages={pages.map((m, i) => <FundUsagePage key={`${m.month}-${i}`} month={m}><FundUsageList month={m} /></FundUsagePage>)}
             />
           </div>
           <div className="hidden lg:block">
@@ -366,7 +369,7 @@ export function PenggunaanDanaView({ fundUsage }: { fundUsage: FundUsageView }) 
               navLabel="Halaman penggunaan dana"
               initialPage={0}
               labels={labels}
-              pages={months.map((m) => <FundUsagePage key={m.month} month={m}><FundUsageTable month={m} /></FundUsagePage>)}
+              pages={pages.map((m, i) => <FundUsagePage key={`${m.month}-${i}`} month={m}><FundUsageTable month={m} /></FundUsagePage>)}
             />
           </div>
         </Card>
