@@ -79,3 +79,26 @@ export function AutoRefresh({ updatedAt }: { updatedAt: string }) {
     </p>
   );
 }
+
+const RETRY_MS = 5 * 60_000;
+
+/**
+ * On the "data not ready" page, such as an exhausted Firestore read quota, retries every 5 minutes while the tab is
+ * visible and right away when the investor returns to it, so the data appears once reads are allowed again without a
+ * manual reload. A refused read is not billed, and the longer interval keeps retries few.
+ */
+export function RetryWhenReady() {
+  const router = useRouter();
+  useEffect(() => {
+    const retry = () => {
+      if (document.visibilityState === "visible" && navigator.onLine) router.refresh();
+    };
+    const timer = window.setInterval(retry, RETRY_MS);
+    document.addEventListener("visibilitychange", retry);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", retry);
+    };
+  }, [router]);
+  return null;
+}

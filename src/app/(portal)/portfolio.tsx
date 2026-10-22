@@ -1,5 +1,5 @@
 import { AlertIcon } from "@/components/icons";
-import { AutoRefresh } from "@/components/portal/auto-refresh";
+import { AutoRefresh, RetryWhenReady } from "@/components/portal/auto-refresh";
 import { PortfolioView, type PortalView } from "@/components/portal/views";
 import { requireSession } from "@/lib/auth/session";
 import { QUOTA_MESSAGE, isQuotaError } from "@/lib/data/firestore-source";
@@ -32,6 +32,7 @@ export async function PortfolioPage({ view, searchParams = {} }: { view: PortalV
         </span>
         <p className="font-bold">Data investasi belum siap</p>
         <p className="text-sm text-ink-2">{reason} Hubungi admin Inzta.</p>
+        <RetryWhenReady />
       </div>
     );
   }
