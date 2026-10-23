@@ -7,7 +7,7 @@ export interface InvestorDataSource {
   /** Monthly sales totals for any months, for the Penjualan month and year filter. */
   getMonths(months: MonthKey[], today: IsoDate, nowMs?: number): Promise<MonthlySales[]>;
   getFirstSaleMonth(nowMs?: number): Promise<MonthKey | null>;
-  /** Belanja Produksi items the admin marked as paid from the investment (ADR-0007). */
+  /** Belanja Investasi items the admin recorded in the ERP (ADR-0008). */
   getFundUsage(nowMs?: number): Promise<FundUsage>;
 }
 

@@ -6,8 +6,8 @@ status: verification
 tier: lite
 owner: "VXerys"
 created: 2026-10-22
-last_updated: 2026-10-22
-last_verified: 2026-10-22
+last_updated: 2026-10-23
+last_verified: 2026-10-23
 requirements: [FR-001, FR-002, FR-003]
 supersedes: null
 ---
@@ -54,4 +54,18 @@ supersedes: null
 - commit: inztamoto-erp-dashboard feat/investor-fund-usage
 - covers: [AC-001, AC-002, AC-003, AC-004]
 
-Belum diuji: alur penuh di produksi (admin menandai di dasbor asli, lalu daftar muncul di `capital.inzta.id`).
+### EV-004 — Menu Belanja Investasi terpisah (revisi klien 2026-10-23)
+- command: portal `npm test`, `FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 node --test "src/**/*.itest.ts"`, `npm run typecheck`, `npm run lint`, `npm run build`; ERP `npm run build`, lalu ERP lokal ke emulator Firestore dan Auth (akun uji owner, project `demo-inzta`)
+- output:
+  ```text
+  portal: tests 59 pass; emulator 10 pass: hanya investor_purchases terbaca (Kain canvas, Listrik), enam kolom; "Bisban 4cm" di production_purchases
+          dengan penanda lama tidak terbaca; belanja yang dihapus hilang setelah cache 25 detik; typecheck 0 error, eslint bersih
+  ERP: tambah "Benang <b>jahit</b>" 3 roll x Rp25.000 -> Rp75.000, nama di-escape; Hari 23 Okt Rp75.000, Minggu 4 Rp75.000, Bulan Oktober Rp385.000,
+       Semua Rp685.000, September Rp300.000; cari "benang"; ubah jumlah 4 -> Rp100.000; hapus Kain canvas dengan peringatan portal
+  Belanja Produksi tanpa centang dan tanpa "Benang"; halaman Investor hanya Perjanjian dan Pembayaran ke Investor; 360 px tanpa scroll halaman; console tanpa error
+  ```
+- date: 2026-10-23
+- commit: inztamoto-erp-dashboard 1b0dcac (feat/belanja-investasi); portal feat/F-009-belanja-investasi
+- covers: [AC-001, AC-002, AC-004, AC-005, AC-007, AC-008, AC-009, AC-010]
+
+Belum diuji: alur penuh di produksi (admin mencatat di menu Belanja Investasi dasbor asli, lalu daftar muncul di `capital.inzta.id`), termasuk apakah Security Rules produksi mengizinkan `investor_purchases`. AC-003 (peringatan Tanggal Efektif) memakai fungsi yang sama dengan EV-003 dan tidak diuji ulang.

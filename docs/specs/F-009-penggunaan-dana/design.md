@@ -6,20 +6,20 @@ status: verification
 tier: lite
 owner: "VXerys"
 created: 2026-10-22
-last_updated: 2026-10-22
+last_updated: 2026-10-23
 last_verified: 2026-10-22
 supersedes: null
 ---
 
 # Design: Penggunaan dana investasi
 
-Keputusan data: ADR-0007.
+Keputusan data: ADR-0008 (menggantikan ADR-0007 pada 2026-10-23).
 
 ## Portal
 
 | Path | Responsibility |
 |---|---|
-| `src/lib/data/firestore-source.ts` | `FUND_USAGE_FIELDS`; `getFundUsage()` membaca `production_purchases` bertanda `investorAgreementId == "current"` dengan proyeksi enam kolom, cache 25 detik |
+| `src/lib/data/firestore-source.ts` | `FUND_USAGE_FIELDS`; `getFundUsage()` membaca `investor_purchases` dengan `investorAgreementId == "current"` dengan proyeksi enam kolom, cache 25 detik |
 | `src/lib/data/firestore-mapping.ts` | `toFundUsageItem(id, data)`; dokumen rusak dilewati |
 | `src/lib/investment/fund-usage.ts` | `groupFundUsage(items)`: urut terbaru, kelompok per bulan (murni, teruji) |
 | `src/lib/data/load.ts` | `loadFundUsage()` |
@@ -31,7 +31,8 @@ Teks (Q6): menu "Penggunaan Dana"; judul "Penggunaan Dana Investasi"; pembuka "D
 
 ## ERP (`inztamoto-erp-dashboard`, `public/legacy/app-runtime.js`)
 
-- `purchaseFormHTML`: centang `#fPPInvestor` hanya untuk owner dan admin. `savePurchase` menulis tanda bila dicentang; `saveEditPurchase` menulis atau menghapus tanda (`FieldValue.delete()`), di luar `sanitize` karena `sanitize` merusak sentinel.
-- Tabel Belanja Produksi: label kecil "Dana investasi" di samping nama barang bertanda.
-- `confirmDeletePurchase`: peringatan tambahan untuk belanja bertanda.
-- Halaman Investor: kartu "Penggunaan Dana Investasi" dengan pilihan bulan dari `state.productionPurchases`, centang per barang memanggil `toggleInvestorPurchase(id)` yang hanya mengubah `investorAgreementId`, `investorMarkedAt`, `investorMarkedBy`.
+- Menu `#menuBelanjaInvestasi` dan halaman `#pageBelanjaInvestasi` di `src/components/InztamotoApp.jsx`; akses owner dan admin di `updateNavigationAccess` dan `navigateTo`.
+- Listener lazy `investor_purchases` (`LAZY_LISTENERS_BY_PAGE.belanjaInvestasi`), dimulai saat halaman dibuka; kuota habis tampil sebagai pesan dengan tombol Coba lagi.
+- `renderBelanjaInvestasi`: kartu total dan jumlah transaksi, filter `state.ip.period` (day, week memakai `getWeekKey`, month, all) dengan tanggal acuan, cari, tabel 10 per halaman.
+- `openInvestorPurchaseModal`, `saveInvestorPurchase`, `confirmDeleteInvestorPurchase`, `deleteInvestorPurchase`: form sendiri (`#fIP*`), tanpa status minggu.
+- Belanja Produksi dan halaman Investor kembali seperti sebelum F-009; centang, label, kartu, dan `toggleInvestorPurchase` dicabut.

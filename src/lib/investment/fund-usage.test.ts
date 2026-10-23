@@ -12,7 +12,7 @@ test("F-009 AC-005: newest month first, newest day first, same-day items in name
   assert.deepEqual(months[0].items.map((i) => i.itemName), ["Listrik", "bisban z10", "terpal uno"]);
 });
 
-test("F-009 AC-008: no marked purchase gives no month", () => {
+test("F-009 AC-008: no Belanja Investasi item gives no month", () => {
   assert.deepEqual(groupFundUsage([]), []);
 });
 

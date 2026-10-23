@@ -2,16 +2,18 @@
 id: ADR-0007
 title: Penggunaan dana dibaca dari production_purchases yang ditandai, enam kolom
 type: adr
-status: approved
+status: superseded
 tier: full
 owner: "VXerys"
 created: 2026-10-22
-last_updated: 2026-10-22
+last_updated: 2026-10-23
 last_verified: 2026-10-22
 supersedes: null
 ---
 
 # ADR-0007: Penggunaan dana dari Belanja Produksi yang ditandai
+
+Digantikan ADR-0008 (2026-10-23): klien meminta belanja investor dicatat di menu sendiri, tidak dicampur ke Belanja Produksi.
 
 Diputuskan Sehan 2026-10-22, setelah sesi grilling F-009 (Q1, Q9, Q11). Melengkapi ADR-0006: aturan baca di server dan proyeksi kolom tetap berlaku, dan portal kini membaca satu koleksi ERP tambahan.
 

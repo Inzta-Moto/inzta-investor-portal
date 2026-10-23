@@ -71,12 +71,12 @@ test("payments need kind, period, whole amount, and date; repayments need a numb
   assert.equal(toPayment("d", { kind: "bonus", periodMonth: 1, amount: 1, paidDate: "2026-12-25" }).ok, false);
 });
 
-test("F-009 AC-005: a marked purchase keeps the category as typed and the item total as the amount", () => {
+test("F-009 AC-005: a Belanja Investasi item keeps the category as typed and the item total as the amount", () => {
   const mapped = toFundUsageItem("p1", { date: "2026-10-17", itemName: " terpal uno ", category: "bahan", quantity: 5, unit: "meter", totalCost: 600_000 });
   assert.deepEqual(mapped, { ok: true, value: { date: "2026-10-17", itemName: "terpal uno", category: "bahan", quantity: 5, unit: "meter", amount: 600_000 } });
 });
 
-test("F-009 AC-010: a marked purchase without a date, name, quantity, or total is skipped", () => {
+test("F-009 AC-010: a Belanja Investasi item without a date, name, quantity, or total is skipped", () => {
   for (const broken of [
     { itemName: "kain", quantity: 1, totalCost: 1 },
     { date: "2026-10-17", itemName: "  ", quantity: 1, totalCost: 1 },

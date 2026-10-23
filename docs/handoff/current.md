@@ -1,66 +1,65 @@
 ---
 status: active
 owner: "VXerys"
-session_date: "2026-10-22"
-branch: "main"
-base_commit: "0bb1609"
-current_commit: "215394e"
+session_date: "2026-10-23"
+branch: "feat/F-009-belanja-investasi"
+base_commit: "c2a60ac"
+current_commit: "c2a60ac"
 feature_id: "F-009"
-task_id: "T-003"
-expires_after: "2026-11-05"
+task_id: "T-004"
+expires_after: "2026-11-06"
 ---
 
 # Session Handoff
 
 ## Session objective
 
-Menampilkan ke mana dana investasi dipakai, sesuai permintaan klien ("cukup list pemakaian uangnya, tanpa total"). Keputusan dari sesi grilling Q1 sampai Q14 dicatat di F-009 dan ADR-0007.
+Revisi F-009 atas permintaan klien (Raja Purnama, 2026-10-23): belanja dari dana investasi dicatat di menu ERP sendiri, tidak dicampur ke Belanja Produksi atau kartu yang sudah ada, karena investor sifatnya sementara.
 
 ## Context used
 
-ADR-0006, ADR-0007; Belanja Produksi di `inztamoto-erp-dashboard/public/legacy/app-runtime.js` (`production_purchases`, status open/closed, tim tidak pernah menutup minggu); emulator Firestore `demo-inzta`.
+ADR-0006, ADR-0007, ADR-0008; ERP `inztamoto-erp-dashboard/public/legacy/app-runtime.js` dan `src/components/InztamotoApp.jsx`; emulator Firestore dan Auth `demo-inzta`.
 
 ## Completed
 
-- F-009: ERP menandai belanja (`investorAgreementId: "current"`) lewat centang di form Belanja Produksi dan kartu di halaman Investor (owner dan admin); portal membaca belanja bertanda dengan enam kolom dan menampilkannya per bulan di halaman Penggunaan Dana, tanpa total.
-- Spec ditahan: F-010 form isi perjanjian (Q8), F-011 banyak investor (Q7).
-- Fallback salinan data 21 Okt dicabut (0bb1609); total bulanan memakai agregasi `sum()` (019abb1).
+- ERP (branch `feat/belanja-investasi`, commit 1b0dcac): menu Belanja Investasi (owner dan admin), koleksi `investor_purchases`, tambah, ubah, hapus, filter Hari/Minggu/Bulan/Semua, cari, total periode untuk admin. Centang, label, peringatan, dan kartu dana investasi dicabut dari Belanja Produksi dan halaman Investor.
+- Portal: Penggunaan Dana membaca `investor_purchases` (ADR-0008 menggantikan ADR-0007); fixture, seed, dan tes emulator disesuaikan.
 
 ## Requirement coverage
 
-F-009 AC-001 sampai AC-010 pass di emulator dan halaman uji (EV-001 sampai EV-003); alur produksi belum diuji.
+F-009 AC-001 sampai AC-010 pass di emulator (EV-004); alur produksi belum diuji.
 
 ## Changed files
 
-`src/lib/data/`, `src/lib/investment/fund-usage*.ts`, `src/app/(portal)/penggunaan-dana/`, `src/components/portal/{views,nav-links}.tsx`, `src/components/icons.tsx`, `scripts/emulator/`, `docs/adr/ADR-0007-fund-usage-from-purchases.md`, `docs/specs/F-009-penggunaan-dana/`, `docs/specs/F-010-form-perjanjian/`, `docs/specs/F-011-multi-investor/`.
+Portal: `src/lib/data/{firestore-source,firestore-mapping,load,source}.ts`, `src/lib/data/*.test.ts`, `src/lib/data/firestore-source.itest.ts`, `src/lib/investment/{types.ts,fund-usage.test.ts}`, `scripts/emulator/{fixtures,seed}.mjs`, `docs/adr/ADR-0007*`, `docs/adr/ADR-0008*`, `docs/adr/README.md`, `docs/specs/F-009-penggunaan-dana/`. ERP: `public/legacy/app-runtime.js`, `src/components/InztamotoApp.jsx`.
 
 ## Commands executed
 
-`npm test` (58 pass), tes emulator (10 pass), `npm run typecheck` (0 error), `npm run lint` (bersih), `npm run build` (sukses), `npm run context:validate` (lolos, 1 warning lama F-003). ERP: `npm run build` sukses.
+Portal: `npm test` (59 pass), tes emulator (10 pass), `npm run typecheck` (0 error), `npm run lint` (bersih), `npm run build` (sukses). ERP: `npm run build` (sukses), uji manual di ERP lokal ke emulator.
 
 ## Current implementation state
 
-Lokal: `npm run emulator:start`, lalu `FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 npm run emulator:seed`; seed kini berisi 3 belanja (2 bertanda).
+Kedua repo di branch fitur, belum di-push. Belanja Produksi yang ditandai dengan cara lama tidak tampil lagi di portal.
 
 ## Uncommitted work
 
-None.
+None setelah commit sesi ini.
 
 ## Blockers
 
-Deploy ERP Vercel tidak otomatis dari `feat/nextjs-migration`; terakhir dipicu dengan commit kosong. A-016 tetap terbuka.
+Push dan merge menunggu izin Sehan. Security Rules produksi untuk `investor_purchases` belum terbukti.
 
 ## Decisions made during session
 
-Q1 sampai Q14 di F-009 `requirements.md`; ADR-0007. Sehan: tanpa Blaze, F-010 dan F-011 hanya spec.
+Sehan 2026-10-23: koleksi sendiri `investor_purchases`, nama menu Belanja Investasi, semua jejak di Belanja Produksi dan halaman Investor dicabut.
 
 ## Context updates
 
-`docs/adr/README.md`, `docs/specs/_index.md`.
+`docs/adr/README.md`, F-009 requirements, design, tasks, verification.
 
 ## Exact next step
 
-Setelah deploy portal dan ERP, owner menandai satu belanja di dasbor asli lalu membuka `capital.inzta.id/penggunaan-dana`; catat hasilnya sebagai bukti produksi F-009.
+Setelah merge dan deploy ERP serta portal, owner mencatat satu belanja di menu Belanja Investasi lalu membuka `capital.inzta.id/penggunaan-dana`; catat hasilnya sebagai bukti produksi F-009. Belanja lama yang pernah ditandai dicatat ulang di menu baru bila perlu.
 
 ## Do not do next
 
@@ -68,4 +67,4 @@ Jangan mengerjakan F-010 atau F-011 tanpa persetujuan Sehan. Jangan menulis ke F
 
 ## Validity
 
-Berlaku sampai 2026-11-05 atau sampai F-010 atau F-011 dimulai.
+Berlaku sampai 2026-11-06 atau sampai F-010 atau F-011 dimulai.

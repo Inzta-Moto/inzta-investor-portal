@@ -399,6 +399,16 @@ features:
         depends_on: []
         evidence:
           - EV-003
+      - id: T-004
+        title: Menu Belanja Investasi terpisah (revisi klien 2026-10-23)
+        status: done
+        requirements:
+          - FR-001
+          - FR-002
+          - FR-003
+        depends_on: []
+        evidence:
+          - EV-004
   - id: F-010
     title: Form isi perjanjian di ERP
     status: draft
@@ -454,7 +464,7 @@ features:
         evidence: []
 active:
   feature_id: F-009
-  task_id: T-003
+  task_id: T-004
 assumptions_open:
   - id: A-011
     feature: F-005
@@ -487,5 +497,5 @@ blockers:
   - feature_id: F-011
     task_id: T-004
     title: Migrasi data satu investor
-generated_at: 2026-10-22T13:35:24.116Z
-source_hash: d39ad229903881b748ca57d959adb4c7149462ec93bb138e99be89dcb12680a2
+generated_at: 2026-10-23T04:18:04.037Z
+source_hash: 1c9f44f119ecd6b173df800ff18a3c5d394e0fc190944723dd41d2add92f58dd

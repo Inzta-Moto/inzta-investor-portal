@@ -54,12 +54,16 @@ export function buildFixtures(today) {
     "sale-d": { date: `${current}-05`, revenue: 165000, quantity: 1, sellingPrice: 165000, costPrice: 85000, customer: "Pelanggan D", district: "Coblong" },
   };
 
-  // Belanja Produksi as the ERP stores it; only the marked items reach the portal, and only six of their fields.
-  const purchases = {
-    "purchase-a": { date: `${current}-03`, weekKey: `${current}-W1`, itemName: "Kain canvas", category: "bahan", quantity: 10, unit: "meter", unitPrice: 31000, totalCost: 310000, note: "Toko A, transfer", status: "open", investorAgreementId: "current", investorMarkedBy: "uid-admin" },
-    "purchase-b": { date: `${previous}-20`, weekKey: `${previous}-W3`, itemName: "Listrik", category: "Operasional", quantity: 1, unit: "pcs", unitPrice: 300000, totalCost: 300000, note: "Tgl 8", status: "closed", investorAgreementId: "current" },
-    "purchase-c": { date: `${current}-04`, weekKey: `${current}-W1`, itemName: "Bisban 4cm", category: "bahan", quantity: 1, unit: "pcs", unitPrice: 142000, totalCost: 142000, note: "", status: "open" },
+  // Belanja Investasi as the ERP's own menu stores it; only six of its fields reach the portal.
+  const investorPurchases = {
+    "purchase-a": { date: `${current}-03`, itemName: "Kain canvas", category: "bahan", quantity: 10, unit: "meter", unitPrice: 31000, totalCost: 310000, note: "Toko A, transfer", investorAgreementId: "current", createdBy: "uid-admin" },
+    "purchase-b": { date: `${previous}-20`, itemName: "Listrik", category: "Operasional", quantity: 1, unit: "pcs", unitPrice: 300000, totalCost: 300000, note: "Tgl 8", investorAgreementId: "current" },
   };
 
-  return { agreement, payments, sales, purchases, current, previous };
+  // Belanja Produksi stays out of the portal, even an item still carrying the marker from the first F-009 version.
+  const productionPurchases = {
+    "purchase-c": { date: `${current}-04`, weekKey: `${current}-W1`, itemName: "Bisban 4cm", category: "bahan", quantity: 1, unit: "pcs", unitPrice: 142000, totalCost: 142000, note: "", status: "open", investorAgreementId: "current" },
+  };
+
+  return { agreement, payments, sales, investorPurchases, productionPurchases, current, previous };
 }

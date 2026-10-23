@@ -10,8 +10,8 @@ import { TtlCache } from "./ttl-cache.ts";
 // Only these sales fields are ever fetched (ADR-0006): customer, city, reseller, and cost price stay in Firestore.
 export const SALES_FIELDS = ["date", "revenue", "sellingPrice", "quantity"] as const;
 
-// Belanja Produksi marked by the ERP as paid from the investment (ADR-0007): unit price, notes, and week status stay in
-// Firestore. The marker holds the agreement id so a second investor (F-011) only changes its value.
+// Belanja Investasi from the ERP's own menu (ADR-0008): unit price, notes, and who typed the item stay in Firestore.
+// Each item holds the agreement id so a second investor (F-011) only changes the value the portal asks for.
 export const FUND_USAGE_FIELDS = ["date", "itemName", "category", "quantity", "unit", "totalCost"] as const;
 export const INVESTOR_AGREEMENT_ID = "current";
 
@@ -126,7 +126,7 @@ export function createFirestoreSource(db: Firestore) {
   }
 
   async function loadFundUsage(): Promise<FundUsage> {
-    const snap = await db.collection("production_purchases").where("investorAgreementId", "==", INVESTOR_AGREEMENT_ID).select(...FUND_USAGE_FIELDS).get();
+    const snap = await db.collection("investor_purchases").where("investorAgreementId", "==", INVESTOR_AGREEMENT_ID).select(...FUND_USAGE_FIELDS).get();
     const items: FundUsageItem[] = [];
     let skipped = 0;
     for (const doc of snap.docs) {

@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: d39ad229903881b748ca57d959adb4c7149462ec93bb138e99be89dcb12680a2 -->
+source_hash: 1c9f44f119ecd6b173df800ff18a3c5d394e0fc190944723dd41d2add92f58dd -->
 
 # Brief
 
@@ -10,13 +10,19 @@ Project `Inzta Investor Portal`, tier `full`. Rendered from sdd.config.json, doc
 
 ## Active
 Feature F-009 — Penggunaan dana investasi (`verification`, docs/specs/F-009-penggunaan-dana/)
-Task T-003 — Penanda di ERP (`done`); requirements: FR-001; depends on: none
+Task T-004 — Menu Belanja Investasi terpisah (revisi klien 2026-10-23) (`done`); requirements: FR-001, FR-002, FR-003; depends on: none
 
 Acceptance criteria:
-- AC-001: Given owner atau admin, then form Tambah dan Edit Belanja Produksi punya centang "Dibayar dari dana investasi"; role lain tidak melihat centang itu (Q9).
-- AC-002: Given halaman Investor ERP, then owner atau admin melihat Belanja Produksi per bulan dan bisa menandai atau membatalkan tanda per barang, termasuk belanja yang sudah closed; hanya tandanya yang berubah (Q9, Q10).
-- AC-003: Given belanja bertanggal sebelum Tanggal Efektif, then ERP tetap menandai dan menampilkan peringatan (Q5).
-- AC-004: Given belanja bertanda dihapus, then ERP memperingatkan bahwa belanja itu tampil di portal investor (Q10).
+- AC-001: Given owner atau admin, then sidebar ERP punya menu "Belanja Investasi" untuk menambah, mengubah, dan menghapus belanja di koleksi `investor_purchases`; role lain tidak melihat menu itu dan dialihkan bila membuka halamannya (Q9, revisi 2026-10-23).
+- AC-002: Given menu Belanja Investasi, then admin memilih periode Hari, Minggu, Bulan, atau Semua dengan tanggal acuan, mencari barang, dan melihat total serta jumlah transaksi periode itu; total hanya ada di ERP (revisi 2026-10-23).
+- AC-003: Given belanja bertanggal sebelum Tanggal Efektif, then ERP tetap menyimpan dan menampilkan peringatan (Q5).
+- AC-004: Given Belanja Produksi dan halaman Investor, then keduanya tidak punya centang, label, kartu, atau peringatan dana investasi, dan Belanja Investasi tidak muncul di Belanja Produksi (revisi 2026-10-23).
+- AC-005: Given Belanja Investasi, then halaman "Penggunaan Dana Investasi" menampilkan tanggal, nama barang, kategori seperti diketik admin, jumlah dengan satuan, dan nominal per barang, terbaru di atas, dikelompokkan per bulan (Q3, Q12).
+- AC-006: Given halaman itu, then tidak ada total, sisa dana, harga satuan, catatan, atau status minggu (Q3).
+- AC-007: Given belanja ditambah, diedit, atau dihapus di menu Belanja Investasi, then portal menampilkan keadaan terbaru setelah cache 25 detik (Q4, Q10).
+- AC-008: Given tidak ada Belanja Investasi, then halaman menampilkan "Belum ada belanja yang dibayar dari dana investasi."
+- AC-009: Given dokumen Belanja Investasi dengan harga satuan, catatan, dan field lain, then server portal hanya menerima enam kolom ADR-0008, dan tidak pernah membaca `production_purchases`.
+- AC-010: Given dokumen Belanja Investasi yang rusak, then dokumen itu dilewati dan investor melihat kalimat biasa.
 
 ## Rules
 Stop conditions:
@@ -45,7 +51,7 @@ None.
 ## Handoff
 Next step:
 
-Setelah deploy portal dan ERP, owner menandai satu belanja di dasbor asli lalu membuka `capital.inzta.id/penggunaan-dana`; catat hasilnya sebagai bukti produksi F-009.
+Setelah merge dan deploy ERP serta portal, owner mencatat satu belanja di menu Belanja Investasi lalu membuka `capital.inzta.id/penggunaan-dana`; catat hasilnya sebagai bukti produksi F-009. Belanja lama yang pernah ditandai dicatat ulang di menu baru bila perlu.
 
 ## Other open tasks
 None.
@@ -61,6 +67,6 @@ None.
 | F-006 Integrasi Firestore lewat server | verification | blocked | 6/7 |
 | F-007 Filter bulan dan tahun di Penjualan | implemented | complete | 2/2 |
 | F-008 Pilihan tema dan konten desktop lebar penuh | implemented | complete | 2/2 |
-| F-009 Penggunaan dana investasi | verification | complete | 3/3 |
+| F-009 Penggunaan dana investasi | verification | complete | 4/4 |
 | F-010 Form isi perjanjian di ERP | draft | blocked | 0/1 |
 | F-011 Banyak investor | draft | blocked | 0/4 |

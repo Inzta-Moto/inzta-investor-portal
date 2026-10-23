@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: d39ad229903881b748ca57d959adb4c7149462ec93bb138e99be89dcb12680a2 -->
+source_hash: 1c9f44f119ecd6b173df800ff18a3c5d394e0fc190944723dd41d2add92f58dd -->
 
 # Project Progress
 
@@ -81,6 +81,7 @@ source_hash: d39ad229903881b748ca57d959adb4c7149462ec93bb138e99be89dcb12680a2 --
 | T-001 Data penggunaan dana di portal | done | FR-002, FR-003 |  | EV-001 |
 | T-002 Halaman Penggunaan Dana di portal | done | FR-002 | T-001 | EV-002 |
 | T-003 Penanda di ERP | done | FR-001 |  | EV-003 |
+| T-004 Menu Belanja Investasi terpisah (revisi klien 2026-10-23) | done | FR-001, FR-002, FR-003 |  | EV-004 |
 
 ## F-010 — Form isi perjanjian di ERP (`draft`, blocked)
 

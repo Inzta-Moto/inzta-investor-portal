@@ -35,6 +35,13 @@ This file is the master for task status.
 - requirements: [FR-001]
 - depends_on: []
 - evidence: [EV-003]
+- note: digantikan T-004 pada 2026-10-23
+
+### T-004 — Menu Belanja Investasi terpisah (revisi klien 2026-10-23)
+- status: done
+- requirements: [FR-001, FR-002, FR-003]
+- depends_on: []
+- evidence: [EV-004]
 
 ## Deferred
 

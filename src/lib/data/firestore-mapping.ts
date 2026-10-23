@@ -101,14 +101,14 @@ export function toPayment(id: string, data: Data): Mapped<Payment> {
   return { ok: true, value: payment };
 }
 
-/** Belanja Produksi documents are typed by hand in the ERP, so a marked item with a broken field is skipped, not guessed. */
+/** Belanja Investasi items are typed by hand in the ERP, so an item with a broken field is skipped, not guessed. */
 export function toFundUsageItem(id: string, data: Data): Mapped<FundUsageItem> {
   const date = isoOrNull(data.date);
   const itemName = typeof data.itemName === "string" ? data.itemName.trim() : "";
   const quantity = typeof data.quantity === "number" && Number.isFinite(data.quantity) && data.quantity > 0 ? data.quantity : null;
   // The ERP stores Math.round(quantity * unitPrice); rounding again keeps an older fractional total readable.
   const amount = typeof data.totalCost === "number" && Number.isFinite(data.totalCost) && data.totalCost >= 0 ? Math.round(data.totalCost) : null;
-  if (!date || !itemName || quantity === null || amount === null) return { ok: false, reason: `production_purchases/${id} bertanda dana investasi tetapi tidak valid dan diabaikan.` };
+  if (!date || !itemName || quantity === null || amount === null) return { ok: false, reason: `investor_purchases/${id} tidak valid dan diabaikan.` };
   return {
     ok: true,
     value: {

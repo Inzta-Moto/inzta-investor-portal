@@ -21,5 +21,8 @@ await fetch(`http://${host}/emulator/v1/projects/demo-inzta/databases/(default)/
 await db.doc("investor_agreement/current").set(fx.agreement);
 for (const [id, data] of Object.entries(fx.payments)) await db.doc(`investor_payments/${id}`).set(data);
 for (const [id, data] of Object.entries(fx.sales)) await db.doc(`sales/${id}`).set(data);
-for (const [id, data] of Object.entries(fx.purchases)) await db.doc(`production_purchases/${id}`).set(data);
-console.log(`Emulator terisi: perjanjian, ${Object.keys(fx.payments).length} pembayaran, ${Object.keys(fx.sales).length} penjualan, ${Object.keys(fx.purchases).length} belanja.`);
+for (const [id, data] of Object.entries(fx.investorPurchases)) await db.doc(`investor_purchases/${id}`).set(data);
+for (const [id, data] of Object.entries(fx.productionPurchases)) await db.doc(`production_purchases/${id}`).set(data);
+console.log(
+  `Emulator terisi: perjanjian, ${Object.keys(fx.payments).length} pembayaran, ${Object.keys(fx.sales).length} penjualan, ${Object.keys(fx.investorPurchases).length} belanja investasi, ${Object.keys(fx.productionPurchases).length} belanja produksi.`,
+);

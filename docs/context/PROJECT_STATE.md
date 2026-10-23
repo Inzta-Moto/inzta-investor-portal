@@ -1,12 +1,12 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: d39ad229903881b748ca57d959adb4c7149462ec93bb138e99be89dcb12680a2 -->
+source_hash: 1c9f44f119ecd6b173df800ff18a3c5d394e0fc190944723dd41d2add92f58dd -->
 
 # Project State
 
-- Generated at: 2026-10-22T13:35:24.116Z
+- Generated at: 2026-10-23T04:18:04.037Z
 - Project: Inzta Investor Portal (tier `full`)
-- Active: F-009 / T-003
+- Active: F-009 / T-004
 - Open assumptions: 2
 - Blocked tasks: T-001, T-002, T-006, T-001, T-001, T-002, T-003, T-004
 
@@ -22,22 +22,22 @@ source_hash: d39ad229903881b748ca57d959adb4c7149462ec93bb138e99be89dcb12680a2 --
 | F-006 Integrasi Firestore lewat server | verification | blocked | 0 | 0 | 1 | 0 | 6 | 0 |
 | F-007 Filter bulan dan tahun di Penjualan | implemented | complete | 0 | 0 | 0 | 0 | 2 | 0 |
 | F-008 Pilihan tema dan konten desktop lebar penuh | implemented | complete | 0 | 0 | 0 | 0 | 2 | 0 |
-| F-009 Penggunaan dana investasi | verification | complete | 0 | 0 | 0 | 0 | 3 | 0 |
+| F-009 Penggunaan dana investasi | verification | complete | 0 | 0 | 0 | 0 | 4 | 0 |
 | F-010 Form isi perjanjian di ERP | draft | blocked | 0 | 0 | 1 | 0 | 0 | 0 |
 | F-011 Banyak investor | draft | blocked | 0 | 0 | 4 | 0 | 0 | 0 |
 
 <!-- GENERATED:GIT_FACTS:START -->
 ## Git
 
-- Branch: `main`
-- HEAD: `2ec7fb9`
+- Branch: `feat/F-009-belanja-investasi`
+- HEAD: `c2a60ac`
 - Worktree: dirty
 
 Recent commits:
 
+- `c2a60ac fix(F-006): retry the not-ready page every 5 minutes`
+- `a3e6b11 feat(F-009): sepuluh belanja per halaman di Penggunaan Dana`
+- `ea5436c docs(F-009): handoff paths`
 - `2ec7fb9 docs(F-009): evidence and handoff for penggunaan dana`
 - `215394e feat(F-009): penggunaan dana investasi dari Belanja Produksi yang ditandai`
-- `0bb1609 revert(F-006): drop the saved 2026-10-21 copy fallback`
-- `6cb953c feat(F-006): serve the saved 2026-10-21 copy while the Firestore quota is exhausted`
-- `019abb1 fix(F-006): sum monthly sales with Firestore aggregation to stay within quota`
 <!-- GENERATED:GIT_FACTS:END -->

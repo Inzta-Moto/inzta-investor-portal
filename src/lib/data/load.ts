@@ -53,7 +53,7 @@ export async function loadSalesView(params: Record<string, string | string[] | u
 
 export type FundUsageView = { months: FundUsageMonth[]; skipped: number };
 
-/** The Penggunaan Dana list: marked Belanja Produksi items, newest month first, without any total. */
+/** The Penggunaan Dana list: Belanja Investasi items, newest month first, without any total. */
 export async function loadFundUsage(): Promise<FundUsageView> {
   const { items, skipped } = await getDataSource().getFundUsage(Date.now());
   return { months: groupFundUsage(items), skipped };
