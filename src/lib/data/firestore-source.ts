@@ -32,6 +32,16 @@ const RECENT_TTL = 25_000;
 const SETTLED_TTL = 60 * 60_000;
 const AGREEMENT_TTL = 25_000;
 
+// Firestore code 9 with this text: the sum() aggregation on sales needs the composite index (date, revenue) from
+// firestore.indexes.json, which the owner creates in the project; the emulator never enforces it.
+export const INDEX_MESSAGE =
+  "Database Inzta belum memiliki index untuk total penjualan bulanan, jadi data belum bisa dihitung. Admin Inzta perlu membuat index itu sekali.";
+
+export function isMissingIndexError(error: unknown): boolean {
+  const code = (error as { code?: unknown } | null)?.code;
+  return (code === 9 || code === "failed-precondition") && /requires an index/i.test(String((error as Error | null)?.message ?? ""));
+}
+
 export class InvestorDataError extends Error {}
 
 export function adminDb(): Firestore {

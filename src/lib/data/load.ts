@@ -5,7 +5,7 @@ import { buildPortfolio, type Portfolio } from "../investment/portfolio.ts";
 import { groupFundUsage, type FundUsageMonth } from "../investment/fund-usage.ts";
 import { availableYears, filterMonths, monthFocus, parseSalesFilter, salesPoints, type MonthFocus, type SalesFilter, type SalesPoint } from "../investment/sales.ts";
 import type { IsoDate } from "../investment/types.ts";
-import { InvestorDataError, QUOTA_MESSAGE, isQuotaError } from "./firestore-source.ts";
+import { INDEX_MESSAGE, InvestorDataError, QUOTA_MESSAGE, isMissingIndexError, isQuotaError } from "./firestore-source.ts";
 import { getDataSource } from "./source.ts";
 
 export type PortfolioResult = { ok: true; portfolio: Portfolio; updatedAt: string } | { ok: false; reason: string };
@@ -27,6 +27,10 @@ export const loadPortfolio = cache(async (): Promise<PortfolioResult> => {
   } catch (error) {
     if (error instanceof InvestorDataError) return { ok: false, reason: error.message };
     if (isQuotaError(error)) return { ok: false, reason: QUOTA_MESSAGE };
+    if (isMissingIndexError(error)) {
+      console.error(String((error as Error).message));
+      return { ok: false, reason: INDEX_MESSAGE };
+    }
     throw error;
   }
 });

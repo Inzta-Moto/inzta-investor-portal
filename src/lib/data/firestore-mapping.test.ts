@@ -86,3 +86,11 @@ test("F-009 AC-010: a Belanja Investasi item without a date, name, quantity, or 
     assert.equal(toFundUsageItem("p", broken).ok, false);
   }
 });
+
+test("F-006: a missing composite index is reported as a readable message, not the generic error screen", async () => {
+  const { isMissingIndexError, isQuotaError } = await import("./firestore-source.ts");
+  const indexError = Object.assign(new Error("9 FAILED_PRECONDITION: The query requires an index. You can create it here: https://console.firebase.google.com/..."), { code: 9 });
+  assert.equal(isMissingIndexError(indexError), true);
+  assert.equal(isQuotaError(indexError), false);
+  assert.equal(isMissingIndexError(Object.assign(new Error("8 RESOURCE_EXHAUSTED: Quota exceeded."), { code: 8 })), false);
+});

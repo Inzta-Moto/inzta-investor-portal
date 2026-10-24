@@ -2,7 +2,7 @@ import { AlertIcon } from "@/components/icons";
 import { AutoRefresh, RetryWhenReady } from "@/components/portal/auto-refresh";
 import { PortfolioView, type PortalView } from "@/components/portal/views";
 import { requireSession } from "@/lib/auth/session";
-import { QUOTA_MESSAGE, isQuotaError } from "@/lib/data/firestore-source";
+import { INDEX_MESSAGE, QUOTA_MESSAGE, isMissingIndexError, isQuotaError } from "@/lib/data/firestore-source";
 import { loadFundUsage, loadPortfolio, loadSalesView, type FundUsageView, type SalesView } from "@/lib/data/load";
 
 /**
@@ -20,8 +20,9 @@ export async function PortfolioPage({ view, searchParams = {} }: { view: PortalV
       if (view === "penjualan") sales = await loadSalesView(searchParams);
       else fundUsage = await loadFundUsage();
     } catch (error) {
-      if (!isQuotaError(error)) throw error;
-      reason = QUOTA_MESSAGE;
+      if (isQuotaError(error)) reason = QUOTA_MESSAGE;
+      else if (isMissingIndexError(error)) reason = INDEX_MESSAGE;
+      else throw error;
     }
   }
   if (reason !== null || !result.ok) {
