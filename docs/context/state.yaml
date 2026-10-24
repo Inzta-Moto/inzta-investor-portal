@@ -497,5 +497,5 @@ blockers:
   - feature_id: F-011
     task_id: T-004
     title: Migrasi data satu investor
-generated_at: 2026-10-23T04:18:04.037Z
-source_hash: 1c9f44f119ecd6b173df800ff18a3c5d394e0fc190944723dd41d2add92f58dd
+generated_at: 2026-10-24T16:00:48.426Z
+source_hash: 3845e89ad13f3da5c2ab6174f9164b0298aec9f453054179013b0001a431ecf2

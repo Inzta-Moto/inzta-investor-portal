@@ -1,10 +1,8 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
 
-import { agreementMonthKey, formatDate, formatMonth } from "@/lib/format/dates";
+import { agreementMonthKey, formatMonth } from "@/lib/format/dates";
 import { chartPoints, phaseSubtitle, toChartPoints } from "@/lib/format/portfolio-view";
 import type { FundUsageView, SalesView } from "@/lib/data/load";
-import { pageFundUsage, type FundUsageMonth } from "@/lib/investment/fund-usage";
 import type { MonthFocus } from "@/lib/investment/sales";
 import type { CommissionItem } from "@/lib/investment/commission";
 import type { Portfolio } from "@/lib/investment/portfolio";
@@ -302,115 +300,49 @@ export function PengembalianView({ portfolio }: { portfolio: Portfolio }) {
   );
 }
 
-const quantityFormat = new Intl.NumberFormat("id-ID", { maximumFractionDigits: 2 });
+const USAGE_SUBTITLE = "Dana investasi Anda yang sudah dipakai PT Inzta Gear Indonesia untuk belanja usaha, dicatat oleh tim Inzta.";
 
-function quantityText(quantity: number, unit: string): string {
-  return unit ? `${quantityFormat.format(quantity)} ${unit}` : quantityFormat.format(quantity);
-}
-
-function FundUsageList({ month }: { month: FundUsageMonth }) {
-  return (
-    <ul>
-      {month.items.map((item, index) => (
-        <li key={`${item.date}-${item.itemName}-${index}`} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-0.5 border-b border-line px-4 py-3.5 last:border-b-0">
-          <p className="min-w-0 font-bold break-words">{item.itemName}</p>
-          <p className="tabular text-right font-semibold">{formatRupiah(item.amount)}</p>
-          <p className="col-span-2 text-[13px] text-ink-3">
-            {[formatDate(item.date), item.category, quantityText(item.quantity, item.unit)].filter(Boolean).join(" · ")}
-          </p>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function FundUsageTable({ month }: { month: FundUsageMonth }) {
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-sm">
-        <caption className="sr-only">Belanja yang dibayar dari dana investasi, {formatMonth(month.month, "long")}</caption>
-        <thead>
-          <tr className="bg-surface-sunk text-left text-xs font-semibold text-ink-3">
-            <th scope="col" className="px-5 py-3">Tanggal</th>
-            <th scope="col" className="px-5 py-3">Barang</th>
-            <th scope="col" className="px-5 py-3">Kategori</th>
-            <th scope="col" className="px-5 py-3 text-right">Jumlah</th>
-            <th scope="col" className="px-5 py-3 text-right">Nominal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {month.items.map((item, index) => (
-            <tr key={`${item.date}-${item.itemName}-${index}`} className="border-t border-line">
-              <td className="px-5 py-3 whitespace-nowrap">{formatDate(item.date)}</td>
-              <th scope="row" className="px-5 py-3 text-left font-bold">{item.itemName}</th>
-              <td className="px-5 py-3 text-ink-2">{item.category || "–"}</td>
-              <td className="tabular px-5 py-3 text-right whitespace-nowrap">{quantityText(item.quantity, item.unit)}</td>
-              <td className="tabular px-5 py-3 text-right whitespace-nowrap">{formatRupiah(item.amount)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-function FundUsagePage({ month, children }: { month: FundUsageMonth; children: ReactNode }) {
-  return (
-    <div>
-      <h2 className="border-b border-line px-4 py-3.5 text-[15px] font-bold lg:px-5 lg:text-base">{formatMonth(month.month, "long")}</h2>
-      {children}
-    </div>
-  );
-}
-
-const FUND_USAGE_PAGE = 10;
-
-// Ten items per page and never two months on one page, newest first. The client asked for the list only: no total, remaining fund, or chart.
-export function PenggunaanDanaView({ fundUsage, error }: { fundUsage?: FundUsageView; error?: string }) {
+// One global figure, no item list (client revision 2026-10-24); no remaining-fund figure either, because the
+// investment also covers costs that are not purchases.
+export function PenggunaanDanaView({ portfolio, fundUsage, error }: { portfolio: Portfolio; fundUsage?: FundUsageView; error?: string }) {
   if (!fundUsage) {
     return (
       <>
-        <PageHeader title="Penggunaan Dana Investasi" subtitle="Daftar belanja PT Inzta Gear Indonesia yang dibayar dari dana investasi Anda, dicatat oleh tim Inzta." />
-        <SectionUnavailable reason={error ?? "Daftar penggunaan dana belum bisa dimuat saat ini."} />
+        <PageHeader title="Penggunaan Dana Investasi" subtitle={USAGE_SUBTITLE} />
+        <SectionUnavailable reason={error ?? "Total penggunaan dana belum bisa dimuat saat ini."} />
       </>
     );
   }
-  const { months, skipped } = fundUsage;
-  const pages = pageFundUsage(months, FUND_USAGE_PAGE);
-  const labels = pages.map((m) => formatMonth(m.month, "long"));
+  const { summary, skipped } = fundUsage;
+  const period =
+    summary.firstMonth && summary.lastMonth
+      ? summary.firstMonth === summary.lastMonth
+        ? formatMonth(summary.firstMonth, "long")
+        : `${formatMonth(summary.firstMonth, "long")} sampai ${formatMonth(summary.lastMonth, "long")}`
+      : null;
   return (
     <>
-      <PageHeader title="Penggunaan Dana Investasi" subtitle="Daftar belanja PT Inzta Gear Indonesia yang dibayar dari dana investasi Anda, dicatat oleh tim Inzta." />
+      <PageHeader title="Penggunaan Dana Investasi" subtitle={USAGE_SUBTITLE} />
       {skipped ? (
         <Notice tone="warn">
           <AlertIcon className="size-5 text-warn" />
-          <span>{skipped} catatan belanja belum terbaca dan belum ditampilkan. Hubungi admin Inzta untuk memperbaiki data.</span>
+          <span>{skipped} catatan belanja belum terbaca dan belum dihitung. Hubungi admin Inzta untuk memperbaiki data.</span>
         </Notice>
       ) : null}
-      {months.length === 0 ? (
-        <Card>
-          <p className="text-sm text-ink-2">Belum ada belanja yang dibayar dari dana investasi.</p>
-        </Card>
-      ) : (
-        <Card flush>
-          <div className="lg:hidden">
-            <Paginated
-              navLabel="Halaman penggunaan dana"
-              initialPage={0}
-              labels={labels}
-              pages={pages.map((m, i) => <FundUsagePage key={`${m.month}-${i}`} month={m}><FundUsageList month={m} /></FundUsagePage>)}
-            />
-          </div>
-          <div className="hidden lg:block">
-            <Paginated
-              navLabel="Halaman penggunaan dana"
-              initialPage={0}
-              labels={labels}
-              pages={pages.map((m, i) => <FundUsagePage key={`${m.month}-${i}`} month={m}><FundUsageTable month={m} /></FundUsagePage>)}
-            />
-          </div>
-        </Card>
-      )}
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:gap-4">
+        <StatCard className="lg:col-span-7" label="Total dana investasi terpakai" value={formatRupiah(summary.total)}>
+          <p className="text-[13px] text-ink-3">
+            {summary.count === 0 ? "Belum ada belanja yang dibayar dari dana investasi." : `${summary.count} belanja · ${period}`}
+          </p>
+        </StatCard>
+        <StatCard className="lg:col-span-5" label="Dana investasi" value={formatRupiah(portfolio.totalInvestment)}>
+          <p className="text-[13px] text-ink-3">Sesuai perjanjian, Tahap I dan Tahap II.</p>
+        </StatCard>
+      </div>
+      <Notice>
+        <InfoIcon className="size-5 text-brand-amber" />
+        <span>Angka ini bertambah setiap tim Inzta mencatat belanja yang dibayar dari dana investasi. Rincian per barang disimpan Inzta dan tidak ditampilkan di portal.</span>
+      </Notice>
     </>
   );
 }
@@ -429,7 +361,7 @@ export function PortfolioView({
   sectionError?: string;
 }) {
   if (view === "penjualan") return <PenjualanView portfolio={portfolio} sales={sales} error={sectionError} />;
-  if (view === "penggunaan-dana") return <PenggunaanDanaView fundUsage={fundUsage} error={sectionError} />;
+  if (view === "penggunaan-dana") return <PenggunaanDanaView portfolio={portfolio} fundUsage={fundUsage} error={sectionError} />;
   if (view === "komisi") return <KomisiView portfolio={portfolio} />;
   if (view === "pengembalian") return <PengembalianView portfolio={portfolio} />;
   return <RingkasanView portfolio={portfolio} />;

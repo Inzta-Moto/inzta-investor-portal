@@ -6,7 +6,7 @@ status: verification
 tier: lite
 owner: "VXerys"
 created: 2026-10-22
-last_updated: 2026-10-23
+last_updated: 2026-10-24
 last_verified: 2026-10-23
 supersedes: null
 ---
@@ -23,7 +23,7 @@ Admin Inzta mencatat belanja yang dibayar dana investasi di menu Belanja Investa
 
 ## Non-goals
 
-- Total, sisa dana, ringkasan angka, atau grafik penggunaan dana.
+- Rincian per barang di portal (dicabut klien 2026-10-24), sisa dana, atau grafik penggunaan dana.
 - Menghitung Belanja Investasi di Belanja Produksi, Laporan, atau Dashboard ERP; pembagian nominal satu belanja (Q2).
 - Merapikan atau menyeragamkan kategori belanja (Q12).
 - Form isi perjanjian (F-010) dan banyak investor (F-011).
@@ -39,10 +39,10 @@ Admin Inzta mencatat belanja yang dibayar dana investasi di menu Belanja Investa
 
 ### FR-002 — Daftar di portal
 
-- AC-005: Given Belanja Investasi, then halaman "Penggunaan Dana Investasi" menampilkan tanggal, nama barang, kategori seperti diketik admin, jumlah dengan satuan, dan nominal per barang, terbaru di atas, dikelompokkan per bulan (Q3, Q12).
-- AC-006: Given halaman itu, then tidak ada total, sisa dana, harga satuan, catatan, atau status minggu (Q3).
+- AC-005: Given Belanja Investasi, then halaman "Penggunaan Dana Investasi" menampilkan satu angka: total seluruh belanja, dengan jumlah belanja dan rentang bulannya, di samping Dana Investasi dari perjanjian (revisi klien 2026-10-24: "jangan pake rincian, global aja, total dana terpakai berapa").
+- AC-006: Given halaman itu, then tidak ada rincian per barang, sisa dana, harga satuan, catatan, atau status minggu. Rincian per barang tetap dicatat di ERP.
 - AC-007: Given belanja ditambah, diedit, atau dihapus di menu Belanja Investasi, then portal menampilkan keadaan terbaru setelah cache 25 detik (Q4, Q10).
-- AC-008: Given tidak ada Belanja Investasi, then halaman menampilkan "Belum ada belanja yang dibayar dari dana investasi."
+- AC-008: Given tidak ada Belanja Investasi, then total Rp0 dengan keterangan "Belum ada belanja yang dibayar dari dana investasi."
 
 ### FR-003 — Batas data
 

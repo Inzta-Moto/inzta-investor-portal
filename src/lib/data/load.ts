@@ -2,7 +2,7 @@ import { cache } from "react";
 
 import { addMonths, monthKey, toYearMonth, todayInJakarta } from "../investment/calendar.ts";
 import { buildPortfolio, type Portfolio } from "../investment/portfolio.ts";
-import { groupFundUsage, type FundUsageMonth } from "../investment/fund-usage.ts";
+import { summarizeFundUsage, type FundUsageSummary } from "../investment/fund-usage.ts";
 import { availableYears, filterMonths, monthFocus, parseSalesFilter, salesPoints, type MonthFocus, type SalesFilter, type SalesPoint } from "../investment/sales.ts";
 import type { IsoDate } from "../investment/types.ts";
 import { INDEX_MESSAGE, InvestorDataError, QUOTA_MESSAGE, isMissingIndexError, isQuotaError } from "./firestore-source.ts";
@@ -55,10 +55,10 @@ export async function loadSalesView(params: Record<string, string | string[] | u
   return { filter, years, today, points: salesPoints(months, monthly, today), focus: focusMonth ? monthFocus(focusMonth, monthly, today) : null };
 }
 
-export type FundUsageView = { months: FundUsageMonth[]; skipped: number };
+export type FundUsageView = { summary: FundUsageSummary; skipped: number };
 
-/** The Penggunaan Dana list: Belanja Investasi items, newest month first, without any total. */
+/** The Penggunaan Dana figure: the total of every Belanja Investasi item; the item list stays with Inzta (client, 2026-10-24). */
 export async function loadFundUsage(): Promise<FundUsageView> {
   const { items, skipped } = await getDataSource().getFundUsage(Date.now());
-  return { months: groupFundUsage(items), skipped };
+  return { summary: summarizeFundUsage(items), skipped };
 }

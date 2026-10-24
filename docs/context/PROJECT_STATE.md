@@ -1,10 +1,10 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: 1c9f44f119ecd6b173df800ff18a3c5d394e0fc190944723dd41d2add92f58dd -->
+source_hash: 3845e89ad13f3da5c2ab6174f9164b0298aec9f453054179013b0001a431ecf2 -->
 
 # Project State
 
-- Generated at: 2026-10-23T04:18:04.037Z
+- Generated at: 2026-10-24T16:00:48.426Z
 - Project: Inzta Investor Portal (tier `full`)
 - Active: F-009 / T-004
 - Open assumptions: 2
@@ -29,15 +29,15 @@ source_hash: 1c9f44f119ecd6b173df800ff18a3c5d394e0fc190944723dd41d2add92f58dd --
 <!-- GENERATED:GIT_FACTS:START -->
 ## Git
 
-- Branch: `feat/F-009-belanja-investasi`
-- HEAD: `c2a60ac`
+- Branch: `main`
+- HEAD: `0821111`
 - Worktree: dirty
 
 Recent commits:
 
+- `0821111 feat(F-006): keep the portal usable when one section fails to load`
+- `02ca5b6 fix(F-006): composite index for the monthly sales sum, readable message until it exists`
+- `d09e01a feat(F-009): penggunaan dana dari menu Belanja Investasi ERP`
 - `c2a60ac fix(F-006): retry the not-ready page every 5 minutes`
 - `a3e6b11 feat(F-009): sepuluh belanja per halaman di Penggunaan Dana`
-- `ea5436c docs(F-009): handoff paths`
-- `2ec7fb9 docs(F-009): evidence and handoff for penggunaan dana`
-- `215394e feat(F-009): penggunaan dana investasi dari Belanja Produksi yang ditandai`
 <!-- GENERATED:GIT_FACTS:END -->

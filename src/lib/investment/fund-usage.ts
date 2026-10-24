@@ -19,3 +19,16 @@ export function groupFundUsage(items: FundUsageItem[]): FundUsageMonth[] {
 export function pageFundUsage(months: FundUsageMonth[], size: number): FundUsageMonth[] {
   return months.flatMap((m) => Array.from({ length: Math.ceil(m.items.length / size) }, (_, i) => ({ month: m.month, items: m.items.slice(i * size, (i + 1) * size) })));
 }
+
+export type FundUsageSummary = { total: number; count: number; firstMonth: MonthKey | null; lastMonth: MonthKey | null };
+
+/** One global figure for the investor (client revision 2026-10-24): the sum of every Belanja Investasi item. */
+export function summarizeFundUsage(items: FundUsageItem[]): FundUsageSummary {
+  const months = items.map((item) => item.date.slice(0, 7)).sort();
+  return {
+    total: items.reduce((sum, item) => sum + item.amount, 0),
+    count: items.length,
+    firstMonth: months[0] ?? null,
+    lastMonth: months.at(-1) ?? null,
+  };
+}

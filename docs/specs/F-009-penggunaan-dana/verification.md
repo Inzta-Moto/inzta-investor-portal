@@ -6,8 +6,8 @@ status: verification
 tier: lite
 owner: "VXerys"
 created: 2026-10-22
-last_updated: 2026-10-23
-last_verified: 2026-10-23
+last_updated: 2026-10-24
+last_verified: 2026-10-24
 requirements: [FR-001, FR-002, FR-003]
 supersedes: null
 ---
@@ -67,5 +67,17 @@ supersedes: null
 - date: 2026-10-23
 - commit: inztamoto-erp-dashboard 1b0dcac (feat/belanja-investasi); portal feat/F-009-belanja-investasi
 - covers: [AC-001, AC-002, AC-004, AC-005, AC-007, AC-008, AC-009, AC-010]
+
+### EV-005 — Total global menggantikan daftar (revisi klien 2026-10-24)
+- command: `npm test`, `npm run typecheck`, `npm run lint`, `npm run build`; `next start` dari worktree `main` ke emulator (seed 2 belanja investasi)
+- output:
+  ```text
+  tests 62 pass: summarizeFundUsage total, jumlah, bulan pertama dan terakhir; typecheck 0 error, eslint bersih, build sukses
+  320 px: "Total dana investasi terpakai Rp610.000 · 2 belanja · September 2026 sampai Oktober 2026", kartu Dana investasi Rp200.000.000,
+          tanpa tabel atau daftar barang, tanpa scroll horizontal
+  ```
+- date: 2026-10-24
+- commit: main setelah 0821111
+- covers: [AC-005, AC-006, AC-008]
 
 Belum diuji: alur penuh di produksi (admin mencatat di menu Belanja Investasi dasbor asli, lalu daftar muncul di `capital.inzta.id`), termasuk apakah Security Rules produksi mengizinkan `investor_purchases`. AC-003 (peringatan Tanggal Efektif) memakai fungsi yang sama dengan EV-003 dan tidak diuji ulang.

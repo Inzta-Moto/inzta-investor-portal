@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. Rendered by `npm run context:render`.
 Source: sdd.config.json, docs/steering/, docs/specs/F-*/, docs/context/ASSUMPTIONS.md, docs/handoff/current.md.
-source_hash: 1c9f44f119ecd6b173df800ff18a3c5d394e0fc190944723dd41d2add92f58dd -->
+source_hash: 3845e89ad13f3da5c2ab6174f9164b0298aec9f453054179013b0001a431ecf2 -->
 
 # Brief
 
@@ -17,10 +17,10 @@ Acceptance criteria:
 - AC-002: Given menu Belanja Investasi, then admin memilih periode Hari, Minggu, Bulan, atau Semua dengan tanggal acuan, mencari barang, dan melihat total serta jumlah transaksi periode itu; total hanya ada di ERP (revisi 2026-10-23).
 - AC-003: Given belanja bertanggal sebelum Tanggal Efektif, then ERP tetap menyimpan dan menampilkan peringatan (Q5).
 - AC-004: Given Belanja Produksi dan halaman Investor, then keduanya tidak punya centang, label, kartu, atau peringatan dana investasi, dan Belanja Investasi tidak muncul di Belanja Produksi (revisi 2026-10-23).
-- AC-005: Given Belanja Investasi, then halaman "Penggunaan Dana Investasi" menampilkan tanggal, nama barang, kategori seperti diketik admin, jumlah dengan satuan, dan nominal per barang, terbaru di atas, dikelompokkan per bulan (Q3, Q12).
-- AC-006: Given halaman itu, then tidak ada total, sisa dana, harga satuan, catatan, atau status minggu (Q3).
+- AC-005: Given Belanja Investasi, then halaman "Penggunaan Dana Investasi" menampilkan satu angka: total seluruh belanja, dengan jumlah belanja dan rentang bulannya, di samping Dana Investasi dari perjanjian (revisi klien 2026-10-24: "jangan pake rincian, global aja, total dana terpakai berapa").
+- AC-006: Given halaman itu, then tidak ada rincian per barang, sisa dana, harga satuan, catatan, atau status minggu. Rincian per barang tetap dicatat di ERP.
 - AC-007: Given belanja ditambah, diedit, atau dihapus di menu Belanja Investasi, then portal menampilkan keadaan terbaru setelah cache 25 detik (Q4, Q10).
-- AC-008: Given tidak ada Belanja Investasi, then halaman menampilkan "Belum ada belanja yang dibayar dari dana investasi."
+- AC-008: Given tidak ada Belanja Investasi, then total Rp0 dengan keterangan "Belum ada belanja yang dibayar dari dana investasi."
 - AC-009: Given dokumen Belanja Investasi dengan harga satuan, catatan, dan field lain, then server portal hanya menerima enam kolom ADR-0008, dan tidak pernah membaca `production_purchases`.
 - AC-010: Given dokumen Belanja Investasi yang rusak, then dokumen itu dilewati dan investor melihat kalimat biasa.
 
