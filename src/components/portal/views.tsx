@@ -15,6 +15,7 @@ import { AlertIcon, DownIcon, InfoIcon, RightIcon, UpIcon } from "../icons";
 import { Card, Notice, PageHeader, StatCard } from "./cards";
 import { CommissionHero } from "./commission-hero";
 import { ContractTimeline } from "./contract-timeline";
+import { RetryWhenReady } from "./auto-refresh";
 import { Paginated } from "./paginated";
 import { CommissionReceivedCard, RepaymentReceivedCard } from "./received-cards";
 import { RepaymentTable } from "./repayment-table";
@@ -33,6 +34,17 @@ function Warnings({ portfolio }: { portfolio: Portfolio }) {
       <span>{warning} Hubungi admin Inzta untuk memperbaiki data.</span>
     </Notice>
   ));
+}
+
+/** Shown in place of a section whose data could not be read, so the rest of the page stays usable. */
+function SectionUnavailable({ reason }: { reason: string }) {
+  return (
+    <Notice tone="warn">
+      <AlertIcon className="size-5 text-warn" />
+      <span>{reason} Halaman ini mencoba memuat ulang secara berkala.</span>
+      <RetryWhenReady />
+    </Notice>
+  );
 }
 
 function ChangeLine({ portfolio }: { portfolio: Portfolio }) {
@@ -72,8 +84,15 @@ export function RingkasanView({ portfolio }: { portfolio: Portfolio }) {
           <ContractTimeline portfolio={portfolio} />
         </Card>
         <Card className="lg:col-span-8">
-          <SalesChart title="Penjualan per bulan" points={chartPoints(portfolio)} />
-          {sales.change ? (
+          {sales.unavailable ? (
+            <>
+              <h2 className="mb-3 text-[15px] font-bold lg:text-base">Penjualan per bulan</h2>
+              <SectionUnavailable reason={sales.unavailable} />
+            </>
+          ) : (
+            <SalesChart title="Penjualan per bulan" points={chartPoints(portfolio)} />
+          )}
+          {!sales.unavailable && sales.change ? (
             <p className="mt-3 flex flex-wrap items-center gap-x-2 border-t border-line pt-3 text-[13px] text-ink-2">
               {formatMonth(sales.change.month, "long")}: <b className="tabular text-ink">{formatRupiah(sales.change.revenue)}</b>
               <ChangeLine portfolio={portfolio} />
@@ -125,8 +144,18 @@ function FocusSummary({ focus }: { focus: MonthFocus }) {
   );
 }
 
-export function PenjualanView({ portfolio, sales }: { portfolio: Portfolio; sales: SalesView }) {
+export function PenjualanView({ portfolio, sales, error }: { portfolio: Portfolio; sales?: SalesView; error?: string }) {
   const { points, change } = portfolio.sales;
+  const unavailable = portfolio.sales.unavailable ?? error ?? (sales ? null : "Rincian penjualan belum bisa dimuat saat ini.");
+  if (unavailable || !sales) {
+    return (
+      <>
+        <PageHeader title="Penjualan" subtitle="Hasil penjualan InztaMoto per bulan, dihitung dari catatan Inzta" />
+        <Warnings portfolio={portfolio} />
+        <SectionUnavailable reason={unavailable ?? "Rincian penjualan belum bisa dimuat saat ini."} />
+      </>
+    );
+  }
   const running = points[points.length - 1];
   const complete = points.filter((point) => !point.running && point.revenue > 0);
   const average = complete.length ? Math.round(complete.reduce((sum, point) => sum + point.revenue, 0) / complete.length) : null;
@@ -337,7 +366,15 @@ function FundUsagePage({ month, children }: { month: FundUsageMonth; children: R
 const FUND_USAGE_PAGE = 10;
 
 // Ten items per page and never two months on one page, newest first. The client asked for the list only: no total, remaining fund, or chart.
-export function PenggunaanDanaView({ fundUsage }: { fundUsage: FundUsageView }) {
+export function PenggunaanDanaView({ fundUsage, error }: { fundUsage?: FundUsageView; error?: string }) {
+  if (!fundUsage) {
+    return (
+      <>
+        <PageHeader title="Penggunaan Dana Investasi" subtitle="Daftar belanja PT Inzta Gear Indonesia yang dibayar dari dana investasi Anda, dicatat oleh tim Inzta." />
+        <SectionUnavailable reason={error ?? "Daftar penggunaan dana belum bisa dimuat saat ini."} />
+      </>
+    );
+  }
   const { months, skipped } = fundUsage;
   const pages = pageFundUsage(months, FUND_USAGE_PAGE);
   const labels = pages.map((m) => formatMonth(m.month, "long"));
@@ -378,9 +415,21 @@ export function PenggunaanDanaView({ fundUsage }: { fundUsage: FundUsageView }) 
   );
 }
 
-export function PortfolioView({ view, portfolio, sales, fundUsage }: { view: PortalView; portfolio: Portfolio; sales?: SalesView; fundUsage?: FundUsageView }) {
-  if (view === "penjualan" && sales) return <PenjualanView portfolio={portfolio} sales={sales} />;
-  if (view === "penggunaan-dana" && fundUsage) return <PenggunaanDanaView fundUsage={fundUsage} />;
+export function PortfolioView({
+  view,
+  portfolio,
+  sales,
+  fundUsage,
+  sectionError,
+}: {
+  view: PortalView;
+  portfolio: Portfolio;
+  sales?: SalesView;
+  fundUsage?: FundUsageView;
+  sectionError?: string;
+}) {
+  if (view === "penjualan") return <PenjualanView portfolio={portfolio} sales={sales} error={sectionError} />;
+  if (view === "penggunaan-dana") return <PenggunaanDanaView fundUsage={fundUsage} error={sectionError} />;
   if (view === "komisi") return <KomisiView portfolio={portfolio} />;
   if (view === "pengembalian") return <PengembalianView portfolio={portfolio} />;
   return <RingkasanView portfolio={portfolio} />;

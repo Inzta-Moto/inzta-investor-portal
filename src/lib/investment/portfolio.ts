@@ -15,7 +15,7 @@ export type Portfolio = {
   phase: AgreementPhase;
   commission: { items: CommissionItem[]; totals: CommissionTotals; current: CommissionItem | null };
   repayment: { items: RepaymentItem[]; totals: RepaymentTotals; next: RepaymentItem | null };
-  sales: { points: SalesPoint[]; change: MonthChange | null };
+  sales: { points: SalesPoint[]; change: MonthChange | null; unavailable: string | null };
   warnings: string[];
 };
 
@@ -42,7 +42,7 @@ export function buildPortfolio(snapshot: InvestorSnapshot, today: IsoDate): Port
     phase,
     commission: { items, totals: commissionTotals(agreement, payments), current },
     repayment: { items: repayments, totals: repaymentTotals(agreement, payments), next: repayments.find((r) => r.status !== "paid") ?? null },
-    sales: { points, change: latestCompleteChange(points) },
+    sales: { points, change: latestCompleteChange(points), unavailable: snapshot.salesUnavailable ?? null },
     warnings,
   };
 }

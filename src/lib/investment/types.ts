@@ -66,6 +66,8 @@ export type InvestorSnapshot = {
   asOf: IsoDate;
   /** Admin-entered documents that were skipped because they were malformed. */
   warnings?: string[];
+  /** Why the monthly totals could not be read; the rest of the snapshot is still valid. */
+  salesUnavailable?: string;
 };
 
 export type ScheduleStatus = "paid" | "due" | "late" | "upcoming" | "unset";

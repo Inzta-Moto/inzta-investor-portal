@@ -2,7 +2,7 @@ import { AlertIcon } from "@/components/icons";
 import { AutoRefresh, RetryWhenReady } from "@/components/portal/auto-refresh";
 import { PortfolioView, type PortalView } from "@/components/portal/views";
 import { requireSession } from "@/lib/auth/session";
-import { INDEX_MESSAGE, QUOTA_MESSAGE, isMissingIndexError, isQuotaError } from "@/lib/data/firestore-source";
+import { sectionReason } from "@/lib/data/firestore-source";
 import { loadFundUsage, loadPortfolio, loadSalesView, type FundUsageView, type SalesView } from "@/lib/data/load";
 
 /**
@@ -14,18 +14,18 @@ export async function PortfolioPage({ view, searchParams = {} }: { view: PortalV
   const result = await loadPortfolio();
   let sales: SalesView | undefined;
   let fundUsage: FundUsageView | undefined;
-  let reason = result.ok ? null : result.reason;
+  // A section that fails to load is reported inside the page; the navigation and the other sections stay usable.
+  let sectionError: string | undefined;
   if (result.ok && (view === "penjualan" || view === "penggunaan-dana")) {
     try {
       if (view === "penjualan") sales = await loadSalesView(searchParams);
       else fundUsage = await loadFundUsage();
     } catch (error) {
-      if (isQuotaError(error)) reason = QUOTA_MESSAGE;
-      else if (isMissingIndexError(error)) reason = INDEX_MESSAGE;
-      else throw error;
+      sectionError = sectionReason(error, view === "penjualan" ? "Rincian penjualan belum bisa dimuat saat ini." : "Daftar penggunaan dana belum bisa dimuat saat ini.");
     }
   }
-  if (reason !== null || !result.ok) {
+  if (!result.ok) {
+    const reason = result.reason;
     return (
       <div role="alert" className="grid justify-items-start gap-2.5 rounded-xl border border-line bg-surface p-5">
         <span className="grid size-10 place-items-center rounded-[10px] bg-warn-soft text-warn">
@@ -40,7 +40,7 @@ export async function PortfolioPage({ view, searchParams = {} }: { view: PortalV
   return (
     <>
       <AutoRefresh updatedAt={result.updatedAt} />
-      <PortfolioView view={view} portfolio={result.portfolio} sales={sales} fundUsage={fundUsage} />
+      <PortfolioView view={view} portfolio={result.portfolio} sales={sales} fundUsage={fundUsage} sectionError={sectionError} />
     </>
   );
 }

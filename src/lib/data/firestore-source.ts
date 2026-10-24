@@ -44,6 +44,16 @@ export function isMissingIndexError(error: unknown): boolean {
 
 export class InvestorDataError extends Error {}
 
+/** The sentence a page shows for one section that failed to load; anything unexpected is logged for the admin. */
+export function sectionReason(error: unknown, fallback: string): string {
+  if (isQuotaError(error)) return QUOTA_MESSAGE;
+  if (isMissingIndexError(error)) return INDEX_MESSAGE;
+  console.error(error);
+  return fallback;
+}
+
+export const SALES_UNAVAILABLE = "Total penjualan bulanan belum bisa dimuat saat ini. Bagian lain tetap bisa dilihat.";
+
 export function adminDb(): Firestore {
   if (!getApps().length) {
     const config = readAdminConfig(process.env);
@@ -160,11 +170,15 @@ export function createFirestoreSource(db: Firestore) {
   return {
     async getSnapshot(today: IsoDate, nowMs = Date.now()): Promise<InvestorSnapshot> {
       const keys = Array.from({ length: 12 }, (_, i) => monthKey(addMonths(toYearMonth(today), i - 11)));
-      const [{ agreement, payments, warnings }, monthlySales] = await Promise.all([
-        meta.get("current", AGREEMENT_TTL, nowMs, loadMeta),
-        monthTotals(keys, today, nowMs),
-      ]);
-      return { source: "firestore", agreement, payments, monthlySales, asOf: today, warnings };
+      // The sales sum is the fragile read (index, quota); when it fails the agreement, commission, and repayment
+      // pages still render, and only the sales section says why it is empty.
+      const [metaResult, salesResult] = await Promise.allSettled([meta.get("current", AGREEMENT_TTL, nowMs, loadMeta), monthTotals(keys, today, nowMs)]);
+      if (metaResult.status === "rejected") throw metaResult.reason;
+      const { agreement, payments, warnings } = metaResult.value;
+      if (salesResult.status === "rejected") {
+        return { source: "firestore", agreement, payments, monthlySales: [], asOf: today, warnings, salesUnavailable: sectionReason(salesResult.reason, SALES_UNAVAILABLE) };
+      }
+      return { source: "firestore", agreement, payments, monthlySales: salesResult.value, asOf: today, warnings };
     },
     getMonths(keys: MonthKey[], today: IsoDate, nowMs = Date.now()): Promise<MonthlySales[]> {
       return monthTotals(keys, today, nowMs);
